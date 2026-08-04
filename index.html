@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI & Agentic Systems Certification Exam | 25 MCQ Assessment</title>
+  <title>AI & Agentic Systems Certification Exam | Participant Portal</title>
   <meta name="description" content="Official 25-Question Certification Exam covering LLMs, Context Engineering, Claude Code, MCP, Skills, Subagents, Sandboxing, Agent Teams, GSD, and Gastown Swarms.">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -28,11 +28,11 @@
 
   <main class="main-wrapper">
 
-    <!-- 1. REGISTRATION & WELCOME SCREEN -->
+    <!-- 1. PARTICIPANT LOGIN SCREEN -->
     <section id="welcome-screen" class="welcome-card">
-      <h1 class="welcome-title">Bootcamp Certification Assessment</h1>
+      <h1 class="welcome-title">Bootcamp Certification Exam</h1>
       <p class="welcome-desc">
-        Demonstrate your mastery across the complete 3-week AI Engineering curriculum. Complete all 25 questions within 30 minutes to earn your certificate badge.
+        Welcome! Please log in with your registered participant credentials to start your 25-question proctored assessment.
       </p>
 
       <div class="curriculum-chips">
@@ -59,19 +59,19 @@
 
       <form id="registration-form">
         <div class="form-group">
-          <label class="form-label" for="candidate-name">Full Name *</label>
-          <input type="text" id="candidate-name" class="form-input" placeholder="e.g., Alex Johnson" required>
+          <label class="form-label" for="candidate-email">Participant Email *</label>
+          <input type="email" id="candidate-email" class="form-input" placeholder="e.g. student@example.com" required>
         </div>
         <div class="form-group">
-          <label class="form-label" for="candidate-email">Email Address *</label>
-          <input type="email" id="candidate-email" class="form-input" placeholder="alex@example.com" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="candidate-id">Candidate / Student ID *</label>
-          <input type="text" id="candidate-id" class="form-input" placeholder="e.g., AI-9042" required>
+          <label class="form-label" for="candidate-password">Participant Password *</label>
+          <input type="password" id="candidate-password" class="form-input" placeholder="Enter your password..." required>
         </div>
 
-        <button type="submit" class="btn-start">Launch Proctored Exam (Fullscreen) →</button>
+        <div id="user-login-error" style="color:var(--danger-color); font-size:0.85rem; margin-bottom:1rem; text-align:center;" class="hidden">
+          Invalid email or password. Please contact admin if you are not registered.
+        </div>
+
+        <button type="submit" class="btn-start">Participant Login & Launch Exam →</button>
       </form>
     </section>
 
@@ -144,9 +144,9 @@
     <section id="results-screen" class="results-card hidden">
       <div class="results-header">
         <div id="badge-status" class="pass-fail-badge badge-pass">🏆 PASS (84%)</div>
-        <h2 style="font-family:var(--font-heading); font-size:1.6rem; margin-bottom:0.25rem;" id="res-candidate-name">Candidate Name</h2>
+        <h2 style="font-family:var(--font-heading); font-size:1.6rem; margin-bottom:0.25rem;" id="res-candidate-name">Candidate Email</h2>
         <div class="candidate-meta">
-          <span id="res-candidate-id">ID: AI-0000</span> | Date: <span id="res-date">Aug 4, 2026</span>
+          <span id="res-candidate-id">ID: USR-0000</span> | Date: <span id="res-date">Aug 4, 2026</span>
         </div>
       </div>
 

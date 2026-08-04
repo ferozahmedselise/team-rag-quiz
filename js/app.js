@@ -1,6 +1,6 @@
 /**
  * AI Certification Exam Engine Application Script
- * Controls exam state, question shuffling, timer, UI rendering, scoring, persistence, and review generation.
+ * Controls participant login, exam state, question shuffling, timer, UI rendering, scoring, persistence, and review generation.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -27,9 +27,9 @@ document.addEventListener("DOMContentLoaded", () => {
     examContainer: document.getElementById("exam-screen"),
     resultsContainer: document.getElementById("results-screen"),
     registrationForm: document.getElementById("registration-form"),
-    candidateNameInput: document.getElementById("candidate-name"),
     candidateEmailInput: document.getElementById("candidate-email"),
-    candidateIdInput: document.getElementById("candidate-id"),
+    candidatePasswordInput: document.getElementById("candidate-password"),
+    userLoginErrorMsg: document.getElementById("user-login-error"),
     
     // Exam Header
     timerDisplay: document.getElementById("timer-display"),
@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Event Listeners
   if (elements.registrationForm) {
-    elements.registrationForm.addEventListener("submit", handleRegistration);
+    elements.registrationForm.addEventListener("submit", handleParticipantLogin);
   }
 
   if (elements.prevBtn) {
@@ -129,18 +129,37 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.restartBtn.addEventListener("click", resetExam);
   }
 
-  // Handle Registration & Start Test
-  function handleRegistration(e) {
+  // Handle Participant Login (Only registered participants can log in)
+  function handleParticipantLogin(e) {
     e.preventDefault();
-    candidateInfo.name = elements.candidateNameInput.value.trim() || "Candidate";
-    candidateInfo.email = elements.candidateEmailInput.value.trim() || "candidate@example.com";
-    candidateInfo.id = elements.candidateIdInput.value.trim() || "AI-8092";
+    const email = elements.candidateEmailInput.value.trim();
+    const password = elements.candidatePasswordInput.value.trim();
 
-    if (elements.candidateHeaderName) {
-      elements.candidateHeaderName.textContent = candidateInfo.name;
-    }
+    fetch("/api/user/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Authentication failed");
+        return res.json();
+      })
+      .then((data) => {
+        elements.userLoginErrorMsg.classList.add("hidden");
+        candidateInfo.name = data.user.email.split("@")[0];
+        candidateInfo.email = data.user.email;
+        candidateInfo.id = data.user.id;
 
-    startNewExam();
+        if (elements.candidateHeaderName) {
+          elements.candidateHeaderName.textContent = candidateInfo.email;
+        }
+
+        startNewExam();
+      })
+      .catch(() => {
+        elements.userLoginErrorMsg.textContent = "Invalid email or password. Only registered participants can log in.";
+        elements.userLoginErrorMsg.classList.remove("hidden");
+      });
   }
 
   function startNewExam() {
@@ -422,24 +441,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function saveResultToStorageAndAPI(resultPayload) {
-    // 1. LocalStorage Fallback
     try {
       const stored = JSON.parse(localStorage.getItem("quiz_results") || "[]");
-      stored.unshift(resultPayload); // Latest first
+      stored.unshift(resultPayload);
       localStorage.setItem("quiz_results", JSON.stringify(stored));
     } catch (e) {
       console.warn("LocalStorage save error:", e);
     }
 
-    // 2. REST API Persist
     fetch("/api/results", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(resultPayload)
     }).catch((err) => {
-      console.warn("Backend API save failed (will rely on localStorage):", err);
+      console.warn("Backend API save failed:", err);
     });
   }
 
@@ -447,7 +462,7 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.examContainer.classList.add("hidden");
     elements.resultsContainer.classList.remove("hidden");
 
-    elements.resultCandidateName.textContent = data.candidate.name;
+    elements.resultCandidateName.textContent = data.candidate.email;
     elements.resultCandidateId.textContent = `ID: ${data.candidate.id}`;
     elements.resultDate.textContent = new Date().toLocaleDateString("en-US", {
       year: "numeric",
@@ -457,7 +472,6 @@ document.addEventListener("DOMContentLoaded", () => {
       minute: "2-digit"
     });
 
-    // Pass / Fail Badge
     if (data.passed) {
       elements.badgeStatus.className = "pass-fail-badge badge-pass";
       elements.badgeStatus.innerHTML = `🏆 CERTIFIED - PASS (${data.percentage}%)`;
@@ -469,14 +483,12 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.scoreFraction.textContent = `${data.correctCount} / ${data.totalQuestions}`;
     elements.scorePercent.textContent = `${data.percentage}%`;
 
-    // Animate Circle SVG Progress Ring
     const strokeDashoffset = 339 - (339 * data.percentage) / 100;
     setTimeout(() => {
       elements.circleScoreProgress.style.strokeDashoffset = strokeDashoffset;
       elements.circleScoreProgress.style.stroke = data.passed ? "#10b981" : "#ef4444";
     }, 100);
 
-    // Render Domain Scores
     elements.domainBreakdownContainer.innerHTML = "";
     Object.keys(data.domainScores).forEach((domain) => {
       const stats = data.domainScores[domain];
@@ -496,7 +508,6 @@ document.addEventListener("DOMContentLoaded", () => {
       elements.domainBreakdownContainer.appendChild(domainCard);
     });
 
-    // Render Question-by-Question Detailed Review
     renderDetailedReview();
   }
 

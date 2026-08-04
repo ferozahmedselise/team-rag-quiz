@@ -1,37 +1,52 @@
 /**
  * Admin Panel Dashboard Controller
- * Manages admin authentication, results retrieval, metrics calculation, filtering, modal details, JSON & CSV export, and record deletion.
+ * Manages admin email/password login, participant user registration/deletion,
+ * results retrieval, metrics calculation, filtering, modal details, JSON & CSV export, and record deletion.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-  const ADMIN_KEY_STORAGE = "quiz_admin_authenticated";
+  const ADMIN_TOKEN_STORAGE = "quiz_admin_token";
   let activeResults = [];
-  let currentAdminKey = "";
+  let activeUsers = [];
+  let currentAdminToken = "";
 
   const elements = {
     loginCard: document.getElementById("admin-login-card"),
     loginForm: document.getElementById("admin-login-form"),
-    adminPassword: document.getElementById("admin-password"),
+    adminEmailInput: document.getElementById("admin-email"),
+    adminPasswordInput: document.getElementById("admin-password"),
     loginErrorMsg: document.getElementById("login-error-msg"),
     logoutBtn: document.getElementById("admin-logout-btn"),
     dashboard: document.getElementById("admin-dashboard"),
     
+    // Tabs & Views
+    tabResultsBtn: document.getElementById("tab-results-btn"),
+    tabUsersBtn: document.getElementById("tab-users-btn"),
+    viewResultsSection: document.getElementById("view-results-section"),
+    viewUsersSection: document.getElementById("view-users-section"),
+
     // Metrics
+    metricParticipants: document.getElementById("metric-participants"),
     metricTotal: document.getElementById("metric-total"),
     metricPassed: document.getElementById("metric-passed"),
     metricRate: document.getElementById("metric-rate"),
-    metricStrikes: document.getElementById("metric-strikes"),
 
-    // Filters & Buttons
+    // Results Controls & Table
     searchInput: document.getElementById("search-input"),
     filterStatus: document.getElementById("filter-status"),
     exportJsonBtn: document.getElementById("export-json-btn"),
     exportCsvBtn: document.getElementById("export-csv-btn"),
     clearAllBtn: document.getElementById("clear-all-btn"),
-
-    // Table
     tableBody: document.getElementById("results-table-body"),
     noResultsMsg: document.getElementById("no-results-msg"),
+
+    // User Management
+    addUserForm: document.getElementById("add-user-form"),
+    newUserEmailInput: document.getElementById("new-user-email"),
+    newUserPasswordInput: document.getElementById("new-user-password"),
+    addUserMsg: document.getElementById("add-user-msg"),
+    usersTableBody: document.getElementById("users-table-body"),
+    noUsersMsg: document.getElementById("no-users-msg"),
 
     // Modal
     detailModal: document.getElementById("detail-modal"),
@@ -41,49 +56,118 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   // Check existing session
-  const savedKey = sessionStorage.getItem(ADMIN_KEY_STORAGE);
-  if (savedKey) {
-    currentAdminKey = savedKey;
+  const savedToken = sessionStorage.getItem(ADMIN_TOKEN_STORAGE);
+  if (savedToken) {
+    currentAdminToken = savedToken;
     showDashboard();
   }
 
-  // Login handler
+  // Admin Login handler
   if (elements.loginForm) {
     elements.loginForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      const entered = elements.adminPassword.value.trim();
-      verifyAdminKey(entered);
+      const email = elements.adminEmailInput.value.trim();
+      const password = elements.adminPasswordInput.value.trim();
+
+      fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      })
+        .then((res) => {
+          if (!res.ok) throw new Error("Invalid login");
+          return res.json();
+        })
+        .then((data) => {
+          sessionStorage.setItem(ADMIN_TOKEN_STORAGE, data.token);
+          currentAdminToken = data.token;
+          elements.loginErrorMsg.classList.add("hidden");
+          showDashboard();
+        })
+        .catch(() => {
+          elements.loginErrorMsg.classList.remove("hidden");
+        });
     });
   }
 
   if (elements.logoutBtn) {
     elements.logoutBtn.addEventListener("click", () => {
-      sessionStorage.removeItem(ADMIN_KEY_STORAGE);
-      currentAdminKey = "";
+      sessionStorage.removeItem(ADMIN_TOKEN_STORAGE);
+      currentAdminToken = "";
       elements.dashboard.classList.add("hidden");
       elements.logoutBtn.classList.add("hidden");
       elements.loginCard.classList.remove("hidden");
     });
   }
 
-  // Filter & Search events
-  if (elements.searchInput) {
-    elements.searchInput.addEventListener("input", applyFilters);
+  // Tab Switching
+  if (elements.tabResultsBtn) {
+    elements.tabResultsBtn.addEventListener("click", () => switchTab("RESULTS"));
   }
-  if (elements.filterStatus) {
-    elements.filterStatus.addEventListener("change", applyFilters);
-  }
-
-  if (elements.exportJsonBtn) {
-    elements.exportJsonBtn.addEventListener("click", exportToJSON);
-  }
-  if (elements.exportCsvBtn) {
-    elements.exportCsvBtn.addEventListener("click", exportToCSV);
+  if (elements.tabUsersBtn) {
+    elements.tabUsersBtn.addEventListener("click", () => switchTab("USERS"));
   }
 
-  if (elements.clearAllBtn) {
-    elements.clearAllBtn.addEventListener("click", clearAllResults);
+  function switchTab(tab) {
+    if (tab === "RESULTS") {
+      elements.tabResultsBtn.style.background = "var(--primary)";
+      elements.tabResultsBtn.style.color = "#fff";
+      elements.tabUsersBtn.style.background = "rgba(255,255,255,0.08)";
+      elements.tabUsersBtn.style.color = "var(--text-main)";
+
+      elements.viewResultsSection.classList.remove("hidden");
+      elements.viewUsersSection.classList.add("hidden");
+    } else {
+      elements.tabUsersBtn.style.background = "var(--primary)";
+      elements.tabUsersBtn.style.color = "#fff";
+      elements.tabResultsBtn.style.background = "rgba(255,255,255,0.08)";
+      elements.tabResultsBtn.style.color = "var(--text-main)";
+
+      elements.viewUsersSection.classList.remove("hidden");
+      elements.viewResultsSection.classList.add("hidden");
+    }
   }
+
+  // User Registration Event
+  if (elements.addUserForm) {
+    elements.addUserForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const email = elements.newUserEmailInput.value.trim();
+      const password = elements.newUserPasswordInput.value.trim();
+
+      fetch(`/api/users?key=${encodeURIComponent(currentAdminToken)}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password, createdAt: new Date().toISOString() })
+      })
+        .then((res) => {
+          if (!res.ok) {
+            return res.json().then((err) => { throw new Error(err.error || "Failed to add participant"); });
+          }
+          return res.json();
+        })
+        .then(() => {
+          elements.addUserMsg.className = "show";
+          elements.addUserMsg.style.color = "var(--success-color)";
+          elements.addUserMsg.textContent = `✓ Participant ${email} registered successfully!`;
+          elements.addUserForm.reset();
+          loadUsersData();
+        })
+        .catch((err) => {
+          elements.addUserMsg.className = "show";
+          elements.addUserMsg.style.color = "var(--danger-color)";
+          elements.addUserMsg.textContent = `❌ ${err.message}`;
+        });
+    });
+  }
+
+  // Search & Filter Events
+  if (elements.searchInput) elements.searchInput.addEventListener("input", applyFilters);
+  if (elements.filterStatus) elements.filterStatus.addEventListener("change", applyFilters);
+
+  if (elements.exportJsonBtn) elements.exportJsonBtn.addEventListener("click", exportToJSON);
+  if (elements.exportCsvBtn) elements.exportCsvBtn.addEventListener("click", exportToCSV);
+  if (elements.clearAllBtn) elements.clearAllBtn.addEventListener("click", clearAllResults);
 
   if (elements.detailModalClose) {
     elements.detailModalClose.addEventListener("click", () => {
@@ -91,40 +175,17 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function verifyAdminKey(key) {
-    fetch(`/api/results?key=${encodeURIComponent(key)}`)
-      .then((res) => {
-        if (res.status === 401) {
-          throw new Error("Invalid admin key");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        sessionStorage.setItem(ADMIN_KEY_STORAGE, key);
-        currentAdminKey = key;
-        showDashboard(data);
-      })
-      .catch(() => {
-        elements.loginErrorMsg.classList.remove("hidden");
-      });
-  }
-
-  function showDashboard(initialData = null) {
+  function showDashboard() {
     elements.loginCard.classList.add("hidden");
     elements.dashboard.classList.remove("hidden");
     elements.logoutBtn.classList.remove("hidden");
 
-    if (initialData) {
-      activeResults = initialData;
-      renderMetrics();
-      applyFilters();
-    } else {
-      loadResultsData();
-    }
+    loadResultsData();
+    loadUsersData();
   }
 
   function loadResultsData() {
-    fetch(`/api/results?key=${encodeURIComponent(currentAdminKey)}`)
+    fetch(`/api/results?key=${encodeURIComponent(currentAdminToken)}`)
       .then((res) => res.json())
       .then((data) => {
         activeResults = data;
@@ -139,16 +200,71 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
+  function loadUsersData() {
+    fetch(`/api/users?key=${encodeURIComponent(currentAdminToken)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        activeUsers = data;
+        elements.metricParticipants.textContent = activeUsers.length;
+        renderUsersTable(activeUsers);
+      })
+      .catch((err) => {
+        console.warn("Error fetching users:", err);
+      });
+  }
+
   function renderMetrics() {
     const total = activeResults.length;
     const passed = activeResults.filter((r) => r.passed).length;
     const rate = total > 0 ? Math.round((passed / total) * 100) : 0;
-    const totalStrikes = activeResults.reduce((acc, r) => acc + (r.strikes || 0), 0);
 
     elements.metricTotal.textContent = total;
     elements.metricPassed.textContent = passed;
     elements.metricRate.textContent = `${rate}%`;
-    elements.metricStrikes.textContent = totalStrikes;
+  }
+
+  function renderUsersTable(users) {
+    elements.usersTableBody.innerHTML = "";
+
+    if (users.length === 0) {
+      elements.noUsersMsg.classList.remove("hidden");
+      return;
+    }
+    elements.noUsersMsg.classList.add("hidden");
+
+    users.forEach((u) => {
+      const row = document.createElement("tr");
+      const regDate = u.createdAt ? new Date(u.createdAt).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }) : "N/A";
+
+      row.innerHTML = `
+        <td><code>${escapeHTML(u.id)}</code></td>
+        <td><strong>${escapeHTML(u.email)}</strong></td>
+        <td>${regDate}</td>
+        <td>
+          <button type="button" class="btn-danger delete-user-btn" style="padding:4px 12px; font-size:0.8rem;">Remove</button>
+        </td>
+      `;
+
+      row.querySelector(".delete-user-btn").addEventListener("click", () => removeUser(u.id, u.email));
+      elements.usersTableBody.appendChild(row);
+    });
+  }
+
+  function removeUser(userId, email) {
+    if (!confirm(`Are you sure you want to remove participant account (${email})? They will no longer be able to log in to the exam.`)) {
+      return;
+    }
+
+    fetch(`/api/users?id=${encodeURIComponent(userId)}&key=${encodeURIComponent(currentAdminToken)}`, {
+      method: "DELETE"
+    })
+      .then((res) => res.json())
+      .then(() => {
+        loadUsersData();
+      })
+      .catch((err) => {
+        alert("Failed to remove participant: " + err.message);
+      });
   }
 
   function applyFilters() {
@@ -192,8 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
       row.innerHTML = `
         <td>${escapeHTML(item.formattedDate || new Date(item.timestamp).toLocaleDateString())}</td>
         <td>
-          <strong>${escapeHTML(item.candidate.name)}</strong><br>
-          <span style="font-size:0.75rem; color:var(--text-muted);">${escapeHTML(item.candidate.email)}</span>
+          <strong>${escapeHTML(item.candidate.email)}</strong>
         </td>
         <td><code>${escapeHTML(item.candidate.id)}</code></td>
         <td><strong>${item.correctCount}/${item.totalQuestions}</strong> (${item.percentage}%)</td>
@@ -219,7 +334,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showDetailModal(item) {
-    elements.detailModalTitle.textContent = `Submission Details: ${item.candidate.name}`;
+    elements.detailModalTitle.textContent = `Submission Details: ${item.candidate.email}`;
 
     const strokeDashoffset = 339 - (339 * item.percentage) / 100;
     const strokeColor = item.passed ? "#10b981" : "#ef4444";
@@ -305,10 +420,10 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="pass-fail-badge ${item.passed ? 'badge-pass' : 'badge-fail'}">
             ${item.passed ? `🏆 CERTIFIED - PASS (${item.percentage}%)` : `❌ NOT PASSED (${item.percentage}%)`}
           </div>
-          <h2 style="font-family:var(--font-heading); font-size:1.6rem; margin-bottom:0.25rem;">${escapeHTML(item.candidate.name)}</h2>
+          <h2 style="font-family:var(--font-heading); font-size:1.6rem; margin-bottom:0.25rem;">${escapeHTML(item.candidate.email)}</h2>
           <div class="candidate-meta">
-            <span>ID: ${escapeHTML(item.candidate.id)}</span> | Email: <span>${escapeHTML(item.candidate.email)}</span><br>
-            Submitted: <span>${escapeHTML(item.formattedDate || item.timestamp)}</span> | Time Spent: <span>${timeMins}m ${timeSecs}s</span> | Strikes: <span style="color:${item.strikes > 0 ? 'var(--danger-color)' : 'var(--success-color)'}; font-weight:700;">${item.strikes || 0}</span>
+            <span>ID: ${escapeHTML(item.candidate.id)}</span> | Submitted: <span>${escapeHTML(item.formattedDate || item.timestamp)}</span><br>
+            Time Spent: <span>${timeMins}m ${timeSecs}s</span> | Security Strikes: <span style="color:${item.strikes > 0 ? 'var(--danger-color)' : 'var(--success-color)'}; font-weight:700;">${item.strikes || 0}</span>
           </div>
         </div>
 
@@ -365,10 +480,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const headers = ["Timestamp", "Candidate Name", "Email", "Student ID", "Score", "Total", "Percentage", "Status", "Strikes", "Time (sec)", "Auto Submitted"];
+    const headers = ["Timestamp", "Candidate Email", "Participant ID", "Score", "Total", "Percentage", "Status", "Strikes", "Time (sec)", "Auto Submitted"];
     const rows = activeResults.map((r) => [
       `"${r.formattedDate || r.timestamp}"`,
-      `"${r.candidate.name}"`,
       `"${r.candidate.email}"`,
       `"${r.candidate.id}"`,
       r.correctCount,
@@ -397,7 +511,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     localStorage.removeItem("quiz_results");
 
-    fetch(`/api/results?key=${encodeURIComponent(currentAdminKey)}`, {
+    fetch(`/api/results?key=${encodeURIComponent(currentAdminToken)}`, {
       method: "DELETE"
     })
       .then(() => {
