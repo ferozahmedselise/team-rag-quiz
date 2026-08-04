@@ -2,6 +2,7 @@
 """
 Lightweight HTTP & REST API Server for AI Certification Quiz
 Serves static web files and provides endpoints to persist and retrieve candidate exam results.
+Loads config parameters (such as ADMIN_SECRET) from .env file.
 """
 
 import http.server
@@ -10,9 +11,21 @@ import json
 import os
 import urllib.parse
 
-PORT = 8080
+def load_dotenv():
+    env_path = os.path.join(os.path.dirname(__file__), ".env")
+    if os.path.exists(env_path):
+        with open(env_path, "r") as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    key, val = line.split("=", 1)
+                    os.environ[key.strip()] = val.strip().strip("'\"")
+
+load_dotenv()
+
+PORT = int(os.environ.get("PORT", 8080))
 RESULTS_FILE = os.path.join(os.path.dirname(__file__), "results.json")
-ADMIN_SECRET = "admin123"
+ADMIN_SECRET = os.environ.get("ADMIN_SECRET", "admin123")
 
 # Ensure results file exists
 if not os.path.exists(RESULTS_FILE):

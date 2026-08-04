@@ -1,6 +1,6 @@
 /**
  * Admin Panel Dashboard Controller
- * Manages admin authentication, results retrieval, metrics calculation, filtering, modal details, CSV export, and record deletion.
+ * Manages admin authentication, results retrieval, metrics calculation, filtering, modal details, JSON & CSV export, and record deletion.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -22,9 +22,10 @@ document.addEventListener("DOMContentLoaded", () => {
     metricRate: document.getElementById("metric-rate"),
     metricStrikes: document.getElementById("metric-strikes"),
 
-    // Filters
+    // Filters & Buttons
     searchInput: document.getElementById("search-input"),
     filterStatus: document.getElementById("filter-status"),
+    exportJsonBtn: document.getElementById("export-json-btn"),
     exportCsvBtn: document.getElementById("export-csv-btn"),
     clearAllBtn: document.getElementById("clear-all-btn"),
 
@@ -73,6 +74,9 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.filterStatus.addEventListener("change", applyFilters);
   }
 
+  if (elements.exportJsonBtn) {
+    elements.exportJsonBtn.addEventListener("click", exportToJSON);
+  }
   if (elements.exportCsvBtn) {
     elements.exportCsvBtn.addEventListener("click", exportToCSV);
   }
@@ -101,14 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showDashboard(data);
       })
       .catch(() => {
-        if (key === "admin123") {
-          sessionStorage.setItem(ADMIN_KEY_STORAGE, key);
-          currentAdminKey = key;
-          const localData = JSON.parse(localStorage.getItem("quiz_results") || "[]");
-          showDashboard(localData);
-        } else {
-          elements.loginErrorMsg.classList.remove("hidden");
-        }
+        elements.loginErrorMsg.classList.remove("hidden");
       });
   }
 
@@ -221,14 +218,12 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Render EXACT same candidate result UI inside Admin View Modal
   function showDetailModal(item) {
     elements.detailModalTitle.textContent = `Submission Details: ${item.candidate.name}`;
 
     const strokeDashoffset = 339 - (339 * item.percentage) / 100;
     const strokeColor = item.passed ? "#10b981" : "#ef4444";
 
-    // 1. Domain Breakdown HTML
     let domainHTML = "";
     if (item.domainScores) {
       Object.keys(item.domainScores).forEach((domain) => {
@@ -249,7 +244,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
-    // 2. Questions Review Cards HTML
     let reviewHTML = "";
     if (item.questionsReview && item.questionsReview.length > 0) {
       item.questionsReview.forEach((q, idx) => {
@@ -345,6 +339,24 @@ document.addEventListener("DOMContentLoaded", () => {
     `;
 
     elements.detailModal.classList.add("active");
+  }
+
+  function exportToJSON() {
+    if (activeResults.length === 0) {
+      alert("No data available to export.");
+      return;
+    }
+
+    const jsonString = JSON.stringify(activeResults, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `results_${Date.now()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   }
 
   function exportToCSV() {
