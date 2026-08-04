@@ -126,16 +126,16 @@
 
   </main>
 
-  <!-- Candidate Details Modal -->
+  <!-- Candidate Result UI Modal -->
   <div class="modal-overlay" id="detail-modal">
-    <div class="modal-box" style="max-width:650px; text-align:left;">
-      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-        <h3 class="modal-title" style="margin:0;" id="detail-candidate-title">Candidate Details</h3>
-        <button type="button" id="detail-modal-close" class="btn-secondary" style="padding:4px 10px;">✕</button>
+    <div class="modal-box" style="max-width:920px; width:95%; max-height:90vh; overflow-y:auto; text-align:left; padding:1.5rem;">
+      <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--bg-card-border); padding-bottom:0.75rem; margin-bottom:1rem;">
+        <h3 class="modal-title" style="margin:0;" id="detail-candidate-title">Submission Review UI</h3>
+        <button type="button" id="detail-modal-close" class="btn-secondary" style="padding:6px 14px; cursor:pointer;">✕ Close Modal</button>
       </div>
 
-      <div id="detail-modal-body" style="font-size:0.9rem; color:var(--text-muted);">
-        <!-- Inserted dynamically -->
+      <div id="detail-modal-body">
+        <!-- Rendered with identical candidate Results UI -->
       </div>
     </div>
   </div>

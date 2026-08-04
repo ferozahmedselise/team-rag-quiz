@@ -51,8 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.loginForm.addEventListener("submit", (e) => {
       e.preventDefault();
       const entered = elements.adminPassword.value.trim();
-      
-      // Validate key against API or default key
       verifyAdminKey(entered);
     });
   }
@@ -103,7 +101,6 @@ document.addEventListener("DOMContentLoaded", () => {
         showDashboard(data);
       })
       .catch(() => {
-        // Fallback for offline/standalone mode if key matches "admin123"
         if (key === "admin123") {
           sessionStorage.setItem(ADMIN_KEY_STORAGE, key);
           currentAdminKey = key;
@@ -188,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     elements.noResultsMsg.classList.add("hidden");
 
-    data.forEach((item, index) => {
+    data.forEach((item) => {
       const row = document.createElement("tr");
 
       const timeMins = Math.floor((item.timeSpentSeconds || 0) / 60);
@@ -215,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
         </td>
         <td>${formattedTime}</td>
         <td>
-          <button type="button" class="btn-secondary view-btn" style="padding:4px 10px; font-size:0.8rem;">View</button>
+          <button type="button" class="btn-secondary view-btn" style="padding:4px 10px; font-size:0.8rem;">View Full Result UI</button>
         </td>
       `;
 
@@ -224,38 +221,126 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // Render EXACT same candidate result UI inside Admin View Modal
   function showDetailModal(item) {
-    elements.detailModalTitle.textContent = `Attempt Breakdown: ${item.candidate.name}`;
+    elements.detailModalTitle.textContent = `Submission Details: ${item.candidate.name}`;
 
+    const strokeDashoffset = 339 - (339 * item.percentage) / 100;
+    const strokeColor = item.passed ? "#10b981" : "#ef4444";
+
+    // 1. Domain Breakdown HTML
     let domainHTML = "";
     if (item.domainScores) {
       Object.keys(item.domainScores).forEach((domain) => {
         const stats = item.domainScores[domain];
-        const pct = Math.round((stats.correct / stats.total) * 100);
+        const domPct = Math.round((stats.correct / stats.total) * 100);
+
         domainHTML += `
-          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-            <span>${domain}:</span>
-            <strong>${stats.correct}/${stats.total} (${pct}%)</strong>
+          <div class="domain-card">
+            <div class="domain-header">
+              <span class="domain-name">${domain}</span>
+              <span class="domain-score">${stats.correct}/${stats.total} (${domPct}%)</span>
+            </div>
+            <div class="domain-progress-bar">
+              <div class="domain-progress-fill" style="width: ${domPct}%; background-color: ${domPct >= 80 ? '#10b981' : '#f59e0b'};"></div>
+            </div>
           </div>
         `;
       });
     }
 
-    elements.detailModalBody.innerHTML = `
-      <div style="background:rgba(255,255,255,0.03); border:1px solid var(--bg-card-border); border-radius:8px; padding:1rem; margin-bottom:1rem;">
-        <div><strong>Candidate Name:</strong> ${escapeHTML(item.candidate.name)}</div>
-        <div><strong>Email:</strong> ${escapeHTML(item.candidate.email)}</div>
-        <div><strong>Student ID:</strong> ${escapeHTML(item.candidate.id)}</div>
-        <div><strong>Date Submitted:</strong> ${escapeHTML(item.formattedDate || item.timestamp)}</div>
-        <div><strong>Score Result:</strong> ${item.correctCount}/${item.totalQuestions} (${item.percentage}%) - <strong style="color:${item.passed ? '#34d399' : '#fca5a5'};">${item.passed ? 'PASSED' : 'FAILED'}</strong></div>
-        <div><strong>Security Strikes Recorded:</strong> ${item.strikes || 0}</div>
-        <div><strong>Time Taken:</strong> ${Math.floor((item.timeSpentSeconds || 0) / 60)} mins ${(item.timeSpentSeconds || 0) % 60} secs</div>
-        <div><strong>Auto-Submitted by Proctor:</strong> ${item.isAutoSubmit ? 'Yes (Time or Strikes expired)' : 'No (Normal submission)'}</div>
-      </div>
+    // 2. Questions Review Cards HTML
+    let reviewHTML = "";
+    if (item.questionsReview && item.questionsReview.length > 0) {
+      item.questionsReview.forEach((q, idx) => {
+        const isCorrect = q.chosenIndex === q.correctIndex;
+        const isUnanswered = q.chosenIndex === undefined;
 
-      <h4 style="font-family:var(--font-heading); margin-bottom:0.5rem; color:var(--text-main);">Domain Performance</h4>
-      <div style="background:rgba(15,23,42,0.6); padding:1rem; border-radius:8px; border:1px solid var(--bg-card-border);">
-        ${domainHTML || 'No domain telemetry recorded.'}
+        let optionsHTML = "";
+        q.options.forEach((optText, optIdx) => {
+          let optClass = "review-option";
+          let optIcon = "";
+
+          if (optIdx === q.correctIndex) {
+            optClass += " opt-correct";
+            optIcon = "✓ Correct Answer";
+          } else if (optIdx === q.chosenIndex && !isCorrect) {
+            optClass += " opt-user-incorrect";
+            optIcon = "✗ Candidate Answer";
+          }
+
+          const letter = String.fromCharCode(65 + optIdx);
+          optionsHTML += `
+            <div class="${optClass}">
+              <div class="opt-left">
+                <span class="review-letter">${letter}</span>
+                <span>${escapeHTML(optText)}</span>
+              </div>
+              ${optIcon ? `<span class="opt-tag">${optIcon}</span>` : ""}
+            </div>
+          `;
+        });
+
+        reviewHTML += `
+          <div class="review-card ${isCorrect ? "review-correct" : "review-incorrect"}">
+            <div class="review-card-header">
+              <span class="review-q-num">Q${idx + 1}. [${q.category}]</span>
+              <span class="review-status-badge ${isCorrect ? "badge-green" : "badge-red"}">
+                ${isCorrect ? "Correct (+1)" : isUnanswered ? "Unanswered (0)" : "Incorrect (0)"}
+              </span>
+            </div>
+            <h4 class="review-question-text">${escapeHTML(q.question)}</h4>
+            <div class="review-options-list">${optionsHTML}</div>
+            <div class="review-explanation">
+              <strong>💡 Explanation:</strong> ${escapeHTML(q.explanation)}
+            </div>
+          </div>
+        `;
+      });
+    } else {
+      reviewHTML = `<div style="text-align:center; padding:1rem; color:var(--text-muted);">No detailed question breakdown stored for this attempt.</div>`;
+    }
+
+    const timeMins = Math.floor((item.timeSpentSeconds || 0) / 60);
+    const timeSecs = (item.timeSpentSeconds || 0) % 60;
+
+    elements.detailModalBody.innerHTML = `
+      <div class="results-card" style="margin:0; max-width:100%; border:none; padding:1.5rem; background:transparent; box-shadow:none;">
+        
+        <div class="results-header">
+          <div class="pass-fail-badge ${item.passed ? 'badge-pass' : 'badge-fail'}">
+            ${item.passed ? `🏆 CERTIFIED - PASS (${item.percentage}%)` : `❌ NOT PASSED (${item.percentage}%)`}
+          </div>
+          <h2 style="font-family:var(--font-heading); font-size:1.6rem; margin-bottom:0.25rem;">${escapeHTML(item.candidate.name)}</h2>
+          <div class="candidate-meta">
+            <span>ID: ${escapeHTML(item.candidate.id)}</span> | Email: <span>${escapeHTML(item.candidate.email)}</span><br>
+            Submitted: <span>${escapeHTML(item.formattedDate || item.timestamp)}</span> | Time Spent: <span>${timeMins}m ${timeSecs}s</span> | Strikes: <span style="color:${item.strikes > 0 ? 'var(--danger-color)' : 'var(--success-color)'}; font-weight:700;">${item.strikes || 0}</span>
+          </div>
+        </div>
+
+        <div class="score-overview" style="margin-bottom:2rem;">
+          <div class="circle-score-wrapper">
+            <svg class="circle-svg" viewBox="0 0 120 120">
+              <circle class="circle-bg" cx="60" cy="60" r="54"></circle>
+              <circle class="circle-fill" cx="60" cy="60" r="54" style="stroke-dashoffset: ${strokeDashoffset}; stroke: ${strokeColor};"></circle>
+            </svg>
+            <div class="circle-text">
+              <div class="score-percent-val">${item.percentage}%</div>
+              <div class="score-fraction-val">${item.correctCount} / ${item.totalQuestions}</div>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-heading">Domain Mastery Breakdown</h3>
+        <div class="domain-grid" style="margin-bottom:2rem;">
+          ${domainHTML}
+        </div>
+
+        <h3 class="section-heading">Question-by-Question Candidate Review</h3>
+        <div>
+          ${reviewHTML}
+        </div>
+
       </div>
     `;
 

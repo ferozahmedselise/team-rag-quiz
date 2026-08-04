@@ -364,7 +364,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let correctCount = 0;
     const domainScores = {};
 
-    activeQuestions.forEach((q) => {
+    const questionsReview = activeQuestions.map((q) => {
       if (!domainScores[q.category]) {
         domainScores[q.category] = { total: 0, correct: 0 };
       }
@@ -375,6 +375,16 @@ document.addEventListener("DOMContentLoaded", () => {
         correctCount++;
         domainScores[q.category].correct++;
       }
+
+      return {
+        id: q.id,
+        category: q.category,
+        question: q.question,
+        options: q.options,
+        correctIndex: q.correctIndex,
+        chosenIndex: chosenIndex,
+        explanation: q.explanation
+      };
     });
 
     const percentage = Math.round((correctCount / activeQuestions.length) * 100);
@@ -393,7 +403,8 @@ document.addEventListener("DOMContentLoaded", () => {
       strikes: AntiCheat.getStrikes(),
       timeSpentSeconds,
       isAutoSubmit,
-      domainScores
+      domainScores,
+      questionsReview
     };
 
     // Save to LocalStorage & Send to Backend API
