@@ -1,0 +1,25 @@
+[
+  {
+    "id": "TEST-1",
+    "candidate": {
+      "name": "Test Candidate",
+      "email": "test@example.com",
+      "id": "STUDENT-001"
+    },
+    "timestamp": "2026-08-04T11:50:00Z",
+    "formattedDate": "Aug 4, 2026, 11:50 AM",
+    "correctCount": 22,
+    "totalQuestions": 25,
+    "percentage": 88,
+    "passed": true,
+    "strikes": 0,
+    "timeSpentSeconds": 420,
+    "isAutoSubmit": false,
+    "domainScores": {
+      "LLM Core Concepts": {
+        "total": 4,
+        "correct": 4
+      }
+    }
+  }
+]

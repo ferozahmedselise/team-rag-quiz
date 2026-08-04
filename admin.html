@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | AI Certification Exam Results</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Top App Navigation Header -->
+  <header class="app-header">
+    <div class="brand-container">
+      <div class="brand-logo">🔒</div>
+      <div>
+        <div class="brand-title">Admin Dashboard</div>
+        <div class="brand-subtitle">Exam Results & Proctoring Audit</div>
+      </div>
+    </div>
+    <div style="display:flex; gap:12px; align-items:center;">
+      <a href="index.html" class="btn-secondary" style="font-size:0.85rem; text-decoration:none;">← Student Quiz Page</a>
+      <button type="button" id="admin-logout-btn" class="btn-secondary hidden" style="font-size:0.85rem;">Logout</button>
+    </div>
+  </header>
+
+  <main class="main-wrapper">
+
+    <!-- 1. ADMIN LOGIN GATE -->
+    <section id="admin-login-card" class="welcome-card">
+      <div style="text-align:center; margin-bottom:1.5rem;">
+        <div style="font-size:3rem; margin-bottom:0.5rem;">🛡️</div>
+        <h1 class="welcome-title">Admin Authentication</h1>
+        <p class="welcome-desc">Enter the administrator secret key to access candidate test submissions.</p>
+      </div>
+
+      <form id="admin-login-form" style="max-width:400px; margin:0 auto;">
+        <div class="form-group">
+          <label class="form-label" for="admin-password">Admin Secret Key</label>
+          <input type="password" id="admin-password" class="form-input" placeholder="Enter key (Default: admin123)" required>
+        </div>
+        <div id="login-error-msg" style="color:var(--danger-color); font-size:0.85rem; margin-bottom:1rem; text-align:center;" class="hidden">
+          Invalid admin key! Please try again.
+        </div>
+        <button type="submit" class="btn-start">Authenticate & Access Dashboard →</button>
+      </form>
+    </section>
+
+    <!-- 2. ADMIN DASHBOARD CONTENT -->
+    <section id="admin-dashboard" class="hidden">
+      
+      <!-- Metrics Overview Cards -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <div class="metric-icon">📝</div>
+          <div>
+            <div class="metric-val" id="metric-total">0</div>
+            <div class="metric-label">Total Submissions</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon">🏆</div>
+          <div>
+            <div class="metric-val" id="metric-passed" style="color:var(--success-color);">0</div>
+            <div class="metric-label">Passed (≥80%)</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon">📊</div>
+          <div>
+            <div class="metric-val" id="metric-rate">0%</div>
+            <div class="metric-label">Pass Rate</div>
+          </div>
+        </div>
+
+        <div class="metric-card">
+          <div class="metric-icon">⚠️</div>
+          <div>
+            <div class="metric-val" id="metric-strikes" style="color:var(--warning-color);">0</div>
+            <div class="metric-label">Security Strikes</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls & Filter Toolbar -->
+      <div class="toolbar-card">
+        <div class="toolbar-left">
+          <input type="text" id="search-input" class="form-input" placeholder="Search by name, email, ID..." style="max-width:280px;">
+          <select id="filter-status" class="form-input" style="max-width:160px;">
+            <option value="ALL">All Results</option>
+            <option value="PASS">Pass Only</option>
+            <option value="FAIL">Fail Only</option>
+          </select>
+        </div>
+
+        <div class="toolbar-right">
+          <button type="button" id="export-csv-btn" class="btn-secondary">📥 Export to CSV</button>
+          <button type="button" id="clear-all-btn" class="btn-danger" style="font-size:0.85rem;">Clear All Results</button>
+        </div>
+      </div>
+
+      <!-- Results Table -->
+      <div class="table-card">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Date & Time</th>
+              <th>Candidate Name</th>
+              <th>Student ID</th>
+              <th>Score</th>
+              <th>Status</th>
+              <th>Strikes</th>
+              <th>Time Spent</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="results-table-body">
+            <!-- Dynamic Rows -->
+          </tbody>
+        </table>
+        <div id="no-results-msg" class="no-results hidden">No exam submissions found.</div>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- Candidate Details Modal -->
+  <div class="modal-overlay" id="detail-modal">
+    <div class="modal-box" style="max-width:650px; text-align:left;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <h3 class="modal-title" style="margin:0;" id="detail-candidate-title">Candidate Details</h3>
+        <button type="button" id="detail-modal-close" class="btn-secondary" style="padding:4px 10px;">✕</button>
+      </div>
+
+      <div id="detail-modal-body" style="font-size:0.9rem; color:var(--text-muted);">
+        <!-- Inserted dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

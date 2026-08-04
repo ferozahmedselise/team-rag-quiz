@@ -1,6 +1,6 @@
 /**
  * AI Certification Exam Engine Application Script
- * Controls exam state, question shuffling, timer, UI rendering, scoring, and review generation.
+ * Controls exam state, question shuffling, timer, UI rendering, scoring, persistence, and review generation.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -172,7 +172,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const shuffledQ = shuffleArray(cloned);
 
     return shuffledQ.map((q) => {
-      // Shuffle options while retaining reference to correct answer string
       const originalCorrectString = q.options[q.correctIndex];
       const shuffledOpt = shuffleArray([...q.options]);
       const newCorrectIndex = shuffledOpt.indexOf(originalCorrectString);
@@ -243,7 +242,7 @@ document.addEventListener("DOMContentLoaded", () => {
         optionCard.classList.add("selected");
       }
 
-      const letterPrefix = String.fromCharCode(65 + optIndex); // A, B, C, D
+      const letterPrefix = String.fromCharCode(65 + optIndex);
       optionCard.innerHTML = `
         <span class="option-prefix">${letterPrefix}</span>
         <span class="option-text">${escapeHTML(optText)}</span>
@@ -363,7 +362,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Calculate Score & Results
     let correctCount = 0;
-    const domainScores = {}; // { category: { total: 0, correct: 0 } }
+    const domainScores = {};
 
     activeQuestions.forEach((q) => {
       if (!domainScores[q.category]) {
@@ -380,6 +379,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const percentage = Math.round((correctCount / activeQuestions.length) * 100);
     const passed = correctCount >= EXAM_CONFIG.passingScore; // 20 / 25 (80%)
+    const timeSpentSeconds = EXAM_CONFIG.timeLimitMinutes * 60 - remainingSeconds;
+
+    const resultPayload = {
+      id: "RES-" + Date.now() + "-" + Math.floor(Math.random() * 1000),
+      candidate: candidateInfo,
+      timestamp: new Date().toISOString(),
+      formattedDate: new Date().toLocaleString(),
+      correctCount,
+      totalQuestions: activeQuestions.length,
+      percentage,
+      passed,
+      strikes: AntiCheat.getStrikes(),
+      timeSpentSeconds,
+      isAutoSubmit,
+      domainScores
+    };
+
+    // Save to LocalStorage & Send to Backend API
+    saveResultToStorageAndAPI(resultPayload);
 
     renderResultsScreen({
       candidate: candidateInfo,
@@ -389,6 +407,28 @@ document.addEventListener("DOMContentLoaded", () => {
       passed,
       domainScores,
       isAutoSubmit
+    });
+  }
+
+  function saveResultToStorageAndAPI(resultPayload) {
+    // 1. LocalStorage Fallback
+    try {
+      const stored = JSON.parse(localStorage.getItem("quiz_results") || "[]");
+      stored.unshift(resultPayload); // Latest first
+      localStorage.setItem("quiz_results", JSON.stringify(stored));
+    } catch (e) {
+      console.warn("LocalStorage save error:", e);
+    }
+
+    // 2. REST API Persist
+    fetch("/api/results", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(resultPayload)
+    }).catch((err) => {
+      console.warn("Backend API save failed (will rely on localStorage):", err);
     });
   }
 
@@ -418,7 +458,7 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.scoreFraction.textContent = `${data.correctCount} / ${data.totalQuestions}`;
     elements.scorePercent.textContent = `${data.percentage}%`;
 
-    // Animate Circle SVG Progress Ring (circumference approx 339)
+    // Animate Circle SVG Progress Ring
     const strokeDashoffset = 339 - (339 * data.percentage) / 100;
     setTimeout(() => {
       elements.circleScoreProgress.style.strokeDashoffset = strokeDashoffset;
