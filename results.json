@@ -488,5 +488,23 @@
         "explanation": "As defined in Week 1, an AI Agent is an LLM operating within a feedback loop, selecting and calling tools repeatedly until a designated objective is met."
       }
     ]
+  },
+  {
+    "id": "RES-SINGLE-TEST",
+    "candidate": {
+      "name": "student",
+      "email": "student@example.com",
+      "id": "USR-1"
+    },
+    "timestamp": "2026-08-05T04:35:00Z",
+    "formattedDate": "Aug 5, 2026, 4:35 AM",
+    "correctCount": 23,
+    "totalQuestions": 25,
+    "percentage": 92,
+    "passed": true,
+    "strikes": 0,
+    "timeSpentSeconds": 600,
+    "isAutoSubmit": false,
+    "domainScores": {}
   }
 ]

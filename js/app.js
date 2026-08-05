@@ -1,6 +1,6 @@
 /**
  * AI Certification Exam Engine Application Script
- * Controls participant login, exam state, question shuffling, timer, UI rendering, scoring, persistence, and review generation.
+ * Controls participant login, single-attempt enforcement, exam state, timer, UI rendering, scoring, persistence, and review generation.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.restartBtn.addEventListener("click", resetExam);
   }
 
-  // Handle Participant Login (Only registered participants can log in)
+  // Handle Participant Login (Strict single-attempt enforcement)
   function handleParticipantLogin(e) {
     e.preventDefault();
     const email = elements.candidateEmailInput.value.trim();
@@ -154,12 +154,38 @@ document.addEventListener("DOMContentLoaded", () => {
           elements.candidateHeaderName.textContent = candidateInfo.email;
         }
 
-        startNewExam();
+        // Check if student has already completed their 1 attempt
+        if (data.hasTakenExam && data.existingResult) {
+          showAlreadyTakenScreen(data.existingResult);
+        } else {
+          startNewExam();
+        }
       })
       .catch(() => {
         elements.userLoginErrorMsg.textContent = "Invalid email or password. Only registered participants can log in.";
         elements.userLoginErrorMsg.classList.remove("hidden");
       });
+  }
+
+  function showAlreadyTakenScreen(resultData) {
+    elements.welcomeCard.classList.add("hidden");
+    elements.examContainer.classList.add("hidden");
+    elements.resultsContainer.classList.remove("hidden");
+
+    if (elements.restartBtn) {
+      elements.restartBtn.style.display = "none"; // Hide re-take button
+    }
+
+    renderResultsScreen({
+      candidate: resultData.candidate,
+      correctCount: resultData.correctCount,
+      totalQuestions: resultData.totalQuestions,
+      percentage: resultData.percentage,
+      passed: resultData.passed,
+      domainScores: resultData.domainScores || {},
+      isAutoSubmit: resultData.isAutoSubmit,
+      questionsReview: resultData.questionsReview || []
+    }, true);
   }
 
   function startNewExam() {
@@ -168,6 +194,10 @@ document.addEventListener("DOMContentLoaded", () => {
     flaggedQuestions.clear();
     currentIndex = 0;
     remainingSeconds = EXAM_CONFIG.timeLimitMinutes * 60;
+
+    if (elements.restartBtn) {
+      elements.restartBtn.style.display = "none"; // Prevent retaking
+    }
 
     // Shuffle Questions and their Options using Fisher-Yates
     activeQuestions = prepareShuffledQuestions(quizQuestions);
@@ -342,7 +372,6 @@ document.addEventListener("DOMContentLoaded", () => {
       elements.questionGrid.appendChild(btn);
     });
 
-    // Update Counters
     const answeredCountVal = Object.keys(userAnswers).length;
     elements.answeredCount.textContent = `${answeredCountVal} / ${activeQuestions.length}`;
     elements.flaggedCount.textContent = flaggedQuestions.size;
@@ -363,7 +392,7 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.confirmModalText.innerHTML = `
       You have answered <strong>${answeredVal}</strong> out of <strong>${activeQuestions.length}</strong> questions.<br>
       ${remainingVal > 0 ? `<span style="color: var(--danger-color); font-weight:600;">⚠️ You have ${remainingVal} unanswered question(s).</span>` : 'All questions answered!'}
-      <br><br>Are you sure you want to submit your final exam answers now?
+      <br><br>Are you sure you want to submit your final exam answers now? (Note: Only 1 attempt is permitted).
     `;
     elements.confirmSubmitModal.classList.add("active");
   }
@@ -379,7 +408,6 @@ document.addEventListener("DOMContentLoaded", () => {
     clearInterval(timerInterval);
     AntiCheat.stopExam();
 
-    // Calculate Score & Results
     let correctCount = 0;
     const domainScores = {};
 
@@ -426,7 +454,6 @@ document.addEventListener("DOMContentLoaded", () => {
       questionsReview
     };
 
-    // Save to LocalStorage & Send to Backend API
     saveResultToStorageAndAPI(resultPayload);
 
     renderResultsScreen({
@@ -436,7 +463,8 @@ document.addEventListener("DOMContentLoaded", () => {
       percentage,
       passed,
       domainScores,
-      isAutoSubmit
+      isAutoSubmit,
+      questionsReview
     });
   }
 
@@ -458,7 +486,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function renderResultsScreen(data) {
+  function renderResultsScreen(data, isAlreadyTakenView = false) {
     elements.examContainer.classList.add("hidden");
     elements.resultsContainer.classList.remove("hidden");
 
@@ -471,6 +499,23 @@ document.addEventListener("DOMContentLoaded", () => {
       hour: "2-digit",
       minute: "2-digit"
     });
+
+    if (isAlreadyTakenView) {
+      const noticeBox = document.createElement("div");
+      noticeBox.className = "rules-box";
+      noticeBox.style.marginBottom = "1.5rem";
+      noticeBox.innerHTML = `
+        <div class="rules-title" style="color:var(--warning-color);">⚠️ Exam Attempt Completed</div>
+        <div style="font-size:0.88rem; color:#fde68a;">
+          You have already completed your 1 permitted exam attempt for account <strong>${escapeHTML(data.candidate.email)}</strong>. Multiple attempts are not permitted.
+        </div>
+      `;
+      const headerEl = elements.resultsContainer.querySelector(".results-header");
+      if (headerEl && !elements.resultsContainer.querySelector(".already-taken-notice")) {
+        noticeBox.classList.add("already-taken-notice");
+        headerEl.after(noticeBox);
+      }
+    }
 
     if (data.passed) {
       elements.badgeStatus.className = "pass-fail-badge badge-pass";
@@ -508,14 +553,16 @@ document.addEventListener("DOMContentLoaded", () => {
       elements.domainBreakdownContainer.appendChild(domainCard);
     });
 
-    renderDetailedReview();
+    renderDetailedReview(data.questionsReview || []);
   }
 
-  function renderDetailedReview() {
+  function renderDetailedReview(questionsList) {
     elements.reviewQuestionsContainer.innerHTML = "";
 
-    activeQuestions.forEach((q, idx) => {
-      const chosenIndex = userAnswers[q.id];
+    const listToRender = questionsList.length > 0 ? questionsList : activeQuestions;
+
+    listToRender.forEach((q, idx) => {
+      const chosenIndex = q.chosenIndex !== undefined ? q.chosenIndex : userAnswers[q.id];
       const isCorrect = chosenIndex === q.correctIndex;
       const isUnanswered = chosenIndex === undefined;
 

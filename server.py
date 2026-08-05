@@ -4,7 +4,7 @@ Lightweight HTTP & REST API Server for AI Certification Quiz
 Serves static web files and provides REST endpoints for:
 - Admin Authentication (Email & Password from .env)
 - Participant Registration & Management (Add / Remove participant accounts)
-- Participant Login Authentication
+- Participant Login Authentication & Single-Attempt Enforcement
 - Quiz Results Persistence & Audit
 """
 
@@ -40,7 +40,6 @@ if not os.path.exists(RESULTS_FILE):
         json.dump([], f)
 
 if not os.path.exists(USERS_FILE):
-    # Initialize with default candidate account
     default_users = [
         {
             "id": "USR-1",
@@ -67,7 +66,6 @@ class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
     def is_authenticated_admin(self, key_or_token):
         if not key_or_token:
             return False
-        # Matches admin password or admin token string
         return key_or_token == ADMIN_PASSWORD or key_or_token == f"admin-token-{ADMIN_PASSWORD}"
 
     def send_json(self, status_code, data):
@@ -106,7 +104,6 @@ class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
                 return
 
             users = read_json_file(USERS_FILE)
-            # Remove passwords before sending list
             safe_users = [{ "id": u["id"], "email": u["email"], "createdAt": u.get("createdAt", "") } for u in users]
             self.send_json(200, safe_users)
             return
@@ -137,7 +134,7 @@ class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_json(401, {"error": "Invalid admin email or password"})
             return
 
-        # 2. API: Participant / User Login
+        # 2. API: Participant / User Login (Check single-attempt rule)
         if parsed_url.path == "/api/user/login":
             email = payload.get("email", "").strip().lower()
             password = payload.get("password", "").strip()
@@ -145,13 +142,27 @@ class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
             users = read_json_file(USERS_FILE)
             matched_user = next((u for u in users if u["email"].lower() == email and u["password"] == password), None)
 
-            if matched_user:
+            if not matched_user:
+                self.send_json(401, {"error": "Invalid email or password. Please contact admin if unregistered."})
+                return
+
+            # Check if candidate has already taken the exam
+            results = read_json_file(RESULTS_FILE)
+            existing_attempt = next((r for r in results if r.get("candidate", {}).get("email", "").lower() == email), None)
+
+            if existing_attempt:
                 self.send_json(200, {
-                    "status": "success",
-                    "user": { "id": matched_user["id"], "email": matched_user["email"] }
+                    "status": "already_taken",
+                    "hasTakenExam": True,
+                    "user": { "id": matched_user["id"], "email": matched_user["email"] },
+                    "existingResult": existing_attempt
                 })
             else:
-                self.send_json(401, {"error": "Invalid email or password. Please contact admin if unregistered."})
+                self.send_json(200, {
+                    "status": "success",
+                    "hasTakenExam": False,
+                    "user": { "id": matched_user["id"], "email": matched_user["email"] }
+                })
             return
 
         # 3. API: Register / Add Participant (Admin only)
@@ -189,9 +200,16 @@ class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_json(201, {"status": "success", "message": "Participant registered successfully", "user": new_user})
             return
 
-        # 4. API: Save Exam Result
+        # 4. API: Save Exam Result (Strict single-attempt enforcement)
         if parsed_url.path == "/api/results":
+            candidate_email = payload.get("candidate", {}).get("email", "").strip().lower()
             results = read_json_file(RESULTS_FILE)
+
+            # Prevent duplicate submission
+            if any(r.get("candidate", {}).get("email", "").lower() == candidate_email for r in results):
+                self.send_json(400, {"error": "Exam already submitted. Only 1 attempt is allowed per candidate."})
+                return
+
             results.append(payload)
             write_json_file(RESULTS_FILE, results)
             self.send_json(201, {"status": "success", "message": "Result saved successfully"})
