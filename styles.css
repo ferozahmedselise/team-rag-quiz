@@ -200,6 +200,16 @@ body {
   gap: 8px;
 }
 
+blockquote.scenario-quote {
+  margin: 0.75rem 0;
+  padding: 0.6rem 1rem;
+  border-left: 3px solid var(--primary);
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: var(--radius-sm);
+  font-style: italic;
+  color: var(--text-muted);
+}
+
 .rules-list {
   list-style-type: none;
   font-size: 0.85rem;

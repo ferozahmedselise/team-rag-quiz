@@ -1,6 +1,7 @@
 /**
  * AI Certification Exam Engine Application Script
- * Controls participant login, single-attempt enforcement, exam state, timer, UI rendering, scoring, persistence, and review generation.
+ * Controls candidate login, quiz set selection, multi-attempt retakes, exam state,
+ * timer, UI rendering, scoring, SQLite persistence, and attempt history browsing.
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -13,6 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let candidateInfo = { name: "", email: "", id: "" };
+  let currentExamSet = { setId: "set-1", setName: "Quiz Set 1" };
   let activeQuestions = [];
   let userAnswers = {}; // { questionId: selectedIndex }
   let flaggedQuestions = new Set();
@@ -20,6 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let timerInterval = null;
   let remainingSeconds = EXAM_CONFIG.timeLimitMinutes * 60;
   let isSubmitted = false;
+  let userAttemptHistory = [];
 
   // DOM Element Handles
   const elements = {
@@ -29,7 +32,11 @@ document.addEventListener("DOMContentLoaded", () => {
     registrationForm: document.getElementById("registration-form"),
     candidateEmailInput: document.getElementById("candidate-email"),
     candidatePasswordInput: document.getElementById("candidate-password"),
+    quizSetSelect: document.getElementById("quiz-set-select"),
     userLoginErrorMsg: document.getElementById("user-login-error"),
+    userHistorySection: document.getElementById("user-history-section"),
+    userHistoryList: document.getElementById("user-history-list"),
+    startNewAttemptBtn: document.getElementById("start-new-attempt-btn"),
     
     // Exam Header
     timerDisplay: document.getElementById("timer-display"),
@@ -66,6 +73,13 @@ document.addEventListener("DOMContentLoaded", () => {
     restartBtn: document.getElementById("restart-exam-btn"),
 
     // Modals & Anti-Cheat
+    loginBox: document.getElementById("login-box"),
+    candidateDashboard: document.getElementById("candidate-dashboard"),
+    dashboardUserEmail: document.getElementById("dashboard-user-email"),
+    userLogoutBtn: document.getElementById("user-logout-btn"),
+    topLogoutBtn: document.getElementById("top-logout-btn"),
+    upperWelcomeSection: document.getElementById("upper-welcome-section"),
+    startSelectedQuizBtn: document.getElementById("start-selected-quiz-btn"),
     confirmSubmitModal: document.getElementById("confirm-submit-modal"),
     confirmModalText: document.getElementById("confirm-modal-text"),
     confirmSubmitYes: document.getElementById("confirm-submit-yes"),
@@ -74,21 +88,90 @@ document.addEventListener("DOMContentLoaded", () => {
     fullscreenReenterBtn: document.getElementById("reenter-fullscreen-btn")
   };
 
-  // Initialize AntiCheat System
+  // 1. Populate Quiz Set Selection Dropdown & Check Session
+  populateQuizSetDropdown();
+  checkAndRestoreSession();
+
+  function checkAndRestoreSession() {
+    try {
+      const savedSessionStr = localStorage.getItem("quiz_candidate_session") || sessionStorage.getItem("quiz_candidate_session");
+      if (!savedSessionStr) return;
+
+      const session = JSON.parse(savedSessionStr);
+      if (session && session.email && session.id) {
+        candidateInfo.email = session.email;
+        candidateInfo.id = session.id;
+        candidateInfo.name = session.email.split("@")[0];
+
+        if (elements.candidateHeaderName) {
+          elements.candidateHeaderName.textContent = candidateInfo.email;
+        }
+        if (elements.dashboardUserEmail) {
+          elements.dashboardUserEmail.textContent = candidateInfo.email;
+        }
+
+        if (elements.topLogoutBtn) elements.topLogoutBtn.classList.remove("hidden");
+        if (elements.upperWelcomeSection) elements.upperWelcomeSection.classList.add("hidden");
+        if (elements.loginBox) elements.loginBox.classList.add("hidden");
+        if (elements.candidateDashboard) elements.candidateDashboard.classList.remove("hidden");
+
+        fetchCandidateHistory();
+      }
+    } catch (e) {
+      console.warn("Session restore failed:", e);
+    }
+  }
+
+  function populateQuizSetDropdown() {
+    if (!elements.quizSetSelect) return;
+    elements.quizSetSelect.innerHTML = "";
+
+    if (typeof QUIZ_SETS !== "undefined" && Array.isArray(QUIZ_SETS) && QUIZ_SETS.length > 0) {
+      QUIZ_SETS.forEach((setObj) => {
+        const opt = document.createElement("option");
+        opt.value = setObj.setId;
+        opt.textContent = `${setObj.setName} — 25 Questions (30 Mins)`;
+        elements.quizSetSelect.appendChild(opt);
+      });
+    } else {
+      const opt = document.createElement("option");
+      opt.value = "default";
+      opt.textContent = "Default AI Certification Set (25 Questions)";
+      elements.quizSetSelect.appendChild(opt);
+    }
+  }
+
+  // 2. Initialize AntiCheat System (Silent tracking without auto-submit or popups)
   AntiCheat.init({
     onViolation: (data) => {
       if (elements.strikeBadgeText) {
-        elements.strikeBadgeText.textContent = `${data.strikeCount} / ${data.maxStrikes}`;
+        elements.strikeBadgeText.textContent = `${data.strikeCount}`;
       }
     },
-    onAutoSubmit: () => {
-      submitExam(true);
-    }
+    onAutoSubmit: null
   });
 
   // Event Listeners
   if (elements.registrationForm) {
     elements.registrationForm.addEventListener("submit", handleParticipantLogin);
+  }
+
+  if (elements.startSelectedQuizBtn) {
+    elements.startSelectedQuizBtn.addEventListener("click", () => {
+      if (candidateInfo.email) {
+        startNewExam();
+      } else {
+        alert("Please log in first.");
+      }
+    });
+  }
+
+  if (elements.userLogoutBtn) {
+    elements.userLogoutBtn.addEventListener("click", handleLogout);
+  }
+
+  if (elements.topLogoutBtn) {
+    elements.topLogoutBtn.addEventListener("click", handleLogout);
   }
 
   if (elements.prevBtn) {
@@ -129,7 +212,7 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.restartBtn.addEventListener("click", resetExam);
   }
 
-  // Handle Participant Login (Strict single-attempt enforcement)
+  // Handle Participant Login & Show Dashboard
   function handleParticipantLogin(e) {
     e.preventDefault();
     const email = elements.candidateEmailInput.value.trim();
@@ -150,16 +233,26 @@ document.addEventListener("DOMContentLoaded", () => {
         candidateInfo.email = data.user.email;
         candidateInfo.id = data.user.id;
 
+        // Persist candidate session for page reloads
+        const sessionData = { id: data.user.id, email: data.user.email };
+        localStorage.setItem("quiz_candidate_session", JSON.stringify(sessionData));
+        sessionStorage.setItem("quiz_candidate_session", JSON.stringify(sessionData));
+
         if (elements.candidateHeaderName) {
           elements.candidateHeaderName.textContent = candidateInfo.email;
         }
-
-        // Check if student has already completed their 1 attempt
-        if (data.hasTakenExam && data.existingResult) {
-          showAlreadyTakenScreen(data.existingResult);
-        } else {
-          startNewExam();
+        if (elements.dashboardUserEmail) {
+          elements.dashboardUserEmail.textContent = candidateInfo.email;
         }
+
+        // Show top logout button and hide upper section & login card
+        if (elements.topLogoutBtn) elements.topLogoutBtn.classList.remove("hidden");
+        if (elements.upperWelcomeSection) elements.upperWelcomeSection.classList.add("hidden");
+        if (elements.loginBox) elements.loginBox.classList.add("hidden");
+        if (elements.candidateDashboard) elements.candidateDashboard.classList.remove("hidden");
+
+        userAttemptHistory = data.history || [];
+        renderUserHistoryList(userAttemptHistory);
       })
       .catch(() => {
         elements.userLoginErrorMsg.textContent = "Invalid email or password. Only registered participants can log in.";
@@ -167,25 +260,74 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  function showAlreadyTakenScreen(resultData) {
-    elements.welcomeCard.classList.add("hidden");
-    elements.examContainer.classList.add("hidden");
-    elements.resultsContainer.classList.remove("hidden");
+  function handleLogout() {
+    candidateInfo = { name: "", email: "", id: "" };
+    userAttemptHistory = [];
 
-    if (elements.restartBtn) {
-      elements.restartBtn.style.display = "none"; // Hide re-take button
+    // Clear saved session
+    localStorage.removeItem("quiz_candidate_session");
+    sessionStorage.removeItem("quiz_candidate_session");
+
+    if (elements.topLogoutBtn) elements.topLogoutBtn.classList.add("hidden");
+    if (elements.candidateHeaderName) elements.candidateHeaderName.textContent = "Guest Candidate";
+    if (elements.candidateDashboard) elements.candidateDashboard.classList.add("hidden");
+    if (elements.upperWelcomeSection) elements.upperWelcomeSection.classList.remove("hidden");
+    if (elements.loginBox) elements.loginBox.classList.remove("hidden");
+    if (elements.candidateEmailInput) elements.candidateEmailInput.value = "";
+    if (elements.candidatePasswordInput) elements.candidatePasswordInput.value = "";
+  }
+
+  function fetchCandidateHistory() {
+    if (!candidateInfo.email) return;
+    fetch(`/api/user/results?email=${encodeURIComponent(candidateInfo.email)}`)
+      .then((res) => res.json())
+      .then((history) => {
+        userAttemptHistory = history || [];
+        renderUserHistoryList(userAttemptHistory);
+      })
+      .catch((err) => console.warn("Failed to fetch user history:", err));
+  }
+
+  function renderUserHistoryList(historyArray) {
+    if (!elements.userHistorySection || !elements.userHistoryList) return;
+
+    if (!historyArray || historyArray.length === 0) {
+      elements.userHistorySection.classList.add("hidden");
+      return;
     }
 
-    renderResultsScreen({
-      candidate: resultData.candidate,
-      correctCount: resultData.correctCount,
-      totalQuestions: resultData.totalQuestions,
-      percentage: resultData.percentage,
-      passed: resultData.passed,
-      domainScores: resultData.domainScores || {},
-      isAutoSubmit: resultData.isAutoSubmit,
-      questionsReview: resultData.questionsReview || []
-    }, true);
+    elements.userHistorySection.classList.remove("hidden");
+    elements.userHistoryList.innerHTML = "";
+
+    historyArray.forEach((item, index) => {
+      const itemCard = document.createElement("div");
+      itemCard.style.cssText =
+        "display: flex; justify-content: space-between; align-items: center; background: rgba(15,23,42,0.6); padding: 0.85rem 1.2rem; border-radius: 8px; border: 1px solid var(--border-color); flex-wrap: wrap; gap: 0.5rem;";
+
+      const passBadge = item.passed
+        ? '<span style="color: var(--success-color); font-weight: 600; background: rgba(34,197,94,0.15); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">PASS</span>'
+        : '<span style="color: var(--danger-color); font-weight: 600; background: rgba(239,68,68,0.15); padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.8rem;">FAIL</span>';
+
+      const setLabel = item.setName || (item.setId ? `Quiz Set ${item.setId.replace("set-", "")}` : "AI Certification Quiz");
+      const dateStr = item.formattedDate || (item.timestamp ? new Date(item.timestamp).toLocaleDateString() : "Recent");
+
+      itemCard.innerHTML = `
+        <div>
+          <div style="font-weight: 600; font-size: 0.95rem; color: #f8fafc;">${escapeHTML(setLabel)} ${passBadge}</div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">
+            📅 ${escapeHTML(dateStr)} | Score: <strong>${item.correctCount} / ${item.totalQuestions || 25} (${item.percentage}%)</strong>
+          </div>
+        </div>
+        <button type="button" class="btn-secondary view-past-result-btn" style="padding: 0.3rem 0.75rem; font-size: 0.8rem;">🔍 View Details</button>
+      `;
+
+      const viewBtn = itemCard.querySelector(".view-past-result-btn");
+      viewBtn.addEventListener("click", () => {
+        renderResultsScreen(item, false);
+      });
+
+      elements.userHistoryList.appendChild(itemCard);
+    });
   }
 
   function startNewExam() {
@@ -195,12 +337,24 @@ document.addEventListener("DOMContentLoaded", () => {
     currentIndex = 0;
     remainingSeconds = EXAM_CONFIG.timeLimitMinutes * 60;
 
-    if (elements.restartBtn) {
-      elements.restartBtn.style.display = "none"; // Prevent retaking
+    // Determine selected Quiz Set
+    const selectedSetId = elements.quizSetSelect ? elements.quizSetSelect.value : "set-1";
+    let selectedSetObj = null;
+
+    if (typeof QUIZ_SETS !== "undefined" && Array.isArray(QUIZ_SETS)) {
+      selectedSetObj = QUIZ_SETS.find((s) => s.setId === selectedSetId) || QUIZ_SETS[0];
     }
 
-    // Shuffle Questions and their Options using Fisher-Yates
-    activeQuestions = prepareShuffledQuestions(quizQuestions);
+    if (selectedSetObj) {
+      currentExamSet = {
+        setId: selectedSetObj.setId,
+        setName: selectedSetObj.setName
+      };
+      activeQuestions = prepareShuffledQuestions(selectedSetObj.questions);
+    } else {
+      currentExamSet = { setId: "default", setName: "AI Certification Quiz" };
+      activeQuestions = prepareShuffledQuestions(quizQuestions);
+    }
 
     // Switch Views
     elements.welcomeCard.classList.add("hidden");
@@ -252,220 +406,243 @@ document.addEventListener("DOMContentLoaded", () => {
 
       if (remainingSeconds <= 0) {
         clearInterval(timerInterval);
-        submitExam(true);
+        submitExam(true); // Auto-submit on time expiry
       }
     }, 1000);
   }
 
   function updateTimerDisplay() {
+    if (!elements.timerDisplay) return;
     const mins = Math.floor(remainingSeconds / 60);
     const secs = remainingSeconds % 60;
-    const formatted = `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
-    
-    if (elements.timerDisplay) {
-      elements.timerDisplay.textContent = formatted;
-      if (remainingSeconds <= 300) { // < 5 mins
-        elements.timerDisplay.classList.add("timer-urgent");
-      } else {
-        elements.timerDisplay.classList.remove("timer-urgent");
-      }
+    elements.timerDisplay.textContent = `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+
+    if (remainingSeconds < 300) {
+      elements.timerDisplay.style.color = "var(--danger-color)";
+    } else {
+      elements.timerDisplay.style.color = "var(--accent-glow)";
     }
   }
 
-  // Question Rendering
+  // Question Navigation & UI Rendering
   function renderCurrentQuestion() {
+    if (!activeQuestions[currentIndex]) return;
     const q = activeQuestions[currentIndex];
-    if (!q) return;
 
-    elements.questionCategory.textContent = q.category;
+    elements.questionCategory.textContent = `${currentExamSet.setName} • ${q.category}`;
     elements.questionNumber.textContent = `Question ${currentIndex + 1} of ${activeQuestions.length}`;
-    elements.questionText.textContent = q.question;
+    elements.questionText.innerHTML = formatMarkdown(q.question);
 
-    // Render Option Buttons
+    // Render Options
     elements.optionsContainer.innerHTML = "";
-    q.options.forEach((optText, optIndex) => {
-      const optionCard = document.createElement("button");
-      optionCard.type = "button";
-      optionCard.className = "option-card";
-      if (userAnswers[q.id] === optIndex) {
-        optionCard.classList.add("selected");
-      }
-
-      const letterPrefix = String.fromCharCode(65 + optIndex);
-      optionCard.innerHTML = `
-        <span class="option-prefix">${letterPrefix}</span>
-        <span class="option-text">${escapeHTML(optText)}</span>
+    q.options.forEach((optText, optIdx) => {
+      const card = document.createElement("div");
+      card.className = `option-card ${userAnswers[q.id] === optIdx ? "selected" : ""}`;
+      
+      const letter = String.fromCharCode(65 + optIdx);
+      card.innerHTML = `
+        <div class="option-letter">${letter}</div>
+        <div class="option-text">${formatMarkdown(optText)}</div>
       `;
 
-      optionCard.addEventListener("click", () => selectOption(q.id, optIndex));
-      elements.optionsContainer.appendChild(optionCard);
+      card.addEventListener("click", () => selectOption(q.id, optIdx));
+      elements.optionsContainer.appendChild(card);
     });
 
-    // Update Flag Button State
+    // Update Flag Button
     if (flaggedQuestions.has(q.id)) {
       elements.flagBtn.classList.add("flagged");
-      elements.flagBtn.innerHTML = `🚩 Flagged`;
+      elements.flagBtn.textContent = "🚩 Flagged";
     } else {
       elements.flagBtn.classList.remove("flagged");
-      elements.flagBtn.innerHTML = `🏳️ Flag for Review`;
+      elements.flagBtn.textContent = "🏳️ Flag for Review";
     }
 
-    // Navigation buttons disabled state
+    // Controls State
     elements.prevBtn.disabled = currentIndex === 0;
     if (currentIndex === activeQuestions.length - 1) {
-      elements.nextBtn.textContent = "Review & Submit";
+      elements.nextBtn.style.display = "none";
+      elements.submitExamBtn.style.display = "inline-flex";
     } else {
-      elements.nextBtn.textContent = "Next Question →";
+      elements.nextBtn.style.display = "inline-flex";
+      elements.submitExamBtn.style.display = "inline-flex";
     }
 
-    updateProgressUI();
+    updateProgressBar();
+    highlightCurrentGridCell();
   }
 
-  function selectOption(questionId, optionIndex) {
+  function selectOption(qId, optIndex) {
     if (isSubmitted) return;
-    userAnswers[questionId] = optionIndex;
+    userAnswers[qId] = optIndex;
     renderCurrentQuestion();
     renderQuestionGrid();
   }
 
   function toggleFlagCurrentQuestion() {
-    const q = activeQuestions[currentIndex];
-    if (flaggedQuestions.has(q.id)) {
-      flaggedQuestions.delete(q.id);
+    const currentQ = activeQuestions[currentIndex];
+    if (!currentQ) return;
+
+    if (flaggedQuestions.has(currentQ.id)) {
+      flaggedQuestions.delete(currentQ.id);
     } else {
-      flaggedQuestions.add(q.id);
+      flaggedQuestions.add(currentQ.id);
     }
+
     renderCurrentQuestion();
     renderQuestionGrid();
   }
 
   function navigateQuestion(direction) {
-    const nextIdx = currentIndex + direction;
-    if (nextIdx >= 0 && nextIdx < activeQuestions.length) {
-      currentIndex = nextIdx;
+    const newIdx = currentIndex + direction;
+    if (newIdx >= 0 && newIdx < activeQuestions.length) {
+      currentIndex = newIdx;
       renderCurrentQuestion();
-      renderQuestionGrid();
-    } else if (nextIdx === activeQuestions.length) {
-      promptSubmitConfirmation();
     }
   }
 
-  // Sidebar Question Grid
   function renderQuestionGrid() {
+    if (!elements.questionGrid) return;
     elements.questionGrid.innerHTML = "";
+
     activeQuestions.forEach((q, idx) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "grid-item";
+      const cell = document.createElement("button");
+      cell.type = "button";
+      cell.className = "grid-cell";
+      cell.textContent = idx + 1;
 
-      if (idx === currentIndex) btn.classList.add("active");
-      if (userAnswers[q.id] !== undefined) btn.classList.add("answered");
-      if (flaggedQuestions.has(q.id)) btn.classList.add("flagged");
+      if (userAnswers[q.id] !== undefined) {
+        cell.classList.add("answered");
+      }
+      if (flaggedQuestions.has(q.id)) {
+        cell.classList.add("flagged");
+      }
+      if (idx === currentIndex) {
+        cell.classList.add("current");
+      }
 
-      btn.textContent = idx + 1;
-      btn.addEventListener("click", () => {
+      cell.addEventListener("click", () => {
         currentIndex = idx;
         renderCurrentQuestion();
-        renderQuestionGrid();
       });
 
-      elements.questionGrid.appendChild(btn);
+      elements.questionGrid.appendChild(cell);
     });
 
-    const answeredCountVal = Object.keys(userAnswers).length;
-    elements.answeredCount.textContent = `${answeredCountVal} / ${activeQuestions.length}`;
-    elements.flaggedCount.textContent = flaggedQuestions.size;
+    // Update Counts
+    const ansCount = Object.keys(userAnswers).length;
+    if (elements.answeredCount) elements.answeredCount.textContent = `${ansCount} / ${activeQuestions.length}`;
+    if (elements.flaggedCount) elements.flaggedCount.textContent = flaggedQuestions.size;
   }
 
-  function updateProgressUI() {
-    const answeredCountVal = Object.keys(userAnswers).length;
-    const pct = Math.round((answeredCountVal / activeQuestions.length) * 100);
-    elements.progressBar.style.width = `${pct}%`;
-    elements.progressText.textContent = `${pct}% Complete`;
+  function highlightCurrentGridCell() {
+    const cells = elements.questionGrid.querySelectorAll(".grid-cell");
+    cells.forEach((c, idx) => {
+      if (idx === currentIndex) {
+        c.classList.add("current");
+      } else {
+        c.classList.remove("current");
+      }
+    });
   }
 
-  // Submission & Scoring Engine
+  function updateProgressBar() {
+    const ansCount = Object.keys(userAnswers).length;
+    const pct = Math.round((ansCount / activeQuestions.length) * 100);
+    if (elements.progressBar) elements.progressBar.style.width = `${pct}%`;
+    if (elements.progressText) elements.progressText.textContent = `${pct}% Complete (${ansCount}/${activeQuestions.length})`;
+  }
+
+  // Submission Flow
   function promptSubmitConfirmation() {
-    const answeredVal = Object.keys(userAnswers).length;
-    const remainingVal = activeQuestions.length - answeredVal;
+    const ansCount = Object.keys(userAnswers).length;
+    const total = activeQuestions.length;
+    const unanswered = total - ansCount;
 
-    elements.confirmModalText.innerHTML = `
-      You have answered <strong>${answeredVal}</strong> out of <strong>${activeQuestions.length}</strong> questions.<br>
-      ${remainingVal > 0 ? `<span style="color: var(--danger-color); font-weight:600;">⚠️ You have ${remainingVal} unanswered question(s).</span>` : 'All questions answered!'}
-      <br><br>Are you sure you want to submit your final exam answers now? (Note: Only 1 attempt is permitted).
-    `;
-    elements.confirmSubmitModal.classList.add("active");
+    let msg = `You have answered ${ansCount} of ${total} questions.`;
+    if (unanswered > 0) {
+      msg += ` Warning: ${unanswered} question(s) remain unanswered.`;
+    }
+    msg += " Are you sure you want to submit now?";
+
+    if (elements.confirmModalText) elements.confirmModalText.textContent = msg;
+    if (elements.confirmSubmitModal) elements.confirmSubmitModal.classList.add("active");
   }
 
   function closeSubmitModal() {
-    elements.confirmSubmitModal.classList.remove("active");
+    if (elements.confirmSubmitModal) elements.confirmSubmitModal.classList.remove("active");
   }
 
   function submitExam(isAutoSubmit = false) {
     if (isSubmitted) return;
     isSubmitted = true;
-
     clearInterval(timerInterval);
     AntiCheat.stopExam();
 
+    // Calculate Score
     let correctCount = 0;
     const domainScores = {};
+    const questionsReview = [];
 
-    const questionsReview = activeQuestions.map((q) => {
+    activeQuestions.forEach((q) => {
+      const chosenIdx = userAnswers[q.id];
+      const isCorrect = chosenIdx === q.correctIndex;
+      if (isCorrect) correctCount++;
+
+      // Domain tracking
       if (!domainScores[q.category]) {
         domainScores[q.category] = { total: 0, correct: 0 };
       }
       domainScores[q.category].total++;
+      if (isCorrect) domainScores[q.category].correct++;
 
-      const chosenIndex = userAnswers[q.id];
-      if (chosenIndex === q.correctIndex) {
-        correctCount++;
-        domainScores[q.category].correct++;
-      }
-
-      return {
+      questionsReview.push({
         id: q.id,
         category: q.category,
         question: q.question,
         options: q.options,
         correctIndex: q.correctIndex,
-        chosenIndex: chosenIndex,
+        chosenIndex: chosenIdx !== undefined ? chosenIdx : -1,
         explanation: q.explanation
-      };
+      });
     });
 
     const percentage = Math.round((correctCount / activeQuestions.length) * 100);
-    const passed = correctCount >= EXAM_CONFIG.passingScore; // 20 / 25 (80%)
-    const timeSpentSeconds = EXAM_CONFIG.timeLimitMinutes * 60 - remainingSeconds;
+    const passed = percentage >= EXAM_CONFIG.passingPercentage;
+    const timeSpent = EXAM_CONFIG.timeLimitMinutes * 60 - remainingSeconds;
 
     const resultPayload = {
-      id: "RES-" + Date.now() + "-" + Math.floor(Math.random() * 1000),
+      id: `RES-${Date.now()}-${Math.floor(Math.random() * 1000)}`,
+      setId: currentExamSet.setId,
+      setName: currentExamSet.setName,
       candidate: candidateInfo,
       timestamp: new Date().toISOString(),
-      formattedDate: new Date().toLocaleString(),
+      formattedDate: new Date().toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      }),
       correctCount,
       totalQuestions: activeQuestions.length,
       percentage,
       passed,
       strikes: AntiCheat.getStrikes(),
-      timeSpentSeconds,
+      timeSpentSeconds: timeSpent,
       isAutoSubmit,
       domainScores,
       questionsReview
     };
 
+    // Save Result to LocalStorage & SQLite Backend
     saveResultToStorageAndAPI(resultPayload);
 
-    renderResultsScreen({
-      candidate: candidateInfo,
-      correctCount,
-      totalQuestions: activeQuestions.length,
-      percentage,
-      passed,
-      domainScores,
-      isAutoSubmit,
-      questionsReview
-    });
+    // Update history list in background
+    fetchCandidateHistory();
+
+    // Render Dashboard
+    renderResultsScreen(resultPayload);
   }
 
   function saveResultToStorageAndAPI(resultPayload) {
@@ -486,36 +663,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  function renderResultsScreen(data, isAlreadyTakenView = false) {
+  function renderResultsScreen(data) {
     elements.examContainer.classList.add("hidden");
+    elements.welcomeCard.classList.add("hidden");
     elements.resultsContainer.classList.remove("hidden");
 
-    elements.resultCandidateName.textContent = data.candidate.email;
+    const setLabel = data.setName || (data.setId ? `Quiz Set ${data.setId.replace("set-", "")}` : "AI Certification Exam");
+    elements.resultCandidateName.textContent = `${data.candidate.email} (${setLabel})`;
     elements.resultCandidateId.textContent = `ID: ${data.candidate.id}`;
-    elements.resultDate.textContent = new Date().toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit"
-    });
-
-    if (isAlreadyTakenView) {
-      const noticeBox = document.createElement("div");
-      noticeBox.className = "rules-box";
-      noticeBox.style.marginBottom = "1.5rem";
-      noticeBox.innerHTML = `
-        <div class="rules-title" style="color:var(--warning-color);">⚠️ Exam Attempt Completed</div>
-        <div style="font-size:0.88rem; color:#fde68a;">
-          You have already completed your 1 permitted exam attempt for account <strong>${escapeHTML(data.candidate.email)}</strong>. Multiple attempts are not permitted.
-        </div>
-      `;
-      const headerEl = elements.resultsContainer.querySelector(".results-header");
-      if (headerEl && !elements.resultsContainer.querySelector(".already-taken-notice")) {
-        noticeBox.classList.add("already-taken-notice");
-        headerEl.after(noticeBox);
-      }
-    }
+    elements.resultDate.textContent = data.formattedDate || new Date().toLocaleDateString("en-US");
 
     if (data.passed) {
       elements.badgeStatus.className = "pass-fail-badge badge-pass";
@@ -528,57 +684,74 @@ document.addEventListener("DOMContentLoaded", () => {
     elements.scoreFraction.textContent = `${data.correctCount} / ${data.totalQuestions}`;
     elements.scorePercent.textContent = `${data.percentage}%`;
 
-    const strokeDashoffset = 339 - (339 * data.percentage) / 100;
-    setTimeout(() => {
-      elements.circleScoreProgress.style.strokeDashoffset = strokeDashoffset;
-      elements.circleScoreProgress.style.stroke = data.passed ? "#10b981" : "#ef4444";
-    }, 100);
+    // SVG Donut Circle Animation
+    if (elements.circleScoreProgress) {
+      const circumference = 2 * Math.PI * 54; // r=54
+      const offset = circumference - (data.percentage / 100) * circumference;
+      elements.circleScoreProgress.style.strokeDasharray = `${circumference}`;
+      elements.circleScoreProgress.style.strokeDashoffset = `${offset}`;
+      elements.circleScoreProgress.style.stroke = data.passed ? "var(--success-color)" : "var(--danger-color)";
+    }
 
+    // Render Domain Breakdown
+    renderDomainBreakdown(data.domainScores || {});
+
+    // Render Detailed Answer Review Cards
+    renderQuestionsReview(data.questionsReview || []);
+
+    if (elements.restartBtn) {
+      elements.restartBtn.style.display = "inline-flex";
+      elements.restartBtn.textContent = "Take Another Assessment / Choose Quiz Set";
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function renderDomainBreakdown(domainScores) {
+    if (!elements.domainBreakdownContainer) return;
     elements.domainBreakdownContainer.innerHTML = "";
-    Object.keys(data.domainScores).forEach((domain) => {
-      const stats = data.domainScores[domain];
-      const domPct = Math.round((stats.correct / stats.total) * 100);
+
+    Object.keys(domainScores).forEach((domain) => {
+      const scoreObj = domainScores[domain];
+      const pct = Math.round((scoreObj.correct / scoreObj.total) * 100);
 
       const domainCard = document.createElement("div");
-      domainCard.className = "domain-card";
+      domainCard.className = "domain-item";
       domainCard.innerHTML = `
         <div class="domain-header">
-          <span class="domain-name">${domain}</span>
-          <span class="domain-score">${stats.correct}/${stats.total} (${domPct}%)</span>
+          <span class="domain-name">${escapeHTML(domain)}</span>
+          <span class="domain-score">${scoreObj.correct}/${scoreObj.total} (${pct}%)</span>
         </div>
-        <div class="domain-progress-bar">
-          <div class="domain-progress-fill" style="width: ${domPct}%; background-color: ${domPct >= 80 ? '#10b981' : '#f59e0b'};"></div>
+        <div class="domain-progress-bg">
+          <div class="domain-progress-fill" style="width: ${pct}%; background: ${pct >= 80 ? "var(--success-color)" : pct >= 50 ? "var(--warning-color)" : "var(--danger-color)"};"></div>
         </div>
       `;
       elements.domainBreakdownContainer.appendChild(domainCard);
     });
-
-    renderDetailedReview(data.questionsReview || []);
   }
 
-  function renderDetailedReview(questionsList) {
+  function renderQuestionsReview(reviewList) {
+    if (!elements.reviewQuestionsContainer) return;
     elements.reviewQuestionsContainer.innerHTML = "";
 
-    const listToRender = questionsList.length > 0 ? questionsList : activeQuestions;
-
-    listToRender.forEach((q, idx) => {
-      const chosenIndex = q.chosenIndex !== undefined ? q.chosenIndex : userAnswers[q.id];
-      const isCorrect = chosenIndex === q.correctIndex;
-      const isUnanswered = chosenIndex === undefined;
+    reviewList.forEach((q, idx) => {
+      const isCorrect = q.chosenIndex === q.correctIndex;
+      const isUnanswered = q.chosenIndex === -1 || q.chosenIndex === undefined;
 
       const reviewCard = document.createElement("div");
       reviewCard.className = `review-card ${isCorrect ? "review-correct" : "review-incorrect"}`;
 
       let optionsHTML = "";
       q.options.forEach((optText, optIdx) => {
-        let optClass = "review-option";
+        let optClass = "review-opt";
         let optIcon = "";
 
         if (optIdx === q.correctIndex) {
           optClass += " opt-correct";
           optIcon = "✓ Correct Answer";
-        } else if (optIdx === chosenIndex && !isCorrect) {
-          optClass += " opt-user-incorrect";
+        }
+        if (optIdx === q.chosenIndex && !isCorrect) {
+          optClass += " opt-chosen-wrong";
           optIcon = "✗ Your Answer";
         }
 
@@ -587,7 +760,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="${optClass}">
             <div class="opt-left">
               <span class="review-letter">${letter}</span>
-              <span>${escapeHTML(optText)}</span>
+              <span>${formatMarkdown(optText)}</span>
             </div>
             ${optIcon ? `<span class="opt-tag">${optIcon}</span>` : ""}
           </div>
@@ -601,10 +774,10 @@ document.addEventListener("DOMContentLoaded", () => {
             ${isCorrect ? "Correct (+1)" : isUnanswered ? "Unanswered (0)" : "Incorrect (0)"}
           </span>
         </div>
-        <h4 class="review-question-text">${escapeHTML(q.question)}</h4>
+        <h4 class="review-question-text">${formatMarkdown(q.question)}</h4>
         <div class="review-options-list">${optionsHTML}</div>
         <div class="review-explanation">
-          <strong>💡 Explanation:</strong> ${escapeHTML(q.explanation)}
+          <strong>💡 Explanation:</strong> ${formatMarkdown(q.explanation)}
         </div>
       `;
 
@@ -614,8 +787,40 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function resetExam() {
     elements.resultsContainer.classList.add("hidden");
+    elements.examContainer.classList.add("hidden");
     elements.welcomeCard.classList.remove("hidden");
+    if (candidateInfo.email) {
+      if (elements.loginBox) elements.loginBox.classList.add("hidden");
+      if (elements.candidateDashboard) elements.candidateDashboard.classList.remove("hidden");
+      fetchCandidateHistory();
+    } else {
+      if (elements.candidateDashboard) elements.candidateDashboard.classList.add("hidden");
+      if (elements.loginBox) elements.loginBox.classList.remove("hidden");
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function formatMarkdown(str) {
+    if (!str) return "";
+    let safe = str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+    // Convert **bold** markdown syntax to <strong>bold</strong>
+    safe = safe.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+
+    // Convert *italic* markdown syntax to <em>italic</em>
+    safe = safe.replace(/\*(.*?)\*/g, "<em>$1</em>");
+
+    // Convert > scenario quotes and line breaks
+    safe = safe.replace(/\n\n> /g, "<blockquote class='scenario-quote'>");
+    safe = safe.replace(/\n> /g, "<blockquote class='scenario-quote'>");
+    safe = safe.replace(/\n/g, "<br>");
+
+    return safe;
   }
 
   function escapeHTML(str) {

@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI & Agentic Systems Certification Exam | Participant Portal</title>
-  <meta name="description" content="Official 25-Question Certification Exam covering LLMs, Context Engineering, Claude Code, MCP, Skills, Subagents, Sandboxing, Agent Teams, GSD, and Gastown Swarms.">
+  <meta name="description"
+    content="Official 25-Question Certification Exam covering LLMs, Context Engineering, Claude Code, MCP, Skills, Subagents, Sandboxing, Agent Teams, GSD, and Gastown Swarms.">
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
 
   <!-- Top App Navigation Header -->
@@ -19,10 +22,16 @@
       </div>
     </div>
     <div style="display:flex; gap:16px; align-items:center;">
-      <div class="header-candidate-badge" id="header-candidate-name" style="font-size:0.85rem; color:var(--text-muted); font-weight:500;">
+      <div class="header-candidate-badge" id="header-candidate-name"
+        style="font-size:0.85rem; color:var(--text-muted); font-weight:500;">
         Guest Candidate
       </div>
-      <a href="admin.html" style="font-size:0.8rem; color:var(--text-muted); text-decoration:none; border:1px solid var(--bg-card-border); padding:6px 12px; border-radius:6px; transition:var(--transition-fast);">🔒 Admin Portal</a>
+      <button type="button" id="top-logout-btn" class="btn-secondary hidden"
+        style="padding: 5px 12px; font-size: 0.8rem; border-color: rgba(239,68,68,0.4); color: #f87171; background: rgba(239,68,68,0.1); cursor: pointer;">🔒
+        Logout</button>
+      <a href="admin.html"
+        style="font-size:0.8rem; color:var(--text-muted); text-decoration:none; border:1px solid var(--bg-card-border); padding:6px 12px; border-radius:6px; transition:var(--transition-fast);">🔒
+        Admin Portal</a>
     </div>
   </header>
 
@@ -30,49 +39,90 @@
 
     <!-- 1. PARTICIPANT LOGIN SCREEN -->
     <section id="welcome-screen" class="welcome-card">
-      <h1 class="welcome-title">Bootcamp Certification Exam</h1>
-      <p class="welcome-desc">
-        Welcome! Please log in with your registered participant credentials to start your 25-question proctored assessment.
-      </p>
+      <div id="upper-welcome-section">
+        <h1 class="welcome-title">Bootcamp Certification Exam</h1>
+        <p class="welcome-desc">
+          Welcome! Please log in with your registered participant credentials to start your 25-question proctored
+          assessment.
+        </p>
 
-      <div class="curriculum-chips">
-        <span class="chip">🤖 LLM Core & Reasoning</span>
-        <span class="chip">📚 Context Engineering & agents.md</span>
-        <span class="chip">⚡ YOLO Mode & Ralph Loops</span>
-        <span class="chip">💻 Claude Code & CLI</span>
-        <span class="chip">🔌 MCP (Hosts, Clients & Servers)</span>
-        <span class="chip">🎯 Skills vs MCP vs Plugins</span>
-        <span class="chip">🪝 Sub-Agents, Hooks & Commands</span>
-        <span class="chip">☁️ Cloud Sandboxes & Sprites.dev</span>
-        <span class="chip">👥 Agent Teams, GSD & Gastown</span>
+        <div class="curriculum-chips">
+          <span class="chip">🤖 LLM Core & Reasoning</span>
+          <span class="chip">📚 Context Engineering & agents.md</span>
+          <span class="chip">⚡ YOLO Mode & Ralph Loops</span>
+          <span class="chip">💻 Claude Code & CLI</span>
+          <span class="chip">🔌 MCP (Hosts, Clients & Servers)</span>
+          <span class="chip">🎯 Skills vs MCP vs Plugins</span>
+          <span class="chip">🪝 Sub-Agents, Hooks & Commands</span>
+          <span class="chip">☁️ Cloud Sandboxes & Sprites.dev</span>
+          <span class="chip">👥 Agent Teams, GSD & Gastown</span>
+        </div>
+
+        <div class="rules-box">
+          <div class="rules-title">🛡️ Strict Proctoring & Exam Environment Guidelines</div>
+          <ul class="rules-list">
+            <li>Passing Requirement: <strong>80% Score (Minimum 20 out of 25 correct)</strong>.</li>
+            <li>Browser Locks: Copy, Cut, Paste, Text Selection, and Right-Click are disabled.</li>
+            <li>Proctoring Enforcement: Switching browser tabs or exiting Fullscreen triggers security strikes.</li>
+            <li>Auto-Submit Warning: Reaching 3 strikes or letting the 30-minute timer run out automatically submits
+              your exam.</li>
+          </ul>
+        </div>
       </div>
 
-      <div class="rules-box">
-        <div class="rules-title">🛡️ Strict Proctoring & Exam Environment Guidelines</div>
-        <ul class="rules-list">
-          <li>Passing Requirement: <strong>80% Score (Minimum 20 out of 25 correct)</strong>.</li>
-          <li>Browser Locks: Copy, Cut, Paste, Text Selection, and Right-Click are disabled.</li>
-          <li>Proctoring Enforcement: Switching browser tabs or exiting Fullscreen triggers security strikes.</li>
-          <li>Auto-Submit Warning: Reaching 3 strikes or letting the 30-minute timer run out automatically submits your exam.</li>
-        </ul>
+      <!-- 1. UNAUTHENTICATED LOGIN CARD -->
+      <div id="login-box">
+        <form id="registration-form">
+          <div class="form-group">
+            <label class="form-label" for="candidate-email">Participant Email *</label>
+            <input type="email" id="candidate-email" class="form-input" placeholder="e.g. student@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="candidate-password">Participant Password *</label>
+            <input type="password" id="candidate-password" class="form-input" placeholder="Enter your password..."
+              required>
+          </div>
+
+          <div id="user-login-error"
+            style="color:var(--danger-color); font-size:0.85rem; margin-bottom:1rem; text-align:center;" class="hidden">
+            Invalid email or password. Please contact admin if you are not registered.
+          </div>
+
+          <button type="submit" class="btn-start">Participant Login →</button>
+        </form>
       </div>
 
-      <form id="registration-form">
-        <div class="form-group">
-          <label class="form-label" for="candidate-email">Participant Email *</label>
-          <input type="email" id="candidate-email" class="form-input" placeholder="e.g. student@example.com" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label" for="candidate-password">Participant Password *</label>
-          <input type="password" id="candidate-password" class="form-input" placeholder="Enter your password..." required>
+      <!-- 2. AUTHENTICATED CANDIDATE DASHBOARD -->
+      <div id="candidate-dashboard" class="hidden">
+
+        <!-- Quiz Set Selection Box -->
+        <div
+          style="background:rgba(255,255,255,0.03); border:1px solid var(--border-color); border-radius:12px; padding:1.5rem; margin-bottom:2rem;">
+          <h3 style="margin-top:0; font-size:1.2rem; color:var(--primary); margin-bottom:1rem;">🎯 Select Exam Quiz Set
+          </h3>
+
+          <div class="form-group">
+            <label class="form-label" for="quiz-set-select">Choose Question Set *</label>
+            <select id="quiz-set-select" class="form-input"
+              style="background: #0f172a; color: #f8fafc; font-size: 1rem; padding: 0.75rem;">
+              <!-- Populated dynamically by app.js from QUIZ_SETS -->
+            </select>
+          </div>
+
+          <button type="button" id="start-selected-quiz-btn" class="btn-start" style="margin-top:1rem;">🚀 Start
+            Selected Quiz Set →</button>
         </div>
 
-        <div id="user-login-error" style="color:var(--danger-color); font-size:0.85rem; margin-bottom:1rem; text-align:center;" class="hidden">
-          Invalid email or password. Please contact admin if you are not registered.
+        <!-- Candidate Attempt History Section -->
+        <div id="user-history-section" class="hidden"
+          style="background: rgba(255,255,255,0.03); border: 1px solid var(--border-color); border-radius: 12px; padding: 1.5rem;">
+          <h3 style="margin-top: 0; font-size: 1.1rem; color: var(--primary); margin-bottom: 1rem;">📊 Your Past Exam
+            Attempts</h3>
+          <div id="user-history-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <!-- Past attempt cards injected dynamically -->
+          </div>
         </div>
-
-        <button type="submit" class="btn-start">Participant Login & Launch Exam →</button>
-      </form>
+      </div>
     </section>
 
     <!-- 2. ACTIVE EXAM SCREEN -->
@@ -112,16 +162,18 @@
 
           <div class="strike-box">
             <span>Security Strikes:</span>
-            <span class="strike-val" id="strike-badge-text">0 / 3</span>
+            <span class="strike-val" id="strike-badge-text">0</span>
           </div>
 
           <div style="margin: 1rem 0;">
-            <div style="display:flex; justify-content:space-between; font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">
+            <div
+              style="display:flex; justify-content:space-between; font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">
               <span>Overall Progress</span>
               <span id="exam-progress-text">0% Complete</span>
             </div>
             <div style="height:6px; background:rgba(255,255,255,0.08); border-radius:3px; overflow:hidden;">
-              <div id="exam-progress-bar" style="width:0%; height:100%; background:var(--primary); transition:width 0.3s;"></div>
+              <div id="exam-progress-bar"
+                style="width:0%; height:100%; background:var(--primary); transition:width 0.3s;"></div>
             </div>
           </div>
 
@@ -132,7 +184,8 @@
 
           <div class="grid-legend" style="margin-bottom: 1.25rem;">
             <span><strong style="color:#6ee7b7;">●</strong> Answered (<span id="answered-count">0/25</span>)</span>
-            <span><strong style="color:var(--warning-color);">🚩</strong> Flagged (<span id="flagged-count">0</span>)</span>
+            <span><strong style="color:var(--warning-color);">🚩</strong> Flagged (<span
+                id="flagged-count">0</span>)</span>
           </div>
 
           <button type="button" class="btn-submit-main" id="submit-exam-btn">Submit Exam Now</button>
@@ -144,7 +197,8 @@
     <section id="results-screen" class="results-card hidden">
       <div class="results-header">
         <div id="badge-status" class="pass-fail-badge badge-pass">🏆 PASS (84%)</div>
-        <h2 style="font-family:var(--font-heading); font-size:1.6rem; margin-bottom:0.25rem;" id="res-candidate-name">Candidate Email</h2>
+        <h2 style="font-family:var(--font-heading); font-size:1.6rem; margin-bottom:0.25rem;" id="res-candidate-name">
+          Candidate Email</h2>
         <div class="candidate-meta">
           <span id="res-candidate-id">ID: USR-0000</span> | Date: <span id="res-date">Aug 4, 2026</span>
         </div>
@@ -163,9 +217,12 @@
         </div>
 
         <div style="max-width: 420px;">
-          <h3 style="font-family:var(--font-heading); font-size:1.15rem; margin-bottom:0.5rem;">Passing Standard: 80% (20/25)</h3>
+          <h3 style="font-family:var(--font-heading); font-size:1.15rem; margin-bottom:0.5rem;">Passing Standard: 80%
+            (20/25)</h3>
           <p style="font-size:0.88rem; color:var(--text-muted); line-height:1.5;">
-            Candidates achieving an 80% score or higher demonstrate proficiency across all 3 weeks of the bootcamp curriculum, including LLM reasoning, context engineering, Claude Code, MCP, custom skills, sandboxing, agent teams, GSD, and Gastown swarms.
+            Candidates achieving an 80% score or higher demonstrate proficiency across all 3 weeks of the bootcamp
+            curriculum, including LLM reasoning, context engineering, Claude Code, MCP, custom skills, sandboxing, agent
+            teams, GSD, and Gastown swarms.
           </p>
         </div>
       </div>
@@ -181,7 +238,8 @@
       </div>
 
       <div style="text-align:center; margin-top:2.5rem;">
-        <button type="button" class="btn-start" id="restart-exam-btn" style="max-width:300px;">Take Another Assessment</button>
+        <button type="button" class="btn-start" id="restart-exam-btn" style="max-width:300px;">Take Another
+          Assessment</button>
       </div>
     </section>
 
@@ -223,7 +281,8 @@
       <div class="modal-icon">🖥️</div>
       <h3 class="modal-title" style="color:var(--warning-color);">Fullscreen Required</h3>
       <p class="modal-desc">
-        Exam security requires active Fullscreen mode. Please click below to re-enable fullscreen to continue your assessment.
+        Exam security requires active Fullscreen mode. Please click below to re-enable fullscreen to continue your
+        assessment.
       </p>
       <div class="modal-actions">
         <button type="button" class="btn-primary" id="reenter-fullscreen-btn">Re-enter Fullscreen</button>
@@ -236,7 +295,9 @@
 
   <!-- Scripts -->
   <script src="data/questions.js"></script>
+  <script src="data/quiz_sets.js"></script>
   <script src="js/anti_cheat.js"></script>
   <script src="js/app.js"></script>
 </body>
+
 </html>

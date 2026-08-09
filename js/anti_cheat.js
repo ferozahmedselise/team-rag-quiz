@@ -35,25 +35,23 @@ const AntiCheat = (function () {
   }
 
   function attachDOMProtection() {
-    // Disable right click / context menu
+    // Disable right click / context menu quietly
     document.addEventListener("contextmenu", function (e) {
       e.preventDefault();
-      showToast("Security Alert: Context menu is disabled during the exam.");
       return false;
     });
 
-    // Disable copy, cut, paste
+    // Disable copy, cut, paste quietly
     ["copy", "cut", "paste"].forEach((eventType) => {
       document.addEventListener(eventType, function (e) {
         if (isExamActive) {
           e.preventDefault();
-          showToast(`Security Alert: ${eventType.toUpperCase()} operation is disabled.`);
           return false;
         }
       });
     });
 
-    // Disable text selection & drag
+    // Disable text selection & drag quietly
     ["selectstart", "dragstart"].forEach((eventType) => {
       document.addEventListener(eventType, function (e) {
         if (isExamActive) {
@@ -72,7 +70,7 @@ const AntiCheat = (function () {
       const ctrlOrCmd = isMac ? e.metaKey : e.ctrlKey;
       const key = e.key.toLowerCase();
 
-      // Intercept dev tools and copy/paste/save/print shortcuts
+      // Intercept dev tools and copy/paste/save/print shortcuts quietly
       if (
         (ctrlOrCmd && ["c", "v", "x", "a", "u", "s", "p"].includes(key)) ||
         e.key === "F12" ||
@@ -80,7 +78,6 @@ const AntiCheat = (function () {
       ) {
         e.preventDefault();
         e.stopPropagation();
-        showToast("Security Alert: Keyboard shortcut disabled during exam.");
         return false;
       }
     });
@@ -110,12 +107,7 @@ const AntiCheat = (function () {
   function attachFullscreenDetection() {
     document.addEventListener("fullscreenchange", function () {
       if (!isExamActive) return;
-
-      if (!document.fullscreenElement) {
-        showFullscreenWarning();
-      } else {
-        hideFullscreenWarning();
-      }
+      // Screen stays open and unlocked when exiting fullscreen
     });
   }
 
@@ -126,23 +118,13 @@ const AntiCheat = (function () {
     if (onViolationCallback) {
       onViolationCallback({ strikeCount, maxStrikes, reason });
     }
-
-    if (strikeCount >= maxStrikes) {
-      showToast(`CRITICAL: Maximum security strikes (${maxStrikes}) reached! Exam is being auto-submitted.`);
-      setTimeout(() => {
-        if (onAutoSubmitCallback) onAutoSubmitCallback();
-      }, 1500);
-    } else {
-      showViolationModal(strikeCount, maxStrikes, reason);
-    }
+    // Strikes are tracked silently in the background without popups or forced auto-submission.
   }
 
   function requestFullscreen() {
     const elem = document.documentElement;
     if (elem.requestFullscreen) {
-      elem.requestFullscreen().catch(() => {
-        showToast("Note: Please manually enable Fullscreen for optimal exam proctoring.");
-      });
+      elem.requestFullscreen().catch(() => {});
     }
   }
 

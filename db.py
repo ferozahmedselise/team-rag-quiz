@@ -184,11 +184,18 @@ def get_all_results():
 def get_result_by_email(email):
     with get_db() as conn:
         cursor = conn.cursor()
-        cursor.execute("SELECT raw_data FROM results WHERE LOWER(candidate_email) = ? LIMIT 1", (email.strip().lower(),))
+        cursor.execute("SELECT raw_data FROM results WHERE LOWER(candidate_email) = ? ORDER BY timestamp DESC LIMIT 1", (email.strip().lower(),))
         row = cursor.fetchone()
         if row:
             return json.loads(row["raw_data"])
         return None
+
+def get_results_by_candidate_email(email):
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT raw_data FROM results WHERE LOWER(candidate_email) = ? ORDER BY timestamp DESC", (email.strip().lower(),))
+        rows = cursor.fetchall()
+        return [json.loads(row["raw_data"]) for row in rows]
 
 def add_result(payload):
     res_id = payload.get("id") or f"RES-{uuid.uuid4().hex[:8]}"
@@ -224,3 +231,9 @@ def clear_all_results():
     with get_db() as conn:
         cursor = conn.cursor()
         cursor.execute("DELETE FROM results")
+
+def delete_result(result_id):
+    with get_db() as conn:
+        cursor = conn.cursor()
+        cursor.execute("DELETE FROM results WHERE id = ?", (result_id,))
+        return cursor.rowcount > 0

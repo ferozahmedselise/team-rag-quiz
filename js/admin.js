@@ -324,13 +324,36 @@ document.addEventListener("DOMContentLoaded", () => {
         </td>
         <td>${formattedTime}</td>
         <td>
-          <button type="button" class="btn-secondary view-btn" style="padding:4px 10px; font-size:0.8rem;">View Full Result UI</button>
+          <button type="button" class="btn-secondary view-btn" style="padding:4px 10px; font-size:0.8rem;">View UI</button>
+          <button type="button" class="btn-danger delete-result-btn" style="padding:4px 10px; font-size:0.8rem; margin-left:4px;">Delete</button>
         </td>
       `;
 
       row.querySelector(".view-btn").addEventListener("click", () => showDetailModal(item));
+      row.querySelector(".delete-result-btn").addEventListener("click", () => removeResult(item.id, item.candidate.email));
       elements.tableBody.appendChild(row);
     });
+  }
+
+  function removeResult(resultId, email) {
+    if (!confirm(`Are you sure you want to delete this result submission for ${email}?`)) {
+      return;
+    }
+
+    fetch(`/api/results?id=${encodeURIComponent(resultId)}&key=${encodeURIComponent(currentAdminToken)}`, {
+      method: "DELETE"
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to delete result");
+        return res.json();
+      })
+      .then(() => {
+        if (elements.detailModal) elements.detailModal.classList.remove("active");
+        loadDashboardData();
+      })
+      .catch((err) => {
+        alert("Error deleting result: " + err.message);
+      });
   }
 
   function showDetailModal(item) {
@@ -383,7 +406,7 @@ document.addEventListener("DOMContentLoaded", () => {
             <div class="${optClass}">
               <div class="opt-left">
                 <span class="review-letter">${letter}</span>
-                <span>${escapeHTML(optText)}</span>
+                <span>${formatMarkdown(optText)}</span>
               </div>
               ${optIcon ? `<span class="opt-tag">${optIcon}</span>` : ""}
             </div>
@@ -398,10 +421,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 ${isCorrect ? "Correct (+1)" : isUnanswered ? "Unanswered (0)" : "Incorrect (0)"}
               </span>
             </div>
-            <h4 class="review-question-text">${escapeHTML(q.question)}</h4>
+            <h4 class="review-question-text">${formatMarkdown(q.question)}</h4>
             <div class="review-options-list">${optionsHTML}</div>
             <div class="review-explanation">
-              <strong>💡 Explanation:</strong> ${escapeHTML(q.explanation)}
+              <strong>💡 Explanation:</strong> ${formatMarkdown(q.explanation)}
             </div>
           </div>
         `;
@@ -450,8 +473,17 @@ document.addEventListener("DOMContentLoaded", () => {
           ${reviewHTML}
         </div>
 
+        <div style="display:flex; justify-content:flex-end; margin-top:2rem; padding-top:1rem; border-top:1px solid var(--bg-card-border);">
+          <button type="button" class="btn-danger modal-delete-result-btn" style="padding:8px 16px; font-size:0.9rem;">🗑️ Delete This Result Record</button>
+        </div>
+
       </div>
     `;
+
+    const modalDelBtn = elements.detailModalBody.querySelector(".modal-delete-result-btn");
+    if (modalDelBtn) {
+      modalDelBtn.addEventListener("click", () => removeResult(item.id, item.candidate.email));
+    }
 
     elements.detailModal.classList.add("active");
   }
@@ -524,6 +556,24 @@ document.addEventListener("DOMContentLoaded", () => {
         renderMetrics();
         applyFilters();
       });
+  }
+
+  function formatMarkdown(str) {
+    if (!str) return "";
+    let safe = str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+    safe = safe.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+    safe = safe.replace(/\*(.*?)\*/g, "<em>$1</em>");
+    safe = safe.replace(/\n\n> /g, "<blockquote class='scenario-quote'>");
+    safe = safe.replace(/\n> /g, "<blockquote class='scenario-quote'>");
+    safe = safe.replace(/\n/g, "<br>");
+
+    return safe;
   }
 
   function escapeHTML(str) {

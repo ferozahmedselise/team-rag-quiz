@@ -1,0 +1,3304 @@
+{
+  "quizSets": [
+    {
+      "set": 1,
+      "questions": [
+        {
+          "id": 1,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is best described as: **The core Skill file containing YAML frontmatter for discovery and Markdown instructions for execution.**",
+          "options": [
+            "MCP server capabilities",
+            "Plugin",
+            "SKILL.md",
+            "YOLO Mode"
+          ],
+          "correctIndex": 2,
+          "explanation": "SKILL.md"
+        },
+        {
+          "id": 2,
+          "category": "Safety & Execution",
+          "question": "Which concept is demonstrated in this situation?\n\n> An agent runs shell commands inside a disposable micro-VM with temporary storage and limited credentials.",
+          "options": [
+            "Programmatic approval policy",
+            "Sandbox",
+            "Slash commands",
+            "Gastown Polecats"
+          ],
+          "correctIndex": 1,
+          "explanation": "Sandbox"
+        },
+        {
+          "id": 3,
+          "category": "Agent Workflows",
+          "question": "Which concept is best described as: **The progression from tightly controlled AI assistance to more autonomous, tested, and coordinated workflows.**",
+          "options": [
+            "Workflow maturity",
+            "Plan, Execute, Review, Test",
+            "MCP host-client-server structure",
+            "Custom Skill"
+          ],
+          "correctIndex": 0,
+          "explanation": "Workflow maturity"
+        },
+        {
+          "id": 4,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> After a database query runs, the returned rows are added to the next model request.",
+          "options": [
+            "GPT versus ChatGPT",
+            "Tool result feedback",
+            "Reasoning workflow",
+            "Token budget"
+          ],
+          "correctIndex": 1,
+          "explanation": "Tool result feedback"
+        },
+        {
+          "id": 5,
+          "category": "LLM Core Concepts",
+          "question": "Which action best follows the course guidance for **ReAct pattern**?",
+          "options": [
+            "Track both input and output tokens because both affect inference cost and latency.",
+            "Separate what the model predicts from what the surrounding application executes or stores.",
+            "Use precise, minimal tool schemas and validate every requested action before execution.",
+            "Define goals, available tools, observation steps, and safe stopping conditions."
+          ],
+          "correctIndex": 3,
+          "explanation": "ReAct pattern"
+        },
+        {
+          "id": 6,
+          "category": "Context Engineering",
+          "question": "Which statement best defines **Compacting**?",
+          "options": [
+            "Condensing older conversation history into a summary so a long session can continue within the context window.",
+            "The tendency for important information buried in the middle of long context to be recalled less reliably.",
+            "Repository files such as AGENTS.md or CLAUDE.md that contain durable project-specific rules.",
+            "Relevant information receives less effective focus because it competes with excessive irrelevant context."
+          ],
+          "correctIndex": 0,
+          "explanation": "Compacting"
+        },
+        {
+          "id": 7,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **The unavoidable risk that compacting removes fine details while keeping only major points.**",
+          "options": [
+            "Context ordering",
+            "Project instruction files",
+            "Lossy summarization",
+            "Lost in the Middle"
+          ],
+          "correctIndex": 2,
+          "explanation": "Lossy summarization"
+        },
+        {
+          "id": 8,
+          "category": "Spec-Driven Development",
+          "question": "Which action best follows the course guidance for **GSD**?",
+          "options": [
+            "Implement approval policies, event listeners, and allowed tools in application code.",
+            "Use precise specs to shift human effort toward engineering leadership and review.",
+            "Start by improving context relevance, structure, persistence, and ordering.",
+            "Use least privilege, disposable environments, and reviewable outputs for autonomous execution."
+          ],
+          "correctIndex": 1,
+          "explanation": "GSD"
+        },
+        {
+          "id": 9,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **Rules that end an agent loop when the goal is met, a limit is reached, or continuation is unsafe.**",
+          "options": [
+            "Tool Calling",
+            "Autoregressive loop",
+            "Stop conditions",
+            "Persistent memory layer"
+          ],
+          "correctIndex": 2,
+          "explanation": "Stop conditions"
+        },
+        {
+          "id": 10,
+          "category": "Multi-Agent Systems",
+          "question": "Which concept is best described as: **Reusable command shortcuts that trigger predefined agent workflows.**",
+          "options": [
+            "Slash commands",
+            "Clean worker context",
+            "Reviewable diff",
+            "Swarm or Agent Team"
+          ],
+          "correctIndex": 0,
+          "explanation": "Slash commands"
+        },
+        {
+          "id": 11,
+          "category": "LLM Core Concepts",
+          "question": "Which action best follows the course guidance for **Next-token prediction**?",
+          "options": [
+            "Return clear, structured tool results that the model can interpret reliably.",
+            "Track both input and output tokens because both affect inference cost and latency.",
+            "Set iteration limits, time or token budgets, approval gates, and explicit success criteria.",
+            "Explain the model as a statistical next-token predictor rather than as a fact database."
+          ],
+          "correctIndex": 3,
+          "explanation": "Next-token prediction"
+        },
+        {
+          "id": 12,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which action best follows the course guidance for **MCP host-client-server structure**?",
+          "options": [
+            "Use Plugins to distribute consistent team workflows and policies.",
+            "Design integrations once so multiple MCP-aware hosts can reuse them.",
+            "Pair repeated improvement with limits and objective evaluation criteria.",
+            "Use only with strong specs, tests, least privilege, Sandboxing, and reviewable output."
+          ],
+          "correctIndex": 1,
+          "explanation": "MCP host-client-server structure"
+        },
+        {
+          "id": 13,
+          "category": "Agent Workflows",
+          "question": "Which concept is demonstrated in this situation?\n\n> An agent is allowed to make broad changes and run commands without requesting confirmation at every step.",
+          "options": [
+            "MCP server capabilities",
+            "YOLO Mode",
+            "Ralph Loops",
+            "Plan, Execute, Review, Test"
+          ],
+          "correctIndex": 1,
+          "explanation": "YOLO Mode"
+        },
+        {
+          "id": 14,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **A model processing unit that may be a word, sub-word, punctuation mark, whitespace, or character chunk.**",
+          "options": [
+            "ReAct pattern",
+            "Token",
+            "Brain, Memory, Tools, and Loop",
+            "Reasoning workflow"
+          ],
+          "correctIndex": 1,
+          "explanation": "Token"
+        },
+        {
+          "id": 15,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> A team improves results by fixing project instructions and retrieved evidence rather than adding prompt tricks.",
+          "options": [
+            "Sub-Agent",
+            "Gastown Polecats",
+            "Reviewable diff",
+            "Context-first best practice"
+          ],
+          "correctIndex": 3,
+          "explanation": "Context-first best practice"
+        },
+        {
+          "id": 16,
+          "category": "Context Engineering",
+          "question": "Which action best follows the course guidance for **Prompt Engineering**?",
+          "options": [
+            "Place critical instructions near the beginning or end and reduce irrelevant content.",
+            "Inject only state that is current, relevant, and safe to expose.",
+            "Use clear prompts, but support them with relevant memory, tools, files, and system instructions.",
+            "Treat the window as a constrained budget and prioritize signal over volume."
+          ],
+          "correctIndex": 2,
+          "explanation": "Prompt Engineering"
+        },
+        {
+          "id": 17,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **Earlier user and assistant turns included in the current context to maintain continuity.**",
+          "options": [
+            "AGENTS.md rules",
+            "Conversation History",
+            "Attention dilution",
+            "Context pruning"
+          ],
+          "correctIndex": 1,
+          "explanation": "Conversation History"
+        },
+        {
+          "id": 18,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is best described as: **A modular package of reusable procedural guidance, scripts, references, and examples for an agent.**",
+          "options": [
+            "Custom Skill",
+            "Model Context Protocol",
+            "MCP host-client-server structure",
+            "Lazy Skill loading"
+          ],
+          "correctIndex": 0,
+          "explanation": "Custom Skill"
+        },
+        {
+          "id": 19,
+          "category": "Safety & Execution",
+          "question": "Which concept is best described as: **A visible set of proposed changes that a human can inspect before merging or deployment.**",
+          "options": [
+            "Sandbox",
+            "GSD",
+            "Reviewable diff",
+            "Gastown Polecats"
+          ],
+          "correctIndex": 2,
+          "explanation": "Reviewable diff"
+        },
+        {
+          "id": 20,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> The model sees JSON definitions for search, database access, and code execution.",
+          "options": [
+            "Attention dilution",
+            "Tool Definitions",
+            "Conversation History",
+            "Context Window"
+          ],
+          "correctIndex": 1,
+          "explanation": "Tool Definitions"
+        },
+        {
+          "id": 21,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **The model emits a structured request for an external function instead of executing that function itself.**",
+          "options": [
+            "Supervisor-worker pattern",
+            "Token budget",
+            "Tool Calling",
+            "Compacting"
+          ],
+          "correctIndex": 2,
+          "explanation": "Tool Calling"
+        },
+        {
+          "id": 22,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> A user pastes many files, tool schemas, and chat messages, leaving less room for the answer.",
+          "options": [
+            "Ralph Loops",
+            "Gastown Polecats",
+            "Token budget",
+            "Host application"
+          ],
+          "correctIndex": 2,
+          "explanation": "Token budget"
+        },
+        {
+          "id": 23,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> The same model family is wrapped with file handling, web search, user accounts, and conversation history.",
+          "options": [
+            "Supervisor-worker pattern",
+            "GPT versus ChatGPT",
+            "YOLO Mode",
+            "Plan, Execute, Review, Test"
+          ],
+          "correctIndex": 1,
+          "explanation": "GPT versus ChatGPT"
+        },
+        {
+          "id": 24,
+          "category": "LLM Core Concepts",
+          "question": "Which topic pair is the focus of this comparison question: **Context Window and Token budget**?",
+          "options": [
+            "Training",
+            "Skills versus MCP versus Plugins",
+            "Context Window and Token budget",
+            "Persistent memory layer"
+          ],
+          "correctIndex": 2,
+          "explanation": "Context Window and Token budget"
+        },
+        {
+          "id": 25,
+          "category": "LLM Core Concepts",
+          "question": "Which topic pair is the focus of this comparison question: **ReAct pattern and Reasoning workflow**?",
+          "options": [
+            "Context ordering",
+            "Context-first best practice",
+            "ReAct pattern and Reasoning workflow",
+            "Custom Skill"
+          ],
+          "correctIndex": 2,
+          "explanation": "ReAct pattern and Reasoning workflow"
+        }
+      ]
+    },
+    {
+      "set": 2,
+      "questions": [
+        {
+          "id": 1,
+          "category": "LLM Core Concepts",
+          "question": "Which action best follows the course guidance for **Brain, Memory, Tools, and Loop**?",
+          "options": [
+            "Use precise, minimal tool schemas and validate every requested action before execution.",
+            "Define goals, available tools, observation steps, and safe stopping conditions.",
+            "Set iteration limits, time or token budgets, approval gates, and explicit success criteria.",
+            "Design all four pillars together instead of focusing only on model size."
+          ],
+          "correctIndex": 3,
+          "explanation": "Brain, Memory, Tools, and Loop"
+        },
+        {
+          "id": 2,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> A support assistant retrieves a customer's subscription tier from storage before answering.",
+          "options": [
+            "Persistent memory layer",
+            "Autoregressive loop",
+            "Token",
+            "Inference"
+          ],
+          "correctIndex": 0,
+          "explanation": "Persistent memory layer"
+        },
+        {
+          "id": 3,
+          "category": "Agent Workflows",
+          "question": "Which statement best defines **Plan, Execute, Review, Test**?",
+          "options": [
+            "Skills teach procedures, MCP connects external systems, and Plugins package workflows for distribution.",
+            "A host uses MCP clients to communicate with MCP servers that provide external capabilities.",
+            "A workflow in which the agent plans work, performs it, reviews the output, and validates it with tests.",
+            "An MCP server can expose Resources, Tools, and Prompts to compatible hosts."
+          ],
+          "correctIndex": 2,
+          "explanation": "Plan, Execute, Review, Test"
+        },
+        {
+          "id": 4,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **Relevant information receives less effective focus because it competes with excessive irrelevant context.**",
+          "options": [
+            "AGENTS.md rules",
+            "Attention dilution",
+            "Context Window",
+            "Project instruction files"
+          ],
+          "correctIndex": 1,
+          "explanation": "Attention dilution"
+        },
+        {
+          "id": 5,
+          "category": "Multi-Agent Systems",
+          "question": "Which concept is best described as: **A multi-agent structure where one coordinator decomposes and integrates while workers execute bounded subtasks.**",
+          "options": [
+            "Supervisor agent",
+            "Sub-Agent",
+            "Hooks",
+            "Supervisor-worker pattern"
+          ],
+          "correctIndex": 3,
+          "explanation": "Supervisor-worker pattern"
+        },
+        {
+          "id": 6,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> The same model family is wrapped with file handling, web search, user accounts, and conversation history.",
+          "options": [
+            "Inference",
+            "Training",
+            "GPT versus ChatGPT",
+            "Host application"
+          ],
+          "correctIndex": 2,
+          "explanation": "GPT versus ChatGPT"
+        },
+        {
+          "id": 7,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> Claude Code and an IDE both connect to the same Jira integration through an MCP server.",
+          "options": [
+            "YOLO Mode",
+            "MCP host-client-server structure",
+            "Model Context Protocol",
+            "Lazy Skill loading"
+          ],
+          "correctIndex": 2,
+          "explanation": "Model Context Protocol"
+        },
+        {
+          "id": 8,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **Arranging context so important instructions and evidence appear where the model can use them effectively.**",
+          "options": [
+            "Context ordering",
+            "Context Window",
+            "Project instruction files",
+            "Conversation History"
+          ],
+          "correctIndex": 0,
+          "explanation": "Context ordering"
+        },
+        {
+          "id": 9,
+          "category": "Multi-Agent Systems",
+          "question": "Which statement best defines **Swarm or Agent Team**?",
+          "options": [
+            "An isolated worker created by a supervisor to complete a bounded task and return a concise result.",
+            "A security approach that assumes generated actions may fail or be unsafe and limits access by default.",
+            "Code-level rules that decide which tool actions an embedded agent may perform automatically.",
+            "Multiple specialized agents coordinated to complete parts of one larger system in parallel."
+          ],
+          "correctIndex": 3,
+          "explanation": "Swarm or Agent Team"
+        },
+        {
+          "id": 10,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **A focused context for each worker that excludes irrelevant details from other tasks.**",
+          "options": [
+            "Clean worker context",
+            "Programmatic approval policy",
+            "Claude Agent SDK",
+            "Supervisor agent"
+          ],
+          "correctIndex": 0,
+          "explanation": "Clean worker context"
+        },
+        {
+          "id": 11,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> A request containing documents, history, tool schemas, and the answer approaches the model's token capacity.",
+          "options": [
+            "Attention dilution",
+            "Context ordering",
+            "Context Window",
+            "Prompt Engineering"
+          ],
+          "correctIndex": 2,
+          "explanation": "Context Window"
+        },
+        {
+          "id": 12,
+          "category": "System Integration",
+          "question": "Which statement best defines **Professional AI workflow**?",
+          "options": [
+            "A multi-agent structure where one coordinator decomposes and integrates while workers execute bounded subtasks.",
+            "A security approach that assumes generated actions may fail or be unsafe and limits access by default.",
+            "Reusable command shortcuts that trigger predefined agent workflows.",
+            "A controlled chain from requirement to specification, agent teamwork, Skills, MCP, Hooks, Sandbox, and reviewable output."
+          ],
+          "correctIndex": 3,
+          "explanation": "Professional AI workflow"
+        },
+        {
+          "id": 13,
+          "category": "Multi-Agent Systems",
+          "question": "Which statement best defines **Gastown Polecats**?",
+          "options": [
+            "Code-level rules that decide which tool actions an embedded agent may perform automatically.",
+            "A security approach that assumes generated actions may fail or be unsafe and limits access by default.",
+            "The worker agents in the Gastown framing that implement separate pieces assigned by a Lead.",
+            "A development toolkit for embedding an agent loop inside Python or TypeScript applications."
+          ],
+          "correctIndex": 2,
+          "explanation": "Gastown Polecats"
+        },
+        {
+          "id": 14,
+          "category": "LLM Core Concepts",
+          "question": "Which action best follows the course guidance for **AI Agent**?",
+          "options": [
+            "Design all four pillars together instead of focusing only on model size.",
+            "Estimate model load, cost, and context usage in tokens rather than ordinary word count.",
+            "Evaluate whether the system has goal-directed tools, state, and loop behavior before calling it an agent.",
+            "Use precise, minimal tool schemas and validate every requested action before execution."
+          ],
+          "correctIndex": 2,
+          "explanation": "AI Agent"
+        },
+        {
+          "id": 15,
+          "category": "Agent Workflows",
+          "question": "Which concept is demonstrated in this situation?\n\n> An agent produces a result, critiques it, improves it, and repeats until defined quality checks pass.",
+          "options": [
+            "Model Context Protocol",
+            "Ralph Loops",
+            "Plugin",
+            "YOLO Mode"
+          ],
+          "correctIndex": 1,
+          "explanation": "Ralph Loops"
+        },
+        {
+          "id": 16,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which action best follows the course guidance for **Skills versus MCP versus Plugins**?",
+          "options": [
+            "Use this sequence as a default for meaningful coding or operational tasks.",
+            "Publish repeatable, versioned bundles rather than relying on informal setup instructions.",
+            "Choose the layer based on whether the need is procedural guidance, system integration, or team packaging.",
+            "Write accurate name and description metadata plus clear executable steps."
+          ],
+          "correctIndex": 2,
+          "explanation": "Skills versus MCP versus Plugins"
+        },
+        {
+          "id": 17,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which statement best defines **Plugin**?",
+          "options": [
+            "An MCP server can expose Resources, Tools, and Prompts to compatible hosts.",
+            "The core Skill file containing YAML frontmatter for discovery and Markdown instructions for execution.",
+            "The progression from tightly controlled AI assistance to more autonomous, tested, and coordinated workflows.",
+            "An installable bundle that can package MCP servers, Skills, slash commands, Hooks, and shared workflows."
+          ],
+          "correctIndex": 3,
+          "explanation": "Plugin"
+        },
+        {
+          "id": 18,
+          "category": "Context Engineering",
+          "question": "Which action best follows the course guidance for **Context pruning**?",
+          "options": [
+            "Curate a smaller, task-focused context instead of dumping everything available.",
+            "Select the smallest context that still contains all necessary evidence and constraints.",
+            "Move hard constraints and critical decisions into durable project files.",
+            "Store hard requirements and team conventions in version-controlled instruction files."
+          ],
+          "correctIndex": 1,
+          "explanation": "Context pruning"
+        },
+        {
+          "id": 19,
+          "category": "Context Engineering",
+          "question": "Which statement best defines **Context Engineering**?",
+          "options": [
+            "Designing, structuring, pruning, and managing the complete payload sent to the model.",
+            "A high-priority context layer that defines persona, rules, boundaries, and expected behavior.",
+            "Context containing persistent preferences, runtime state, metadata, and environment information.",
+            "The tendency for important information buried in the middle of long context to be recalled less reliably."
+          ],
+          "correctIndex": 0,
+          "explanation": "Context Engineering"
+        },
+        {
+          "id": 20,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> The model produces an execute_python request, and the application runs the code.",
+          "options": [
+            "Tool Calling",
+            "Statelessness",
+            "Next-token prediction",
+            "Token"
+          ],
+          "correctIndex": 0,
+          "explanation": "Tool Calling"
+        },
+        {
+          "id": 21,
+          "category": "Multi-Agent Systems",
+          "question": "Which topic pair is the focus of this comparison question: **Swarm or Agent Team and Supervisor-worker pattern**?",
+          "options": [
+            "Swarm or Agent Team and Supervisor-worker pattern",
+            "Brain, Memory, Tools, and Loop",
+            "Prompt Engineering",
+            "AI Agent"
+          ],
+          "correctIndex": 0,
+          "explanation": "Swarm or Agent Team and Supervisor-worker pattern"
+        },
+        {
+          "id": 22,
+          "category": "Safety & Execution",
+          "question": "Which concept is demonstrated in this situation?\n\n> Remote agents create a pull request rather than changing production files directly.",
+          "options": [
+            "Autoregressive loop",
+            "Reviewable diff",
+            "Token",
+            "Ralph Loops"
+          ],
+          "correctIndex": 1,
+          "explanation": "Reviewable diff"
+        },
+        {
+          "id": 23,
+          "category": "Agent Workflows",
+          "question": "Which concept is demonstrated in this situation?\n\n> An agent is allowed to make broad changes and run commands without requesting confirmation at every step.",
+          "options": [
+            "Compacting",
+            "Statelessness",
+            "YOLO Mode",
+            "Training"
+          ],
+          "correctIndex": 2,
+          "explanation": "YOLO Mode"
+        },
+        {
+          "id": 24,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **The maximum number of tokens a model can process within one request.**",
+          "options": [
+            "Context Window",
+            "Lazy Skill loading",
+            "Reasoning workflow",
+            "Swarm or Agent Team"
+          ],
+          "correctIndex": 0,
+          "explanation": "Context Window"
+        },
+        {
+          "id": 25,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> The model sees JSON definitions for search, database access, and code execution.",
+          "options": [
+            "Tool Definitions",
+            "Programmatic approval policy",
+            "Skills versus MCP versus Plugins",
+            "Lost in the Middle"
+          ],
+          "correctIndex": 0,
+          "explanation": "Tool Definitions"
+        }
+      ]
+    },
+    {
+      "set": 3,
+      "questions": [
+        {
+          "id": 1,
+          "category": "Agent Workflows",
+          "question": "Which action best follows the course guidance for **YOLO Mode**?",
+          "options": [
+            "Use MCP when standardized access to live external systems is needed.",
+            "Use only with strong specs, tests, least privilege, Sandboxing, and reviewable output.",
+            "Expose narrowly scoped capabilities with clear permissions and descriptions.",
+            "Publish repeatable, versioned bundles rather than relying on informal setup instructions."
+          ],
+          "correctIndex": 1,
+          "explanation": "YOLO Mode"
+        },
+        {
+          "id": 2,
+          "category": "Agent SDK",
+          "question": "Which action best follows the course guidance for **Programmatic approval policy**?",
+          "options": [
+            "Match approval requirements to action risk and environment sensitivity.",
+            "Make autonomous work traceable, testable, and reviewable before acceptance.",
+            "Keep coordination and integration responsibilities with a clear supervisor.",
+            "Give each worker a narrow objective, limited tools, and a clear return format."
+          ],
+          "correctIndex": 0,
+          "explanation": "Programmatic approval policy"
+        },
+        {
+          "id": 3,
+          "category": "Spec-Driven Development",
+          "question": "Which concept is best described as: **A workflow where a detailed human-written specification guides AI implementation and evaluation.**",
+          "options": [
+            "Skills versus MCP versus Plugins",
+            "Workflow maturity",
+            "YOLO Mode",
+            "Spec-Driven Development"
+          ],
+          "correctIndex": 3,
+          "explanation": "Spec-Driven Development"
+        },
+        {
+          "id": 4,
+          "category": "Context Engineering",
+          "question": "Which statement best defines **Project instruction files**?",
+          "options": [
+            "The tendency for important information buried in the middle of long context to be recalled less reliably.",
+            "Repository files such as AGENTS.md or CLAUDE.md that contain durable project-specific rules.",
+            "Context containing persistent preferences, runtime state, metadata, and environment information.",
+            "Arranging context so important instructions and evidence appear where the model can use them effectively."
+          ],
+          "correctIndex": 1,
+          "explanation": "Project instruction files"
+        },
+        {
+          "id": 5,
+          "category": "Multi-Agent Systems",
+          "question": "Which statement best defines **Sub-Agent**?",
+          "options": [
+            "An isolated worker created by a supervisor to complete a bounded task and return a concise result.",
+            "Lifecycle event handlers executed by the harness at moments such as pre-tool-exec, post-tool-exec, or pre-commit.",
+            "An isolated execution environment that limits damage from untrusted or unexpected agent-generated actions.",
+            "Multiple specialized agents coordinated to complete parts of one larger system in parallel."
+          ],
+          "correctIndex": 0,
+          "explanation": "Sub-Agent"
+        },
+        {
+          "id": 6,
+          "category": "AI & Agentic Systems",
+          "question": "Which statement best defines **Memory and Environment**?",
+          "options": [
+            "Designing, structuring, pruning, and managing the complete payload sent to the model.",
+            "Earlier user and assistant turns included in the current context to maintain continuity.",
+            "Context containing persistent preferences, runtime state, metadata, and environment information.",
+            "Persistent operational rules such as coding standards, security requirements, test commands, and directory conventions."
+          ],
+          "correctIndex": 2,
+          "explanation": "Memory and Environment"
+        },
+        {
+          "id": 7,
+          "category": "AI & Agentic Systems",
+          "question": "Which statement best defines **Conversation replay**?",
+          "options": [
+            "An agent loop that combines reasoning and acting through Think, Act, Observe, and Repeat.",
+            "An LLM generates output by predicting one token at a time from the current context.",
+            "A model processing unit that may be a word, sub-word, punctuation mark, whitespace, or character chunk.",
+            "An application simulates memory by sending earlier user and assistant messages again in the current request."
+          ],
+          "correctIndex": 3,
+          "explanation": "Conversation replay"
+        },
+        {
+          "id": 8,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is best described as: **An MCP server can expose Resources, Tools, and Prompts to compatible hosts.**",
+          "options": [
+            "Model Context Protocol",
+            "SKILL.md",
+            "Workflow maturity",
+            "MCP server capabilities"
+          ],
+          "correctIndex": 3,
+          "explanation": "MCP server capabilities"
+        },
+        {
+          "id": 9,
+          "category": "Agent SDK",
+          "question": "Which concept is demonstrated in this situation?\n\n> A CI service calls an agent to inspect failing logs, propose a fix, and report to Slack.",
+          "options": [
+            "GSD",
+            "Claude Agent SDK",
+            "Supervisor-worker pattern",
+            "Programmatic approval policy"
+          ],
+          "correctIndex": 1,
+          "explanation": "Claude Agent SDK"
+        },
+        {
+          "id": 10,
+          "category": "Multi-Agent Systems",
+          "question": "Which concept is best described as: **The agent that holds the main goal, decomposes work, coordinates workers, and integrates their results.**",
+          "options": [
+            "Programmatic approval policy",
+            "GSD",
+            "Supervisor agent",
+            "Reviewable diff"
+          ],
+          "correctIndex": 2,
+          "explanation": "Supervisor agent"
+        },
+        {
+          "id": 11,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which statement best defines **Plugin marketplace**?",
+          "options": [
+            "A distribution mechanism that lets teams install and update workflow bundles consistently.",
+            "A workflow where a detailed human-written specification guides AI implementation and evaluation.",
+            "An MCP server can expose Resources, Tools, and Prompts to compatible hosts.",
+            "Skills teach procedures, MCP connects external systems, and Plugins package workflows for distribution."
+          ],
+          "correctIndex": 0,
+          "explanation": "Plugin marketplace"
+        },
+        {
+          "id": 12,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **The tendency for important information buried in the middle of long context to be recalled less reliably.**",
+          "options": [
+            "Context Engineering",
+            "Lost in the Middle",
+            "Attention dilution",
+            "Conversation History"
+          ],
+          "correctIndex": 1,
+          "explanation": "Lost in the Middle"
+        },
+        {
+          "id": 13,
+          "category": "LLM Core Concepts",
+          "question": "Which statement best defines **Host application**?",
+          "options": [
+            "The software layer that manages prompts, state, tools, permissions, execution, and results around the model.",
+            "The core LLM does not inherently remember separate requests unless prior information is sent again.",
+            "Application-managed storage that saves user preferences, facts, or state and injects relevant items into context.",
+            "A model processing unit that may be a word, sub-word, punctuation mark, whitespace, or character chunk."
+          ],
+          "correctIndex": 0,
+          "explanation": "Host application"
+        },
+        {
+          "id": 14,
+          "category": "Safety & Execution",
+          "question": "Which concept is best described as: **A security approach that assumes generated actions may fail or be unsafe and limits access by default.**",
+          "options": [
+            "Sandbox",
+            "Gastown Polecats",
+            "Zero-trust execution",
+            "Sub-Agent"
+          ],
+          "correctIndex": 2,
+          "explanation": "Zero-trust execution"
+        },
+        {
+          "id": 15,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **The process of updating model weights using large datasets and optimization.**",
+          "options": [
+            "Conversation replay",
+            "Reasoning workflow",
+            "Training",
+            "Tool result feedback"
+          ],
+          "correctIndex": 2,
+          "explanation": "Training"
+        },
+        {
+          "id": 16,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **Persistent operational rules such as coding standards, security requirements, test commands, and directory conventions.**",
+          "options": [
+            "AGENTS.md rules",
+            "Memory and Environment",
+            "Lossy summarization",
+            "Project instruction files"
+          ],
+          "correctIndex": 0,
+          "explanation": "AGENTS.md rules"
+        },
+        {
+          "id": 17,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **The finite amount of context and generated output that can fit within the model's token limits.**",
+          "options": [
+            "Autoregressive loop",
+            "Reasoning workflow",
+            "Token budget",
+            "Brain, Memory, Tools, and Loop"
+          ],
+          "correctIndex": 2,
+          "explanation": "Token budget"
+        },
+        {
+          "id": 18,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **A high-priority context layer that defines persona, rules, boundaries, and expected behavior.**",
+          "options": [
+            "Context Window",
+            "Prompt Engineering",
+            "Memory and Environment",
+            "System Prompt"
+          ],
+          "correctIndex": 3,
+          "explanation": "System Prompt"
+        },
+        {
+          "id": 19,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is demonstrated in this situation?\n\n> PDF guidance remains unloaded during a coding task but appears when a PDF form must be filled.",
+          "options": [
+            "SKILL.md",
+            "Model Context Protocol",
+            "Lazy Skill loading",
+            "Skills versus MCP versus Plugins"
+          ],
+          "correctIndex": 2,
+          "explanation": "Lazy Skill loading"
+        },
+        {
+          "id": 20,
+          "category": "LLM Core Concepts",
+          "question": "Which action best follows the course guidance for **Autoregressive loop**?",
+          "options": [
+            "Separate model-building activities that change weights from normal user-time model usage.",
+            "Include only material that is relevant to the task and remove unnecessary payload.",
+            "Separate planning, execution, verification, and final reporting for multi-step tasks.",
+            "Allow the generation process to build sequentially and evaluate the full output, not a single isolated token."
+          ],
+          "correctIndex": 3,
+          "explanation": "Autoregressive loop"
+        },
+        {
+          "id": 21,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **Designing, structuring, pruning, and managing the complete payload sent to the model.**",
+          "options": [
+            "Token",
+            "Context Engineering",
+            "MCP host-client-server structure",
+            "Sub-Agent"
+          ],
+          "correctIndex": 1,
+          "explanation": "Context Engineering"
+        },
+        {
+          "id": 22,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> A summary remembers that a bug was fixed but drops the exact edge case that caused it.",
+          "options": [
+            "Lossy summarization",
+            "Clean worker context",
+            "Conversation History",
+            "GSD"
+          ],
+          "correctIndex": 0,
+          "explanation": "Lossy summarization"
+        },
+        {
+          "id": 23,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **An architecture in which an LLM uses tools, state, and an autonomous loop to achieve a specific goal.**",
+          "options": [
+            "Model Context Protocol",
+            "Context-first best practice",
+            "AI Agent",
+            "Token"
+          ],
+          "correctIndex": 2,
+          "explanation": "AI Agent"
+        },
+        {
+          "id": 24,
+          "category": "Multi-Agent Systems",
+          "question": "Which concept is best described as: **Lifecycle event handlers executed by the harness at moments such as pre-tool-exec, post-tool-exec, or pre-commit.**",
+          "options": [
+            "Conversation replay",
+            "Context ordering",
+            "Hooks",
+            "MCP server capabilities"
+          ],
+          "correctIndex": 2,
+          "explanation": "Hooks"
+        },
+        {
+          "id": 25,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **Repository files such as AGENTS.md or CLAUDE.md that contain durable project-specific rules.**",
+          "options": [
+            "Context Engineering",
+            "Project instruction files",
+            "System Prompt",
+            "Brain, Memory, Tools, and Loop"
+          ],
+          "correctIndex": 1,
+          "explanation": "Project instruction files"
+        }
+      ]
+    },
+    {
+      "set": 4,
+      "questions": [
+        {
+          "id": 1,
+          "category": "Multi-Agent Systems",
+          "question": "Which concept is best described as: **The worker agents in the Gastown framing that implement separate pieces assigned by a Lead.**",
+          "options": [
+            "Sub-Agent",
+            "Supervisor-worker pattern",
+            "Programmatic approval policy",
+            "Gastown Polecats"
+          ],
+          "correctIndex": 3,
+          "explanation": "Gastown Polecats"
+        },
+        {
+          "id": 2,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> A travel system remembers preferences, searches options, requests approval, and performs booking actions.",
+          "options": [
+            "Stop conditions",
+            "Token budget",
+            "AI Agent",
+            "Conversation replay"
+          ],
+          "correctIndex": 2,
+          "explanation": "AI Agent"
+        },
+        {
+          "id": 3,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which statement best defines **Lazy Skill loading**?",
+          "options": [
+            "A modular package of reusable procedural guidance, scripts, references, and examples for an agent.",
+            "Loading Skill instructions only when the current task requires them, saving context space.",
+            "A workflow where a detailed human-written specification guides AI implementation and evaluation.",
+            "An open standard that connects AI hosts to external tools and data through a reusable protocol."
+          ],
+          "correctIndex": 1,
+          "explanation": "Lazy Skill loading"
+        },
+        {
+          "id": 4,
+          "category": "Safety & Execution",
+          "question": "Which statement best defines **Sandbox**?",
+          "options": [
+            "An isolated execution environment that limits damage from untrusted or unexpected agent-generated actions.",
+            "Lifecycle event handlers executed by the harness at moments such as pre-tool-exec, post-tool-exec, or pre-commit.",
+            "A spec-driven approach in which humans define the system and agent teams implement against the specification.",
+            "The agent that holds the main goal, decomposes work, coordinates workers, and integrates their results."
+          ],
+          "correctIndex": 0,
+          "explanation": "Sandbox"
+        },
+        {
+          "id": 5,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which action best follows the course guidance for **SKILL.md**?",
+          "options": [
+            "Move human effort upstream into requirements, constraints, and review standards.",
+            "Create focused Skills that load only when their procedure is relevant.",
+            "Write accurate name and description metadata plus clear executable steps.",
+            "Publish repeatable, versioned bundles rather than relying on informal setup instructions."
+          ],
+          "correctIndex": 2,
+          "explanation": "SKILL.md"
+        },
+        {
+          "id": 6,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **Crafting the user's instruction text, which is one part of the wider context design process.**",
+          "options": [
+            "Tool Definitions",
+            "System Prompt",
+            "Prompt Engineering",
+            "Conversation History"
+          ],
+          "correctIndex": 2,
+          "explanation": "Prompt Engineering"
+        },
+        {
+          "id": 7,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **The tendency for important information buried in the middle of long context to be recalled less reliably.**",
+          "options": [
+            "Lost in the Middle",
+            "Compacting",
+            "Context pruning",
+            "AGENTS.md rules"
+          ],
+          "correctIndex": 0,
+          "explanation": "Lost in the Middle"
+        },
+        {
+          "id": 8,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **The finite amount of context and generated output that can fit within the model's token limits.**",
+          "options": [
+            "Training",
+            "ReAct pattern",
+            "Inference",
+            "Token budget"
+          ],
+          "correctIndex": 3,
+          "explanation": "Token budget"
+        },
+        {
+          "id": 9,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> The model sees JSON definitions for search, database access, and code execution.",
+          "options": [
+            "Context ordering",
+            "Tool Definitions",
+            "Conversation History",
+            "Compacting"
+          ],
+          "correctIndex": 1,
+          "explanation": "Tool Definitions"
+        },
+        {
+          "id": 10,
+          "category": "Multi-Agent Systems",
+          "question": "Which action best follows the course guidance for **Slash commands**?",
+          "options": [
+            "Move the blast radius away from local and production systems.",
+            "Create commands for frequent, repeatable workflows with clear inputs and outputs.",
+            "Start by improving context relevance, structure, persistence, and ordering.",
+            "Define reporting formats, dependencies, and ownership boundaries."
+          ],
+          "correctIndex": 1,
+          "explanation": "Slash commands"
+        },
+        {
+          "id": 11,
+          "category": "Spec-Driven Development",
+          "question": "Which concept is demonstrated in this situation?\n\n> A human writes requirements and acceptance criteria, and agents produce one merged reviewable change set.",
+          "options": [
+            "Context-first best practice",
+            "GSD",
+            "Claude Agent SDK",
+            "Reviewable diff"
+          ],
+          "correctIndex": 1,
+          "explanation": "GSD"
+        },
+        {
+          "id": 12,
+          "category": "LLM Core Concepts",
+          "question": "Which statement best defines **Reasoning workflow**?",
+          "options": [
+            "An agent loop that combines reasoning and acting through Think, Act, Observe, and Repeat.",
+            "An application simulates memory by sending earlier user and assistant messages again in the current request.",
+            "A structured process that gives the model room to plan, decompose, check, and verify complex work.",
+            "Using a trained, frozen model to process context and generate a response."
+          ],
+          "correctIndex": 2,
+          "explanation": "Reasoning workflow"
+        },
+        {
+          "id": 13,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **Using a trained, frozen model to process context and generate a response.**",
+          "options": [
+            "Training",
+            "Host application",
+            "Stop conditions",
+            "Inference"
+          ],
+          "correctIndex": 3,
+          "explanation": "Inference"
+        },
+        {
+          "id": 14,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is best described as: **A host uses MCP clients to communicate with MCP servers that provide external capabilities.**",
+          "options": [
+            "Plan, Execute, Review, Test",
+            "Model Context Protocol",
+            "MCP host-client-server structure",
+            "Workflow maturity"
+          ],
+          "correctIndex": 2,
+          "explanation": "MCP host-client-server structure"
+        },
+        {
+          "id": 15,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> An agent is given eighty files when only three are needed for the bug fix.",
+          "options": [
+            "Lossy summarization",
+            "Context Engineering",
+            "Attention dilution",
+            "Context Window"
+          ],
+          "correctIndex": 2,
+          "explanation": "Attention dilution"
+        },
+        {
+          "id": 16,
+          "category": "AI & Agentic Systems",
+          "question": "Which concept is demonstrated in this situation?\n\n> The model receives the user's language preference and the current project branch before acting.",
+          "options": [
+            "Context Window",
+            "Attention dilution",
+            "Prompt Engineering",
+            "Memory and Environment"
+          ],
+          "correctIndex": 3,
+          "explanation": "Memory and Environment"
+        },
+        {
+          "id": 17,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is demonstrated in this situation?\n\n> A developer adds a marketplace and installs a preconfigured release-management package.",
+          "options": [
+            "Custom Skill",
+            "Plugin marketplace",
+            "Lazy Skill loading",
+            "MCP host-client-server structure"
+          ],
+          "correctIndex": 1,
+          "explanation": "Plugin marketplace"
+        },
+        {
+          "id": 18,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> A new API call contains only the latest message, so the model cannot know an earlier conversation.",
+          "options": [
+            "Statelessness",
+            "Persistent memory layer",
+            "Reasoning workflow",
+            "Training"
+          ],
+          "correctIndex": 0,
+          "explanation": "Statelessness"
+        },
+        {
+          "id": 19,
+          "category": "Multi-Agent Systems",
+          "question": "Which action best follows the course guidance for **Hooks**?",
+          "options": [
+            "Define reporting formats, dependencies, and ownership boundaries.",
+            "Match approval requirements to action risk and environment sensitivity.",
+            "Use Hooks for deterministic enforcement outside the model.",
+            "Assign bounded ownership and define integration rules before parallel work begins."
+          ],
+          "correctIndex": 2,
+          "explanation": "Hooks"
+        },
+        {
+          "id": 20,
+          "category": "Agent Workflows",
+          "question": "Which concept is demonstrated in this situation?\n\n> An AI proposes changes, edits code, inspects the diff, and runs the test suite before delivery.",
+          "options": [
+            "MCP server capabilities",
+            "Ralph Loops",
+            "Plan, Execute, Review, Test",
+            "Model Context Protocol"
+          ],
+          "correctIndex": 2,
+          "explanation": "Plan, Execute, Review, Test"
+        },
+        {
+          "id": 21,
+          "category": "LLM Core Concepts",
+          "question": "Which topic pair is the focus of this comparison question: **GPT versus ChatGPT and Host application**?",
+          "options": [
+            "GPT versus ChatGPT and Host application",
+            "Gastown Polecats",
+            "Brain, Memory, Tools, and Loop",
+            "Sandbox"
+          ],
+          "correctIndex": 0,
+          "explanation": "GPT versus ChatGPT and Host application"
+        },
+        {
+          "id": 22,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is best described as: **A modular package of reusable procedural guidance, scripts, references, and examples for an agent.**",
+          "options": [
+            "Custom Skill",
+            "Context pruning",
+            "MCP server capabilities",
+            "Brain, Memory, Tools, and Loop"
+          ],
+          "correctIndex": 0,
+          "explanation": "Custom Skill"
+        },
+        {
+          "id": 23,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> An agent is given eighty files when only three are needed for the bug fix.",
+          "options": [
+            "Plugin",
+            "Professional AI workflow",
+            "GPT versus ChatGPT",
+            "Attention dilution"
+          ],
+          "correctIndex": 3,
+          "explanation": "Attention dilution"
+        },
+        {
+          "id": 24,
+          "category": "Context Engineering",
+          "question": "Which topic pair is the focus of this comparison question: **Context Engineering and Prompt Engineering**?",
+          "options": [
+            "Context Window",
+            "Conversation History",
+            "Plugin marketplace",
+            "Context Engineering and Prompt Engineering"
+          ],
+          "correctIndex": 3,
+          "explanation": "Context Engineering and Prompt Engineering"
+        },
+        {
+          "id": 25,
+          "category": "Context Engineering",
+          "question": "Which topic pair is the focus of this comparison question: **System Prompt and AGENTS.md rules**?",
+          "options": [
+            "Host application",
+            "Custom Skill",
+            "System Prompt and AGENTS.md rules",
+            "Persistent memory layer"
+          ],
+          "correctIndex": 2,
+          "explanation": "System Prompt and AGENTS.md rules"
+        }
+      ]
+    },
+    {
+      "set": 5,
+      "questions": [
+        {
+          "id": 1,
+          "category": "Multi-Agent Systems",
+          "question": "Which concept is best described as: **An isolated worker created by a supervisor to complete a bounded task and return a concise result.**",
+          "options": [
+            "Sub-Agent",
+            "GSD",
+            "Gastown Polecats",
+            "Context-first best practice"
+          ],
+          "correctIndex": 0,
+          "explanation": "Sub-Agent"
+        },
+        {
+          "id": 2,
+          "category": "LLM Core Concepts",
+          "question": "Which action best follows the course guidance for **Tool result feedback**?",
+          "options": [
+            "Include only material that is relevant to the task and remove unnecessary payload.",
+            "Estimate model load, cost, and context usage in tokens rather than ordinary word count.",
+            "Return clear, structured tool results that the model can interpret reliably.",
+            "Separate model-building activities that change weights from normal user-time model usage."
+          ],
+          "correctIndex": 2,
+          "explanation": "Tool result feedback"
+        },
+        {
+          "id": 3,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **Each generated token becomes part of the input used to predict the following token.**",
+          "options": [
+            "Persistent memory layer",
+            "Autoregressive loop",
+            "Host application",
+            "Statelessness"
+          ],
+          "correctIndex": 1,
+          "explanation": "Autoregressive loop"
+        },
+        {
+          "id": 4,
+          "category": "LLM Core Concepts",
+          "question": "Which statement best defines **Token**?",
+          "options": [
+            "A model processing unit that may be a word, sub-word, punctuation mark, whitespace, or character chunk.",
+            "Application-managed storage that saves user preferences, facts, or state and injects relevant items into context.",
+            "The model emits a structured request for an external function instead of executing that function itself.",
+            "Each generated token becomes part of the input used to predict the following token."
+          ],
+          "correctIndex": 0,
+          "explanation": "Token"
+        },
+        {
+          "id": 5,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which action best follows the course guidance for **Skills versus MCP versus Plugins**?",
+          "options": [
+            "Keep procedures modular and trigger them on demand.",
+            "Use MCP when standardized access to live external systems is needed.",
+            "Expose narrowly scoped capabilities with clear permissions and descriptions.",
+            "Choose the layer based on whether the need is procedural guidance, system integration, or team packaging."
+          ],
+          "correctIndex": 3,
+          "explanation": "Skills versus MCP versus Plugins"
+        },
+        {
+          "id": 6,
+          "category": "Multi-Agent Systems",
+          "question": "Which action best follows the course guidance for **Hooks**?",
+          "options": [
+            "Give each worker only the information needed for its assigned subtask.",
+            "Start by improving context relevance, structure, persistence, and ordering.",
+            "Use Hooks for deterministic enforcement outside the model.",
+            "Keep coordination and integration responsibilities with a clear supervisor."
+          ],
+          "correctIndex": 2,
+          "explanation": "Hooks"
+        },
+        {
+          "id": 7,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> A payments project states that money uses integer minor units and full PAN values must never be logged.",
+          "options": [
+            "System Prompt",
+            "AGENTS.md rules",
+            "Conversation History",
+            "Attention dilution"
+          ],
+          "correctIndex": 1,
+          "explanation": "AGENTS.md rules"
+        },
+        {
+          "id": 8,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which statement best defines **MCP server capabilities**?",
+          "options": [
+            "An MCP server can expose Resources, Tools, and Prompts to compatible hosts.",
+            "Skills teach procedures, MCP connects external systems, and Plugins package workflows for distribution.",
+            "A modular package of reusable procedural guidance, scripts, references, and examples for an agent.",
+            "A high-autonomy operating mode in which an agent performs larger amounts of work with minimal approval."
+          ],
+          "correctIndex": 0,
+          "explanation": "MCP server capabilities"
+        },
+        {
+          "id": 9,
+          "category": "Context Engineering",
+          "question": "Which statement best defines **Clean worker context**?",
+          "options": [
+            "Reusable command shortcuts that trigger predefined agent workflows.",
+            "A spec-driven approach in which humans define the system and agent teams implement against the specification.",
+            "A multi-agent structure where one coordinator decomposes and integrates while workers execute bounded subtasks.",
+            "A focused context for each worker that excludes irrelevant details from other tasks."
+          ],
+          "correctIndex": 3,
+          "explanation": "Clean worker context"
+        },
+        {
+          "id": 10,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> The application re-sends prior questions and answers before the newest message.",
+          "options": [
+            "Memory and Environment",
+            "System Prompt",
+            "Conversation History",
+            "Prompt Engineering"
+          ],
+          "correctIndex": 2,
+          "explanation": "Conversation History"
+        },
+        {
+          "id": 11,
+          "category": "LLM Core Concepts",
+          "question": "Which statement best defines **Training**?",
+          "options": [
+            "The finite amount of context and generated output that can fit within the model's token limits.",
+            "The process of updating model weights using large datasets and optimization.",
+            "The core LLM does not inherently remember separate requests unless prior information is sent again.",
+            "The model emits a structured request for an external function instead of executing that function itself."
+          ],
+          "correctIndex": 1,
+          "explanation": "Training"
+        },
+        {
+          "id": 12,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **A high-priority context layer that defines persona, rules, boundaries, and expected behavior.**",
+          "options": [
+            "Context Engineering",
+            "System Prompt",
+            "Attention dilution",
+            "Prompt Engineering"
+          ],
+          "correctIndex": 1,
+          "explanation": "System Prompt"
+        },
+        {
+          "id": 13,
+          "category": "Multi-Agent Systems",
+          "question": "Which concept is demonstrated in this situation?\n\n> Separate workers build APIs, UI components, database schemas, and tests under a Lead agent.",
+          "options": [
+            "Sandbox",
+            "Sub-Agent",
+            "Reviewable diff",
+            "Swarm or Agent Team"
+          ],
+          "correctIndex": 3,
+          "explanation": "Swarm or Agent Team"
+        },
+        {
+          "id": 14,
+          "category": "LLM Core Concepts",
+          "question": "Which statement best defines **Next-token prediction**?",
+          "options": [
+            "The four pillars used in the course to describe the main components of an AI Agent.",
+            "An LLM generates output by predicting one token at a time from the current context.",
+            "Rules that end an agent loop when the goal is met, a limit is reached, or continuation is unsafe.",
+            "An application simulates memory by sending earlier user and assistant messages again in the current request."
+          ],
+          "correctIndex": 1,
+          "explanation": "Next-token prediction"
+        },
+        {
+          "id": 15,
+          "category": "Spec-Driven Development",
+          "question": "Which statement best defines **Spec-Driven Development**?",
+          "options": [
+            "A workflow where a detailed human-written specification guides AI implementation and evaluation.",
+            "A workflow in which the agent plans work, performs it, reviews the output, and validates it with tests.",
+            "An open standard that connects AI hosts to external tools and data through a reusable protocol.",
+            "A host uses MCP clients to communicate with MCP servers that provide external capabilities."
+          ],
+          "correctIndex": 0,
+          "explanation": "Spec-Driven Development"
+        },
+        {
+          "id": 16,
+          "category": "Agent Workflows",
+          "question": "Which concept is demonstrated in this situation?\n\n> A team moves from changing one line at a time to spec-driven implementation with testing and review.",
+          "options": [
+            "Workflow maturity",
+            "YOLO Mode",
+            "Plan, Execute, Review, Test",
+            "MCP server capabilities"
+          ],
+          "correctIndex": 0,
+          "explanation": "Workflow maturity"
+        },
+        {
+          "id": 17,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **Arranging context so important instructions and evidence appear where the model can use them effectively.**",
+          "options": [
+            "Context ordering",
+            "Tool Definitions",
+            "AGENTS.md rules",
+            "Lossy summarization"
+          ],
+          "correctIndex": 0,
+          "explanation": "Context ordering"
+        },
+        {
+          "id": 18,
+          "category": "Safety & Execution",
+          "question": "Which action best follows the course guidance for **Reviewable diff**?",
+          "options": [
+            "Implement approval policies, event listeners, and allowed tools in application code.",
+            "Give each worker a narrow objective, limited tools, and a clear return format.",
+            "Use Hooks for deterministic enforcement outside the model.",
+            "Make autonomous work traceable, testable, and reviewable before acceptance."
+          ],
+          "correctIndex": 3,
+          "explanation": "Reviewable diff"
+        },
+        {
+          "id": 19,
+          "category": "Context Engineering",
+          "question": "Which action best follows the course guidance for **Project instruction files**?",
+          "options": [
+            "Store hard requirements and team conventions in version-controlled instruction files.",
+            "Write rules that are specific, testable, and relevant to project execution.",
+            "Curate a smaller, task-focused context instead of dumping everything available.",
+            "Trim, summarize, or retrieve history based on relevance."
+          ],
+          "correctIndex": 0,
+          "explanation": "Project instruction files"
+        },
+        {
+          "id": 20,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is best described as: **An installable bundle that can package MCP servers, Skills, slash commands, Hooks, and shared workflows.**",
+          "options": [
+            "Plan, Execute, Review, Test",
+            "Skills versus MCP versus Plugins",
+            "Plugin",
+            "MCP server capabilities"
+          ],
+          "correctIndex": 2,
+          "explanation": "Plugin"
+        },
+        {
+          "id": 21,
+          "category": "Spec-Driven Development",
+          "question": "Which concept is best described as: **A workflow where a detailed human-written specification guides AI implementation and evaluation.**",
+          "options": [
+            "MCP server capabilities",
+            "AGENTS.md rules",
+            "Spec-Driven Development",
+            "Skills versus MCP versus Plugins"
+          ],
+          "correctIndex": 2,
+          "explanation": "Spec-Driven Development"
+        },
+        {
+          "id": 22,
+          "category": "Context Engineering",
+          "question": "Which topic pair is the focus of this comparison question: **Model Context Protocol and Plugin**?",
+          "options": [
+            "Model Context Protocol and Plugin",
+            "Conversation History",
+            "Plugin marketplace",
+            "Persistent memory layer"
+          ],
+          "correctIndex": 0,
+          "explanation": "Model Context Protocol and Plugin"
+        },
+        {
+          "id": 23,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> A system combines a reasoning model, stored state, external APIs, and repeated execution steps.",
+          "options": [
+            "System Prompt",
+            "Claude Agent SDK",
+            "Hooks",
+            "Brain, Memory, Tools, and Loop"
+          ],
+          "correctIndex": 3,
+          "explanation": "Brain, Memory, Tools, and Loop"
+        },
+        {
+          "id": 24,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **An agent loop that combines reasoning and acting through Think, Act, Observe, and Repeat.**",
+          "options": [
+            "ReAct pattern",
+            "Claude Agent SDK",
+            "Tool Calling",
+            "Plugin marketplace"
+          ],
+          "correctIndex": 0,
+          "explanation": "ReAct pattern"
+        },
+        {
+          "id": 25,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is demonstrated in this situation?\n\n> PDF guidance remains unloaded during a coding task but appears when a PDF form must be filled.",
+          "options": [
+            "Spec-Driven Development",
+            "Supervisor agent",
+            "Lazy Skill loading",
+            "Programmatic approval policy"
+          ],
+          "correctIndex": 2,
+          "explanation": "Lazy Skill loading"
+        }
+      ]
+    },
+    {
+      "set": 6,
+      "questions": [
+        {
+          "id": 1,
+          "category": "Context Engineering",
+          "question": "Which action best follows the course guidance for **Model Context Protocol**?",
+          "options": [
+            "Use this sequence as a default for meaningful coding or operational tasks.",
+            "Publish repeatable, versioned bundles rather than relying on informal setup instructions.",
+            "Move human effort upstream into requirements, constraints, and review standards.",
+            "Use MCP when standardized access to live external systems is needed."
+          ],
+          "correctIndex": 3,
+          "explanation": "Model Context Protocol"
+        },
+        {
+          "id": 2,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> A coding assistant receives relevant files, project rules, failing tests, tool schemas, and the user's request.",
+          "options": [
+            "Lossy summarization",
+            "Lost in the Middle",
+            "Context ordering",
+            "Context Engineering"
+          ],
+          "correctIndex": 3,
+          "explanation": "Context Engineering"
+        },
+        {
+          "id": 3,
+          "category": "Agent Workflows",
+          "question": "Which concept is demonstrated in this situation?\n\n> An agent produces a result, critiques it, improves it, and repeats until defined quality checks pass.",
+          "options": [
+            "Ralph Loops",
+            "MCP server capabilities",
+            "Model Context Protocol",
+            "Custom Skill"
+          ],
+          "correctIndex": 0,
+          "explanation": "Ralph Loops"
+        },
+        {
+          "id": 4,
+          "category": "LLM Core Concepts",
+          "question": "Which action best follows the course guidance for **GPT versus ChatGPT**?",
+          "options": [
+            "Separate model-building activities that change weights from normal user-time model usage.",
+            "Separate what the model predicts from what the surrounding application executes or stores.",
+            "Separate planning, execution, verification, and final reporting for multi-step tasks.",
+            "Track both input and output tokens because both affect inference cost and latency."
+          ],
+          "correctIndex": 1,
+          "explanation": "GPT versus ChatGPT"
+        },
+        {
+          "id": 5,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **An agent loop that combines reasoning and acting through Think, Act, Observe, and Repeat.**",
+          "options": [
+            "Autoregressive loop",
+            "Reasoning workflow",
+            "ReAct pattern",
+            "Statelessness"
+          ],
+          "correctIndex": 2,
+          "explanation": "ReAct pattern"
+        },
+        {
+          "id": 6,
+          "category": "Multi-Agent Systems",
+          "question": "Which action best follows the course guidance for **Supervisor agent**?",
+          "options": [
+            "Use Hooks for deterministic enforcement outside the model.",
+            "Keep coordination and integration responsibilities with a clear supervisor.",
+            "Give each Polecat a discrete task and clear completion criteria.",
+            "Define reporting formats, dependencies, and ownership boundaries."
+          ],
+          "correctIndex": 1,
+          "explanation": "Supervisor agent"
+        },
+        {
+          "id": 7,
+          "category": "Multi-Agent Systems",
+          "question": "Which statement best defines **Supervisor-worker pattern**?",
+          "options": [
+            "A multi-agent structure where one coordinator decomposes and integrates while workers execute bounded subtasks.",
+            "Multiple specialized agents coordinated to complete parts of one larger system in parallel.",
+            "The agent that holds the main goal, decomposes work, coordinates workers, and integrates their results.",
+            "The principle that relevant, structured context is the foundation of reliable model and agent output."
+          ],
+          "correctIndex": 0,
+          "explanation": "Supervisor-worker pattern"
+        },
+        {
+          "id": 8,
+          "category": "Agent SDK",
+          "question": "Which concept is best described as: **Code-level rules that decide which tool actions an embedded agent may perform automatically.**",
+          "options": [
+            "GSD",
+            "Reviewable diff",
+            "Hooks",
+            "Programmatic approval policy"
+          ],
+          "correctIndex": 3,
+          "explanation": "Programmatic approval policy"
+        },
+        {
+          "id": 9,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> An application receives a tool request from the model, validates it, runs the function, and returns the result.",
+          "options": [
+            "Token",
+            "Persistent memory layer",
+            "Tool Calling",
+            "Host application"
+          ],
+          "correctIndex": 3,
+          "explanation": "Host application"
+        },
+        {
+          "id": 10,
+          "category": "System Integration",
+          "question": "Which concept is best described as: **A controlled chain from requirement to specification, agent teamwork, Skills, MCP, Hooks, Sandbox, and reviewable output.**",
+          "options": [
+            "Professional AI workflow",
+            "Swarm or Agent Team",
+            "Sub-Agent",
+            "Slash commands"
+          ],
+          "correctIndex": 0,
+          "explanation": "Professional AI workflow"
+        },
+        {
+          "id": 11,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which statement best defines **Skills versus MCP versus Plugins**?",
+          "options": [
+            "The core Skill file containing YAML frontmatter for discovery and Markdown instructions for execution.",
+            "Skills teach procedures, MCP connects external systems, and Plugins package workflows for distribution.",
+            "An installable bundle that can package MCP servers, Skills, slash commands, Hooks, and shared workflows.",
+            "An MCP server can expose Resources, Tools, and Prompts to compatible hosts."
+          ],
+          "correctIndex": 1,
+          "explanation": "Skills versus MCP versus Plugins"
+        },
+        {
+          "id": 12,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> An IDE agent includes only the three relevant files and the latest failing test output.",
+          "options": [
+            "Prompt Engineering",
+            "Context pruning",
+            "Project instruction files",
+            "Attention dilution"
+          ],
+          "correctIndex": 1,
+          "explanation": "Context pruning"
+        },
+        {
+          "id": 13,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is best described as: **A modular package of reusable procedural guidance, scripts, references, and examples for an agent.**",
+          "options": [
+            "Plugin marketplace",
+            "Custom Skill",
+            "YOLO Mode",
+            "Workflow maturity"
+          ],
+          "correctIndex": 1,
+          "explanation": "Custom Skill"
+        },
+        {
+          "id": 14,
+          "category": "LLM Core Concepts",
+          "question": "Which action best follows the course guidance for **Inference**?",
+          "options": [
+            "Track both input and output tokens because both affect inference cost and latency.",
+            "Estimate model load, cost, and context usage in tokens rather than ordinary word count.",
+            "Define goals, available tools, observation steps, and safe stopping conditions.",
+            "Allow the generation process to build sequentially and evaluate the full output, not a single isolated token."
+          ],
+          "correctIndex": 0,
+          "explanation": "Inference"
+        },
+        {
+          "id": 15,
+          "category": "LLM Core Concepts",
+          "question": "Which action best follows the course guidance for **Stop conditions**?",
+          "options": [
+            "Set iteration limits, time or token budgets, approval gates, and explicit success criteria.",
+            "Design all four pillars together instead of focusing only on model size.",
+            "Replay, retrieve, or inject the needed history and state on each request.",
+            "Explain the model as a statistical next-token predictor rather than as a fact database."
+          ],
+          "correctIndex": 0,
+          "explanation": "Stop conditions"
+        },
+        {
+          "id": 16,
+          "category": "Context Engineering",
+          "question": "Which statement best defines **Lossy summarization**?",
+          "options": [
+            "A high-priority context layer that defines persona, rules, boundaries, and expected behavior.",
+            "Removing irrelevant, stale, redundant, or low-value material before sending context to the model.",
+            "The unavoidable risk that compacting removes fine details while keeping only major points.",
+            "Crafting the user's instruction text, which is one part of the wider context design process."
+          ],
+          "correctIndex": 2,
+          "explanation": "Lossy summarization"
+        },
+        {
+          "id": 17,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is best described as: **An MCP server can expose Resources, Tools, and Prompts to compatible hosts.**",
+          "options": [
+            "MCP server capabilities",
+            "Ralph Loops",
+            "Custom Skill",
+            "Skills versus MCP versus Plugins"
+          ],
+          "correctIndex": 0,
+          "explanation": "MCP server capabilities"
+        },
+        {
+          "id": 18,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **The maximum number of tokens a model can process within one request.**",
+          "options": [
+            "Context Window",
+            "Context ordering",
+            "System Prompt",
+            "Lossy summarization"
+          ],
+          "correctIndex": 0,
+          "explanation": "Context Window"
+        },
+        {
+          "id": 19,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **Condensing older conversation history into a summary so a long session can continue within the context window.**",
+          "options": [
+            "Lost in the Middle",
+            "Context ordering",
+            "Prompt Engineering",
+            "Compacting"
+          ],
+          "correctIndex": 3,
+          "explanation": "Compacting"
+        },
+        {
+          "id": 20,
+          "category": "Safety & Execution",
+          "question": "Which concept is demonstrated in this situation?\n\n> Every command runs with minimal credentials inside an isolated environment and requires policy checks.",
+          "options": [
+            "Swarm or Agent Team",
+            "Gastown Polecats",
+            "Sub-Agent",
+            "Zero-trust execution"
+          ],
+          "correctIndex": 3,
+          "explanation": "Zero-trust execution"
+        },
+        {
+          "id": 21,
+          "category": "LLM Core Concepts",
+          "question": "Which topic pair is the focus of this comparison question: **Training and Inference**?",
+          "options": [
+            "Clean worker context",
+            "Statelessness",
+            "Training and Inference",
+            "Conversation replay"
+          ],
+          "correctIndex": 2,
+          "explanation": "Training and Inference"
+        },
+        {
+          "id": 22,
+          "category": "AI & Agentic Systems",
+          "question": "Which concept is demonstrated in this situation?\n\n> A payments project states that money uses integer minor units and full PAN values must never be logged.",
+          "options": [
+            "Professional AI workflow",
+            "System Prompt",
+            "AGENTS",
+            "Tool result feedback"
+          ],
+          "correctIndex": 2,
+          "explanation": "AGENTS"
+        },
+        {
+          "id": 23,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is demonstrated in this situation?\n\n> A GitHub server provides repository data, issue actions, and reusable prompt templates.",
+          "options": [
+            "YOLO Mode",
+            "Attention dilution",
+            "MCP server capabilities",
+            "Token budget"
+          ],
+          "correctIndex": 2,
+          "explanation": "MCP server capabilities"
+        },
+        {
+          "id": 24,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **An open standard that connects AI hosts to external tools and data through a reusable protocol.**",
+          "options": [
+            "Plan, Execute, Review, Test",
+            "Model Context Protocol",
+            "Zero-trust execution",
+            "Host application"
+          ],
+          "correctIndex": 1,
+          "explanation": "Model Context Protocol"
+        },
+        {
+          "id": 25,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **A high-priority context layer that defines persona, rules, boundaries, and expected behavior.**",
+          "options": [
+            "Context Window",
+            "Memory and Environment",
+            "Reviewable diff",
+            "System Prompt"
+          ],
+          "correctIndex": 3,
+          "explanation": "System Prompt"
+        }
+      ]
+    },
+    {
+      "set": 7,
+      "questions": [
+        {
+          "id": 1,
+          "category": "Context Engineering",
+          "question": "Which statement best defines **Attention dilution**?",
+          "options": [
+            "The tendency for important information buried in the middle of long context to be recalled less reliably.",
+            "A high-priority context layer that defines persona, rules, boundaries, and expected behavior.",
+            "Relevant information receives less effective focus because it competes with excessive irrelevant context.",
+            "Repository files such as AGENTS.md or CLAUDE.md that contain durable project-specific rules."
+          ],
+          "correctIndex": 2,
+          "explanation": "Attention dilution"
+        },
+        {
+          "id": 2,
+          "category": "Context Engineering",
+          "question": "Which statement best defines **Lost in the Middle**?",
+          "options": [
+            "Removing irrelevant, stale, redundant, or low-value material before sending context to the model.",
+            "Relevant information receives less effective focus because it competes with excessive irrelevant context.",
+            "Repository files such as AGENTS.md or CLAUDE.md that contain durable project-specific rules.",
+            "The tendency for important information buried in the middle of long context to be recalled less reliably."
+          ],
+          "correctIndex": 3,
+          "explanation": "Lost in the Middle"
+        },
+        {
+          "id": 3,
+          "category": "AI & Agentic Systems",
+          "question": "Which action best follows the course guidance for **Memory and Environment**?",
+          "options": [
+            "Inject only state that is current, relevant, and safe to expose.",
+            "Store hard requirements and team conventions in version-controlled instruction files.",
+            "Place stable behavior and safety boundaries in the system layer.",
+            "Optimize the full context package rather than polishing only the final prompt sentence."
+          ],
+          "correctIndex": 0,
+          "explanation": "Memory and Environment"
+        },
+        {
+          "id": 4,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **The principle that relevant, structured context is the foundation of reliable model and agent output.**",
+          "options": [
+            "Clean worker context",
+            "Context-first best practice",
+            "Supervisor-worker pattern",
+            "Sub-Agent"
+          ],
+          "correctIndex": 1,
+          "explanation": "Context-first best practice"
+        },
+        {
+          "id": 5,
+          "category": "Agent Workflows",
+          "question": "Which action best follows the course guidance for **YOLO Mode**?",
+          "options": [
+            "Use only with strong specs, tests, least privilege, Sandboxing, and reviewable output.",
+            "Use this sequence as a default for meaningful coding or operational tasks.",
+            "Use Plugins to distribute consistent team workflows and policies.",
+            "Expose narrowly scoped capabilities with clear permissions and descriptions."
+          ],
+          "correctIndex": 0,
+          "explanation": "YOLO Mode"
+        },
+        {
+          "id": 6,
+          "category": "Agent SDK",
+          "question": "Which statement best defines **Claude Agent SDK**?",
+          "options": [
+            "A visible set of proposed changes that a human can inspect before merging or deployment.",
+            "A development toolkit for embedding an agent loop inside Python or TypeScript applications.",
+            "A focused context for each worker that excludes irrelevant details from other tasks.",
+            "The agent that holds the main goal, decomposes work, coordinates workers, and integrates their results."
+          ],
+          "correctIndex": 1,
+          "explanation": "Claude Agent SDK"
+        },
+        {
+          "id": 7,
+          "category": "Agent SDK",
+          "question": "Which concept is best described as: **Code-level rules that decide which tool actions an embedded agent may perform automatically.**",
+          "options": [
+            "Professional AI workflow",
+            "Programmatic approval policy",
+            "Reviewable diff",
+            "Claude Agent SDK"
+          ],
+          "correctIndex": 1,
+          "explanation": "Programmatic approval policy"
+        },
+        {
+          "id": 8,
+          "category": "Context Engineering",
+          "question": "Which action best follows the course guidance for **Clean worker context**?",
+          "options": [
+            "Use Hooks for deterministic enforcement outside the model.",
+            "Define reporting formats, dependencies, and ownership boundaries.",
+            "Give each Polecat a discrete task and clear completion criteria.",
+            "Give each worker only the information needed for its assigned subtask."
+          ],
+          "correctIndex": 3,
+          "explanation": "Clean worker context"
+        },
+        {
+          "id": 9,
+          "category": "Multi-Agent Systems",
+          "question": "Which action best follows the course guidance for **Supervisor agent**?",
+          "options": [
+            "Use Hooks for deterministic enforcement outside the model.",
+            "Keep coordination and integration responsibilities with a clear supervisor.",
+            "Give each Polecat a discrete task and clear completion criteria.",
+            "Use precise specs to shift human effort toward engineering leadership and review."
+          ],
+          "correctIndex": 1,
+          "explanation": "Supervisor agent"
+        },
+        {
+          "id": 10,
+          "category": "Agent Workflows",
+          "question": "Which statement best defines **Plan, Execute, Review, Test**?",
+          "options": [
+            "Skills teach procedures, MCP connects external systems, and Plugins package workflows for distribution.",
+            "A modular package of reusable procedural guidance, scripts, references, and examples for an agent.",
+            "A workflow in which the agent plans work, performs it, reviews the output, and validates it with tests.",
+            "A workflow where a detailed human-written specification guides AI implementation and evaluation."
+          ],
+          "correctIndex": 2,
+          "explanation": "Plan, Execute, Review, Test"
+        },
+        {
+          "id": 11,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is demonstrated in this situation?\n\n> PDF guidance remains unloaded during a coding task but appears when a PDF form must be filled.",
+          "options": [
+            "MCP host-client-server structure",
+            "Ralph Loops",
+            "MCP server capabilities",
+            "Lazy Skill loading"
+          ],
+          "correctIndex": 3,
+          "explanation": "Lazy Skill loading"
+        },
+        {
+          "id": 12,
+          "category": "LLM Core Concepts",
+          "question": "Which statement best defines **Tool Calling**?",
+          "options": [
+            "An application simulates memory by sending earlier user and assistant messages again in the current request.",
+            "The four pillars used in the course to describe the main components of an AI Agent.",
+            "The model emits a structured request for an external function instead of executing that function itself.",
+            "The process of updating model weights using large datasets and optimization."
+          ],
+          "correctIndex": 2,
+          "explanation": "Tool Calling"
+        },
+        {
+          "id": 13,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **The four pillars used in the course to describe the main components of an AI Agent.**",
+          "options": [
+            "Token",
+            "Stop conditions",
+            "GPT versus ChatGPT",
+            "Brain, Memory, Tools, and Loop"
+          ],
+          "correctIndex": 3,
+          "explanation": "Brain, Memory, Tools, and Loop"
+        },
+        {
+          "id": 14,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **A high-priority context layer that defines persona, rules, boundaries, and expected behavior.**",
+          "options": [
+            "Tool Definitions",
+            "Prompt Engineering",
+            "System Prompt",
+            "Context Engineering"
+          ],
+          "correctIndex": 2,
+          "explanation": "System Prompt"
+        },
+        {
+          "id": 15,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **A structured process that gives the model room to plan, decompose, check, and verify complex work.**",
+          "options": [
+            "ReAct pattern",
+            "Stop conditions",
+            "Reasoning workflow",
+            "AI Agent"
+          ],
+          "correctIndex": 2,
+          "explanation": "Reasoning workflow"
+        },
+        {
+          "id": 16,
+          "category": "Spec-Driven Development",
+          "question": "Which concept is demonstrated in this situation?\n\n> A feature request includes architecture, roles, error states, data models, tests, and acceptance criteria before coding starts.",
+          "options": [
+            "MCP host-client-server structure",
+            "Spec-Driven Development",
+            "Skills versus MCP versus Plugins",
+            "Plugin"
+          ],
+          "correctIndex": 1,
+          "explanation": "Spec-Driven Development"
+        },
+        {
+          "id": 17,
+          "category": "Agent Workflows",
+          "question": "Which concept is best described as: **The progression from tightly controlled AI assistance to more autonomous, tested, and coordinated workflows.**",
+          "options": [
+            "Plugin marketplace",
+            "Ralph Loops",
+            "Skills versus MCP versus Plugins",
+            "Workflow maturity"
+          ],
+          "correctIndex": 3,
+          "explanation": "Workflow maturity"
+        },
+        {
+          "id": 18,
+          "category": "AI & Agentic Systems",
+          "question": "Which concept is demonstrated in this situation?\n\n> Request three contains messages from requests one and two along with the new user message.",
+          "options": [
+            "Token budget",
+            "Conversation replay",
+            "ReAct pattern",
+            "AI Agent"
+          ],
+          "correctIndex": 1,
+          "explanation": "Conversation replay"
+        },
+        {
+          "id": 19,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> A new API call contains only the latest message, so the model cannot know an earlier conversation.",
+          "options": [
+            "Statelessness",
+            "Host application",
+            "Inference",
+            "ReAct pattern"
+          ],
+          "correctIndex": 0,
+          "explanation": "Statelessness"
+        },
+        {
+          "id": 20,
+          "category": "Context Engineering",
+          "question": "Which action best follows the course guidance for **Context Window**?",
+          "options": [
+            "Curate a smaller, task-focused context instead of dumping everything available.",
+            "Move hard constraints and critical decisions into durable project files.",
+            "Keep schemas precise and context-efficient so the model selects and fills tools correctly.",
+            "Treat the window as a constrained budget and prioritize signal over volume."
+          ],
+          "correctIndex": 3,
+          "explanation": "Context Window"
+        },
+        {
+          "id": 21,
+          "category": "Multi-Agent Systems",
+          "question": "Which topic pair is the focus of this comparison question: **Hooks and Slash commands**?",
+          "options": [
+            "Programmatic approval policy",
+            "Compacting",
+            "Hooks and Slash commands",
+            "Memory and Environment"
+          ],
+          "correctIndex": 2,
+          "explanation": "Hooks and Slash commands"
+        },
+        {
+          "id": 22,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **An LLM generates output by predicting one token at a time from the current context.**",
+          "options": [
+            "Claude Agent SDK",
+            "Inference",
+            "Attention dilution",
+            "Next-token prediction"
+          ],
+          "correctIndex": 3,
+          "explanation": "Next-token prediction"
+        },
+        {
+          "id": 23,
+          "category": "Multi-Agent Systems",
+          "question": "Which topic pair is the focus of this comparison question: **Sub-Agent and Supervisor agent**?",
+          "options": [
+            "Sub-Agent and Supervisor agent",
+            "Lost in the Middle",
+            "Plugin",
+            "Next-token prediction"
+          ],
+          "correctIndex": 0,
+          "explanation": "Sub-Agent and Supervisor agent"
+        },
+        {
+          "id": 24,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> The database agent receives schema requirements but not unrelated frontend discussions.",
+          "options": [
+            "GSD",
+            "Clean worker context",
+            "Attention dilution",
+            "Tool result feedback"
+          ],
+          "correctIndex": 1,
+          "explanation": "Clean worker context"
+        },
+        {
+          "id": 25,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is best described as: **An installable bundle that can package MCP servers, Skills, slash commands, Hooks, and shared workflows.**",
+          "options": [
+            "Brain, Memory, Tools, and Loop",
+            "Token",
+            "Plugin",
+            "MCP server capabilities"
+          ],
+          "correctIndex": 2,
+          "explanation": "Plugin"
+        }
+      ]
+    },
+    {
+      "set": 8,
+      "questions": [
+        {
+          "id": 1,
+          "category": "Context Engineering",
+          "question": "Which action best follows the course guidance for **Prompt Engineering**?",
+          "options": [
+            "Place critical instructions near the beginning or end and reduce irrelevant content.",
+            "Store hard requirements and team conventions in version-controlled instruction files.",
+            "Use clear prompts, but support them with relevant memory, tools, files, and system instructions.",
+            "Order context by priority and place must-follow instructions at strong recall positions."
+          ],
+          "correctIndex": 2,
+          "explanation": "Prompt Engineering"
+        },
+        {
+          "id": 2,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **Arranging context so important instructions and evidence appear where the model can use them effectively.**",
+          "options": [
+            "Context ordering",
+            "Attention dilution",
+            "Tool Definitions",
+            "Project instruction files"
+          ],
+          "correctIndex": 0,
+          "explanation": "Context ordering"
+        },
+        {
+          "id": 3,
+          "category": "LLM Core Concepts",
+          "question": "Which statement best defines **Tool Calling**?",
+          "options": [
+            "A model processing unit that may be a word, sub-word, punctuation mark, whitespace, or character chunk.",
+            "Using a trained, frozen model to process context and generate a response.",
+            "The model emits a structured request for an external function instead of executing that function itself.",
+            "An application simulates memory by sending earlier user and assistant messages again in the current request."
+          ],
+          "correctIndex": 2,
+          "explanation": "Tool Calling"
+        },
+        {
+          "id": 4,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is best described as: **A distribution mechanism that lets teams install and update workflow bundles consistently.**",
+          "options": [
+            "Spec-Driven Development",
+            "Plugin marketplace",
+            "Plan, Execute, Review, Test",
+            "Ralph Loops"
+          ],
+          "correctIndex": 1,
+          "explanation": "Plugin marketplace"
+        },
+        {
+          "id": 5,
+          "category": "Spec-Driven Development",
+          "question": "Which action best follows the course guidance for **GSD**?",
+          "options": [
+            "Give each Polecat a discrete task and clear completion criteria.",
+            "Assign bounded ownership and define integration rules before parallel work begins.",
+            "Give each worker a narrow objective, limited tools, and a clear return format.",
+            "Use precise specs to shift human effort toward engineering leadership and review."
+          ],
+          "correctIndex": 3,
+          "explanation": "GSD"
+        },
+        {
+          "id": 6,
+          "category": "LLM Core Concepts",
+          "question": "Which action best follows the course guidance for **Persistent memory layer**?",
+          "options": [
+            "Allow the generation process to build sequentially and evaluate the full output, not a single isolated token.",
+            "Separate what the model predicts from what the surrounding application executes or stores.",
+            "Use precise, minimal tool schemas and validate every requested action before execution.",
+            "Store durable facts outside the volatile chat and retrieve only what is relevant."
+          ],
+          "correctIndex": 3,
+          "explanation": "Persistent memory layer"
+        },
+        {
+          "id": 7,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> An agent lists requirements, identifies files, proposes a plan, implements changes, runs tests, and summarizes results.",
+          "options": [
+            "ReAct pattern",
+            "Brain, Memory, Tools, and Loop",
+            "Stop conditions",
+            "Reasoning workflow"
+          ],
+          "correctIndex": 3,
+          "explanation": "Reasoning workflow"
+        },
+        {
+          "id": 8,
+          "category": "Multi-Agent Systems",
+          "question": "Which statement best defines **Sub-Agent**?",
+          "options": [
+            "The agent that holds the main goal, decomposes work, coordinates workers, and integrates their results.",
+            "An isolated worker created by a supervisor to complete a bounded task and return a concise result.",
+            "Lifecycle event handlers executed by the harness at moments such as pre-tool-exec, post-tool-exec, or pre-commit.",
+            "A spec-driven approach in which humans define the system and agent teams implement against the specification."
+          ],
+          "correctIndex": 1,
+          "explanation": "Sub-Agent"
+        },
+        {
+          "id": 9,
+          "category": "Safety & Execution",
+          "question": "Which concept is best described as: **A security approach that assumes generated actions may fail or be unsafe and limits access by default.**",
+          "options": [
+            "Clean worker context",
+            "Zero-trust execution",
+            "Claude Agent SDK",
+            "Sandbox"
+          ],
+          "correctIndex": 1,
+          "explanation": "Zero-trust execution"
+        },
+        {
+          "id": 10,
+          "category": "Safety & Execution",
+          "question": "Which concept is best described as: **An isolated execution environment that limits damage from untrusted or unexpected agent-generated actions.**",
+          "options": [
+            "Reviewable diff",
+            "Swarm or Agent Team",
+            "Sandbox",
+            "Supervisor-worker pattern"
+          ],
+          "correctIndex": 2,
+          "explanation": "Sandbox"
+        },
+        {
+          "id": 11,
+          "category": "Multi-Agent Systems",
+          "question": "Which concept is best described as: **A multi-agent structure where one coordinator decomposes and integrates while workers execute bounded subtasks.**",
+          "options": [
+            "Supervisor-worker pattern",
+            "Slash commands",
+            "Professional AI workflow",
+            "Gastown Polecats"
+          ],
+          "correctIndex": 0,
+          "explanation": "Supervisor-worker pattern"
+        },
+        {
+          "id": 12,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **Each generated token becomes part of the input used to predict the following token.**",
+          "options": [
+            "Autoregressive loop",
+            "Host application",
+            "Persistent memory layer",
+            "Token budget"
+          ],
+          "correctIndex": 0,
+          "explanation": "Autoregressive loop"
+        },
+        {
+          "id": 13,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which action best follows the course guidance for **SKILL.md**?",
+          "options": [
+            "Publish repeatable, versioned bundles rather than relying on informal setup instructions.",
+            "Create focused Skills that load only when their procedure is relevant.",
+            "Write accurate name and description metadata plus clear executable steps.",
+            "Use only with strong specs, tests, least privilege, Sandboxing, and reviewable output."
+          ],
+          "correctIndex": 2,
+          "explanation": "SKILL.md"
+        },
+        {
+          "id": 14,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> An IDE agent includes only the three relevant files and the latest failing test output.",
+          "options": [
+            "System Prompt",
+            "Conversation History",
+            "Lossy summarization",
+            "Context pruning"
+          ],
+          "correctIndex": 3,
+          "explanation": "Context pruning"
+        },
+        {
+          "id": 15,
+          "category": "Context Engineering",
+          "question": "Which action best follows the course guidance for **Lossy summarization**?",
+          "options": [
+            "Move hard constraints and critical decisions into durable project files.",
+            "Write rules that are specific, testable, and relevant to project execution.",
+            "Use clear prompts, but support them with relevant memory, tools, files, and system instructions.",
+            "Place critical instructions near the beginning or end and reduce irrelevant content."
+          ],
+          "correctIndex": 0,
+          "explanation": "Lossy summarization"
+        },
+        {
+          "id": 16,
+          "category": "Context Engineering",
+          "question": "Which action best follows the course guidance for **Project instruction files**?",
+          "options": [
+            "Optimize the full context package rather than polishing only the final prompt sentence.",
+            "Store hard requirements and team conventions in version-controlled instruction files.",
+            "Preserve goals, decisions, constraints, and open tasks when summarizing.",
+            "Trim, summarize, or retrieve history based on relevance."
+          ],
+          "correctIndex": 1,
+          "explanation": "Project instruction files"
+        },
+        {
+          "id": 17,
+          "category": "LLM Core Concepts",
+          "question": "Which action best follows the course guidance for **Host application**?",
+          "options": [
+            "Place security checks, logging, permissions, and error handling in the host or orchestration layer.",
+            "Explain the model as a statistical next-token predictor rather than as a fact database.",
+            "Define goals, available tools, observation steps, and safe stopping conditions.",
+            "Evaluate whether the system has goal-directed tools, state, and loop behavior before calling it an agent."
+          ],
+          "correctIndex": 0,
+          "explanation": "Host application"
+        },
+        {
+          "id": 18,
+          "category": "Context Engineering",
+          "question": "Which statement best defines **Model Context Protocol**?",
+          "options": [
+            "The core Skill file containing YAML frontmatter for discovery and Markdown instructions for execution.",
+            "An open standard that connects AI hosts to external tools and data through a reusable protocol.",
+            "A modular package of reusable procedural guidance, scripts, references, and examples for an agent.",
+            "Repeated cycles of self-evaluation and improvement within a more mature agent workflow."
+          ],
+          "correctIndex": 1,
+          "explanation": "Model Context Protocol"
+        },
+        {
+          "id": 19,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is demonstrated in this situation?\n\n> An IDE host connects through a client to a Postgres MCP server.",
+          "options": [
+            "Skills versus MCP versus Plugins",
+            "MCP server capabilities",
+            "MCP host-client-server structure",
+            "Workflow maturity"
+          ],
+          "correctIndex": 2,
+          "explanation": "MCP host-client-server structure"
+        },
+        {
+          "id": 20,
+          "category": "Agent Workflows",
+          "question": "Which concept is best described as: **Repeated cycles of self-evaluation and improvement within a more mature agent workflow.**",
+          "options": [
+            "MCP server capabilities",
+            "Ralph Loops",
+            "Skills versus MCP versus Plugins",
+            "YOLO Mode"
+          ],
+          "correctIndex": 1,
+          "explanation": "Ralph Loops"
+        },
+        {
+          "id": 21,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **Condensing older conversation history into a summary so a long session can continue within the context window.**",
+          "options": [
+            "Persistent memory layer",
+            "Compacting",
+            "Lossy summarization",
+            "Inference"
+          ],
+          "correctIndex": 1,
+          "explanation": "Compacting"
+        },
+        {
+          "id": 22,
+          "category": "Agent SDK",
+          "question": "Which concept is best described as: **A development toolkit for embedding an agent loop inside Python or TypeScript applications.**",
+          "options": [
+            "Claude Agent SDK",
+            "Context Window",
+            "AGENTS.md rules",
+            "Memory and Environment"
+          ],
+          "correctIndex": 0,
+          "explanation": "Claude Agent SDK"
+        },
+        {
+          "id": 23,
+          "category": "LLM Core Concepts",
+          "question": "Which topic pair is the focus of this comparison question: **Conversation replay and Persistent memory layer**?",
+          "options": [
+            "Claude Agent SDK",
+            "Conversation replay and Persistent memory layer",
+            "Skills versus MCP versus Plugins",
+            "Spec-Driven Development"
+          ],
+          "correctIndex": 1,
+          "explanation": "Conversation replay and Persistent memory layer"
+        },
+        {
+          "id": 24,
+          "category": "Safety & Execution",
+          "question": "Which concept is best described as: **An isolated execution environment that limits damage from untrusted or unexpected agent-generated actions.**",
+          "options": [
+            "GPT versus ChatGPT",
+            "Token budget",
+            "Plugin marketplace",
+            "Sandbox"
+          ],
+          "correctIndex": 3,
+          "explanation": "Sandbox"
+        },
+        {
+          "id": 25,
+          "category": "Agent Workflows",
+          "question": "Which topic pair is the focus of this comparison question: **YOLO Mode and Spec-Driven Development**?",
+          "options": [
+            "YOLO Mode and Spec-Driven Development",
+            "Context Engineering",
+            "Skills versus MCP versus Plugins",
+            "Project instruction files"
+          ],
+          "correctIndex": 0,
+          "explanation": "YOLO Mode and Spec-Driven Development"
+        }
+      ]
+    },
+    {
+      "set": 9,
+      "questions": [
+        {
+          "id": 1,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which action best follows the course guidance for **Custom Skill**?",
+          "options": [
+            "Use this sequence as a default for meaningful coding or operational tasks.",
+            "Move human effort upstream into requirements, constraints, and review standards.",
+            "Design integrations once so multiple MCP-aware hosts can reuse them.",
+            "Create focused Skills that load only when their procedure is relevant."
+          ],
+          "correctIndex": 3,
+          "explanation": "Custom Skill"
+        },
+        {
+          "id": 2,
+          "category": "Context Engineering",
+          "question": "Which statement best defines **Compacting**?",
+          "options": [
+            "Schemas in the context that describe available tools, arguments, and expected usage.",
+            "Context containing persistent preferences, runtime state, metadata, and environment information.",
+            "Earlier user and assistant turns included in the current context to maintain continuity.",
+            "Condensing older conversation history into a summary so a long session can continue within the context window."
+          ],
+          "correctIndex": 3,
+          "explanation": "Compacting"
+        },
+        {
+          "id": 3,
+          "category": "Context Engineering",
+          "question": "Which statement best defines **Conversation History**?",
+          "options": [
+            "Arranging context so important instructions and evidence appear where the model can use them effectively.",
+            "Designing, structuring, pruning, and managing the complete payload sent to the model.",
+            "Schemas in the context that describe available tools, arguments, and expected usage.",
+            "Earlier user and assistant turns included in the current context to maintain continuity."
+          ],
+          "correctIndex": 3,
+          "explanation": "Conversation History"
+        },
+        {
+          "id": 4,
+          "category": "LLM Core Concepts",
+          "question": "Which statement best defines **Token**?",
+          "options": [
+            "Using a trained, frozen model to process context and generate a response.",
+            "Application-managed storage that saves user preferences, facts, or state and injects relevant items into context.",
+            "An LLM generates output by predicting one token at a time from the current context.",
+            "A model processing unit that may be a word, sub-word, punctuation mark, whitespace, or character chunk."
+          ],
+          "correctIndex": 3,
+          "explanation": "Token"
+        },
+        {
+          "id": 5,
+          "category": "Agent SDK",
+          "question": "Which action best follows the course guidance for **Claude Agent SDK**?",
+          "options": [
+            "Give each worker a narrow objective, limited tools, and a clear return format.",
+            "Create commands for frequent, repeatable workflows with clear inputs and outputs.",
+            "Implement approval policies, event listeners, and allowed tools in application code.",
+            "Use precise specs to shift human effort toward engineering leadership and review."
+          ],
+          "correctIndex": 2,
+          "explanation": "Claude Agent SDK"
+        },
+        {
+          "id": 6,
+          "category": "Context Engineering",
+          "question": "Which action best follows the course guidance for **Tool Definitions**?",
+          "options": [
+            "Trim, summarize, or retrieve history based on relevance.",
+            "Place critical instructions near the beginning or end and reduce irrelevant content.",
+            "Curate a smaller, task-focused context instead of dumping everything available.",
+            "Keep schemas precise and context-efficient so the model selects and fills tools correctly."
+          ],
+          "correctIndex": 3,
+          "explanation": "Tool Definitions"
+        },
+        {
+          "id": 7,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **The finite amount of context and generated output that can fit within the model's token limits.**",
+          "options": [
+            "Token budget",
+            "Tool result feedback",
+            "Token",
+            "Host application"
+          ],
+          "correctIndex": 0,
+          "explanation": "Token budget"
+        },
+        {
+          "id": 8,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is best described as: **An installable bundle that can package MCP servers, Skills, slash commands, Hooks, and shared workflows.**",
+          "options": [
+            "MCP server capabilities",
+            "Spec-Driven Development",
+            "SKILL.md",
+            "Plugin"
+          ],
+          "correctIndex": 3,
+          "explanation": "Plugin"
+        },
+        {
+          "id": 9,
+          "category": "Context Engineering",
+          "question": "Which statement best defines **Model Context Protocol**?",
+          "options": [
+            "An open standard that connects AI hosts to external tools and data through a reusable protocol.",
+            "A workflow in which the agent plans work, performs it, reviews the output, and validates it with tests.",
+            "Loading Skill instructions only when the current task requires them, saving context space.",
+            "An MCP server can expose Resources, Tools, and Prompts to compatible hosts."
+          ],
+          "correctIndex": 0,
+          "explanation": "Model Context Protocol"
+        },
+        {
+          "id": 10,
+          "category": "LLM Core Concepts",
+          "question": "Which action best follows the course guidance for **Brain, Memory, Tools, and Loop**?",
+          "options": [
+            "Allow the generation process to build sequentially and evaluate the full output, not a single isolated token.",
+            "Estimate model load, cost, and context usage in tokens rather than ordinary word count.",
+            "Place security checks, logging, permissions, and error handling in the host or orchestration layer.",
+            "Design all four pillars together instead of focusing only on model size."
+          ],
+          "correctIndex": 3,
+          "explanation": "Brain, Memory, Tools, and Loop"
+        },
+        {
+          "id": 11,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which statement best defines **MCP host-client-server structure**?",
+          "options": [
+            "An open standard that connects AI hosts to external tools and data through a reusable protocol.",
+            "A high-autonomy operating mode in which an agent performs larger amounts of work with minimal approval.",
+            "Skills teach procedures, MCP connects external systems, and Plugins package workflows for distribution.",
+            "A host uses MCP clients to communicate with MCP servers that provide external capabilities."
+          ],
+          "correctIndex": 3,
+          "explanation": "MCP host-client-server structure"
+        },
+        {
+          "id": 12,
+          "category": "Multi-Agent Systems",
+          "question": "Which concept is best described as: **The worker agents in the Gastown framing that implement separate pieces assigned by a Lead.**",
+          "options": [
+            "Zero-trust execution",
+            "Gastown Polecats",
+            "Swarm or Agent Team",
+            "Claude Agent SDK"
+          ],
+          "correctIndex": 1,
+          "explanation": "Gastown Polecats"
+        },
+        {
+          "id": 13,
+          "category": "Context Engineering",
+          "question": "Which action best follows the course guidance for **Context Engineering**?",
+          "options": [
+            "Place stable behavior and safety boundaries in the system layer.",
+            "Move hard constraints and critical decisions into durable project files.",
+            "Inject only state that is current, relevant, and safe to expose.",
+            "Optimize the full context package rather than polishing only the final prompt sentence."
+          ],
+          "correctIndex": 3,
+          "explanation": "Context Engineering"
+        },
+        {
+          "id": 14,
+          "category": "System Integration",
+          "question": "Which action best follows the course guidance for **Professional AI workflow**?",
+          "options": [
+            "Move the blast radius away from local and production systems.",
+            "Give each worker only the information needed for its assigned subtask.",
+            "Combine autonomy with standards, integrations, deterministic checks, isolated execution, and human review.",
+            "Give each worker a narrow objective, limited tools, and a clear return format."
+          ],
+          "correctIndex": 2,
+          "explanation": "Professional AI workflow"
+        },
+        {
+          "id": 15,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> A payments project states that money uses integer minor units and full PAN values must never be logged.",
+          "options": [
+            "Conversation History",
+            "Memory and Environment",
+            "Project instruction files",
+            "AGENTS.md rules"
+          ],
+          "correctIndex": 3,
+          "explanation": "AGENTS.md rules"
+        },
+        {
+          "id": 16,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **An architecture in which an LLM uses tools, state, and an autonomous loop to achieve a specific goal.**",
+          "options": [
+            "Tool Calling",
+            "Autoregressive loop",
+            "AI Agent",
+            "Brain, Memory, Tools, and Loop"
+          ],
+          "correctIndex": 2,
+          "explanation": "AI Agent"
+        },
+        {
+          "id": 17,
+          "category": "Safety & Execution",
+          "question": "Which statement best defines **Reviewable diff**?",
+          "options": [
+            "A multi-agent structure where one coordinator decomposes and integrates while workers execute bounded subtasks.",
+            "The agent that holds the main goal, decomposes work, coordinates workers, and integrates their results.",
+            "A visible set of proposed changes that a human can inspect before merging or deployment.",
+            "Reusable command shortcuts that trigger predefined agent workflows."
+          ],
+          "correctIndex": 2,
+          "explanation": "Reviewable diff"
+        },
+        {
+          "id": 18,
+          "category": "Multi-Agent Systems",
+          "question": "Which concept is best described as: **Reusable command shortcuts that trigger predefined agent workflows.**",
+          "options": [
+            "Programmatic approval policy",
+            "Reviewable diff",
+            "Slash commands",
+            "Supervisor agent"
+          ],
+          "correctIndex": 2,
+          "explanation": "Slash commands"
+        },
+        {
+          "id": 19,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is demonstrated in this situation?\n\n> A team uses a PDF Skill, a Jira MCP server, and a Plugin that ships both with release commands.",
+          "options": [
+            "Plugin",
+            "Skills versus MCP versus Plugins",
+            "Ralph Loops",
+            "Spec-Driven Development"
+          ],
+          "correctIndex": 1,
+          "explanation": "Skills versus MCP versus Plugins"
+        },
+        {
+          "id": 20,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> After a database query runs, the returned rows are added to the next model request.",
+          "options": [
+            "Tool result feedback",
+            "ReAct pattern",
+            "Host application",
+            "Stop conditions"
+          ],
+          "correctIndex": 0,
+          "explanation": "Tool result feedback"
+        },
+        {
+          "id": 21,
+          "category": "AI & Agentic Systems",
+          "question": "Which concept is demonstrated in this situation?\n\n> Request three contains messages from requests one and two along with the new user message.",
+          "options": [
+            "Ralph Loops",
+            "Conversation replay",
+            "Spec-Driven Development",
+            "SKILL.md"
+          ],
+          "correctIndex": 1,
+          "explanation": "Conversation replay"
+        },
+        {
+          "id": 22,
+          "category": "Agent Workflows",
+          "question": "Which concept is best described as: **The progression from tightly controlled AI assistance to more autonomous, tested, and coordinated workflows.**",
+          "options": [
+            "Lost in the Middle",
+            "Clean worker context",
+            "Inference",
+            "Workflow maturity"
+          ],
+          "correctIndex": 3,
+          "explanation": "Workflow maturity"
+        },
+        {
+          "id": 23,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **A structured process that gives the model room to plan, decompose, check, and verify complex work.**",
+          "options": [
+            "Spec-Driven Development",
+            "Lazy Skill loading",
+            "Reasoning workflow",
+            "Plan, Execute, Review, Test"
+          ],
+          "correctIndex": 2,
+          "explanation": "Reasoning workflow"
+        },
+        {
+          "id": 24,
+          "category": "Multi-Agent Systems",
+          "question": "Which concept is best described as: **An isolated worker created by a supervisor to complete a bounded task and return a concise result.**",
+          "options": [
+            "Next-token prediction",
+            "Sub-Agent",
+            "Lazy Skill loading",
+            "Tool result feedback"
+          ],
+          "correctIndex": 1,
+          "explanation": "Sub-Agent"
+        },
+        {
+          "id": 25,
+          "category": "LLM Core Concepts",
+          "question": "Which topic pair is the focus of this comparison question: **Tool Calling and Tool result feedback**?",
+          "options": [
+            "Programmatic approval policy",
+            "Plugin marketplace",
+            "Sandbox",
+            "Tool Calling and Tool result feedback"
+          ],
+          "correctIndex": 3,
+          "explanation": "Tool Calling and Tool result feedback"
+        }
+      ]
+    },
+    {
+      "set": 10,
+      "questions": [
+        {
+          "id": 1,
+          "category": "Context Engineering",
+          "question": "Which action best follows the course guidance for **Context Window**?",
+          "options": [
+            "Select the smallest context that still contains all necessary evidence and constraints.",
+            "Store hard requirements and team conventions in version-controlled instruction files.",
+            "Curate a smaller, task-focused context instead of dumping everything available.",
+            "Treat the window as a constrained budget and prioritize signal over volume."
+          ],
+          "correctIndex": 3,
+          "explanation": "Context Window"
+        },
+        {
+          "id": 2,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> The same model family is wrapped with file handling, web search, user accounts, and conversation history.",
+          "options": [
+            "Inference",
+            "Conversation replay",
+            "Reasoning workflow",
+            "GPT versus ChatGPT"
+          ],
+          "correctIndex": 3,
+          "explanation": "GPT versus ChatGPT"
+        },
+        {
+          "id": 3,
+          "category": "Context Engineering",
+          "question": "Which statement best defines **Context-first best practice**?",
+          "options": [
+            "The principle that relevant, structured context is the foundation of reliable model and agent output.",
+            "A focused context for each worker that excludes irrelevant details from other tasks.",
+            "An isolated execution environment that limits damage from untrusted or unexpected agent-generated actions.",
+            "An isolated worker created by a supervisor to complete a bounded task and return a concise result."
+          ],
+          "correctIndex": 0,
+          "explanation": "Context-first best practice"
+        },
+        {
+          "id": 4,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **Relevant information receives less effective focus because it competes with excessive irrelevant context.**",
+          "options": [
+            "Context Engineering",
+            "Context ordering",
+            "Project instruction files",
+            "Attention dilution"
+          ],
+          "correctIndex": 3,
+          "explanation": "Attention dilution"
+        },
+        {
+          "id": 5,
+          "category": "Agent Workflows",
+          "question": "Which concept is best described as: **A workflow in which the agent plans work, performs it, reviews the output, and validates it with tests.**",
+          "options": [
+            "YOLO Mode",
+            "Workflow maturity",
+            "Spec-Driven Development",
+            "Plan, Execute, Review, Test"
+          ],
+          "correctIndex": 3,
+          "explanation": "Plan, Execute, Review, Test"
+        },
+        {
+          "id": 6,
+          "category": "System Integration",
+          "question": "Which concept is best described as: **A controlled chain from requirement to specification, agent teamwork, Skills, MCP, Hooks, Sandbox, and reviewable output.**",
+          "options": [
+            "Supervisor-worker pattern",
+            "Reviewable diff",
+            "Gastown Polecats",
+            "Professional AI workflow"
+          ],
+          "correctIndex": 3,
+          "explanation": "Professional AI workflow"
+        },
+        {
+          "id": 7,
+          "category": "Multi-Agent Systems",
+          "question": "Which concept is demonstrated in this situation?\n\n> A pre-commit check automatically verifies required files before changes can be committed.",
+          "options": [
+            "Programmatic approval policy",
+            "Hooks",
+            "Zero-trust execution",
+            "Supervisor agent"
+          ],
+          "correctIndex": 1,
+          "explanation": "Hooks"
+        },
+        {
+          "id": 8,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which action best follows the course guidance for **MCP server capabilities**?",
+          "options": [
+            "Expose narrowly scoped capabilities with clear permissions and descriptions.",
+            "Use this sequence as a default for meaningful coding or operational tasks.",
+            "Increase autonomy only after specifications, tests, review, and safe execution controls are mature.",
+            "Pair repeated improvement with limits and objective evaluation criteria."
+          ],
+          "correctIndex": 0,
+          "explanation": "MCP server capabilities"
+        },
+        {
+          "id": 9,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **Application-managed storage that saves user preferences, facts, or state and injects relevant items into context.**",
+          "options": [
+            "Stop conditions",
+            "GPT versus ChatGPT",
+            "Conversation replay",
+            "Persistent memory layer"
+          ],
+          "correctIndex": 3,
+          "explanation": "Persistent memory layer"
+        },
+        {
+          "id": 10,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **Schemas in the context that describe available tools, arguments, and expected usage.**",
+          "options": [
+            "Conversation History",
+            "Attention dilution",
+            "System Prompt",
+            "Tool Definitions"
+          ],
+          "correctIndex": 3,
+          "explanation": "Tool Definitions"
+        },
+        {
+          "id": 11,
+          "category": "Multi-Agent Systems",
+          "question": "Which concept is best described as: **Multiple specialized agents coordinated to complete parts of one larger system in parallel.**",
+          "options": [
+            "Professional AI workflow",
+            "Swarm or Agent Team",
+            "Gastown Polecats",
+            "Hooks"
+          ],
+          "correctIndex": 1,
+          "explanation": "Swarm or Agent Team"
+        },
+        {
+          "id": 12,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> A new API call contains only the latest message, so the model cannot know an earlier conversation.",
+          "options": [
+            "Statelessness",
+            "Brain, Memory, Tools, and Loop",
+            "Training",
+            "AI Agent"
+          ],
+          "correctIndex": 0,
+          "explanation": "Statelessness"
+        },
+        {
+          "id": 13,
+          "category": "Agent Workflows",
+          "question": "Which action best follows the course guidance for **Workflow maturity**?",
+          "options": [
+            "Increase autonomy only after specifications, tests, review, and safe execution controls are mature.",
+            "Write accurate name and description metadata plus clear executable steps.",
+            "Publish repeatable, versioned bundles rather than relying on informal setup instructions.",
+            "Expose narrowly scoped capabilities with clear permissions and descriptions."
+          ],
+          "correctIndex": 0,
+          "explanation": "Workflow maturity"
+        },
+        {
+          "id": 14,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> A payments project states that money uses integer minor units and full PAN values must never be logged.",
+          "options": [
+            "System Prompt",
+            "Tool Definitions",
+            "Memory and Environment",
+            "AGENTS.md rules"
+          ],
+          "correctIndex": 3,
+          "explanation": "AGENTS.md rules"
+        },
+        {
+          "id": 15,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which concept is best described as: **Loading Skill instructions only when the current task requires them, saving context space.**",
+          "options": [
+            "Lazy Skill loading",
+            "MCP host-client-server structure",
+            "Plan, Execute, Review, Test",
+            "Custom Skill"
+          ],
+          "correctIndex": 0,
+          "explanation": "Lazy Skill loading"
+        },
+        {
+          "id": 16,
+          "category": "Skills, MCP & Plugins",
+          "question": "Which action best follows the course guidance for **Custom Skill**?",
+          "options": [
+            "Expose narrowly scoped capabilities with clear permissions and descriptions.",
+            "Increase autonomy only after specifications, tests, review, and safe execution controls are mature.",
+            "Use MCP when standardized access to live external systems is needed.",
+            "Create focused Skills that load only when their procedure is relevant."
+          ],
+          "correctIndex": 3,
+          "explanation": "Custom Skill"
+        },
+        {
+          "id": 17,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **An agent loop that combines reasoning and acting through Think, Act, Observe, and Repeat.**",
+          "options": [
+            "ReAct pattern",
+            "Host application",
+            "Inference",
+            "Tool Calling"
+          ],
+          "correctIndex": 0,
+          "explanation": "ReAct pattern"
+        },
+        {
+          "id": 18,
+          "category": "Context Engineering",
+          "question": "Which concept is best described as: **A focused context for each worker that excludes irrelevant details from other tasks.**",
+          "options": [
+            "Supervisor-worker pattern",
+            "Clean worker context",
+            "Zero-trust execution",
+            "Sandbox"
+          ],
+          "correctIndex": 1,
+          "explanation": "Clean worker context"
+        },
+        {
+          "id": 19,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> A summary remembers that a bug was fixed but drops the exact edge case that caused it.",
+          "options": [
+            "Prompt Engineering",
+            "Lost in the Middle",
+            "Lossy summarization",
+            "Context Engineering"
+          ],
+          "correctIndex": 2,
+          "explanation": "Lossy summarization"
+        },
+        {
+          "id": 20,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **The process of updating model weights using large datasets and optimization.**",
+          "options": [
+            "ReAct pattern",
+            "Tool result feedback",
+            "Token budget",
+            "Training"
+          ],
+          "correctIndex": 3,
+          "explanation": "Training"
+        },
+        {
+          "id": 21,
+          "category": "Context Engineering",
+          "question": "Which topic pair is the focus of this comparison question: **Custom Skill and Model Context Protocol**?",
+          "options": [
+            "Supervisor agent",
+            "Inference",
+            "Training",
+            "Custom Skill and Model Context Protocol"
+          ],
+          "correctIndex": 3,
+          "explanation": "Custom Skill and Model Context Protocol"
+        },
+        {
+          "id": 22,
+          "category": "Context Engineering",
+          "question": "Which concept is demonstrated in this situation?\n\n> A crucial requirement is placed between dozens of unrelated files and is overlooked by the model.",
+          "options": [
+            "Sandbox",
+            "Supervisor agent",
+            "Lost in the Middle",
+            "Slash commands"
+          ],
+          "correctIndex": 2,
+          "explanation": "Lost in the Middle"
+        },
+        {
+          "id": 23,
+          "category": "Context Engineering",
+          "question": "Which topic pair is the focus of this comparison question: **Compacting and Project instruction files**?",
+          "options": [
+            "Compacting and Project instruction files",
+            "Stop conditions",
+            "Context Window",
+            "Lazy Skill loading"
+          ],
+          "correctIndex": 0,
+          "explanation": "Compacting and Project instruction files"
+        },
+        {
+          "id": 24,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is best described as: **The core LLM does not inherently remember separate requests unless prior information is sent again.**",
+          "options": [
+            "Statelessness",
+            "Conversation History",
+            "Context Engineering",
+            "MCP server capabilities"
+          ],
+          "correctIndex": 0,
+          "explanation": "Statelessness"
+        },
+        {
+          "id": 25,
+          "category": "LLM Core Concepts",
+          "question": "Which concept is demonstrated in this situation?\n\n> An agent stops after three failed retries or when all acceptance criteria pass.",
+          "options": [
+            "Context Engineering",
+            "Stop conditions",
+            "Inference",
+            "Compacting"
+          ],
+          "correctIndex": 1,
+          "explanation": "Stop conditions"
+        }
+      ]
+    }
+  ]
+}

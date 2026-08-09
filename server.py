@@ -81,6 +81,17 @@ class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_json(200, users)
             return
 
+        # 3. API: Get Candidate Attempt History (Participant)
+        if parsed_url.path == "/api/user/results":
+            email = query_params.get("email", [""])[0].strip().lower()
+            if not email:
+                self.send_json(400, {"error": "Email parameter required"})
+                return
+
+            history = db.get_results_by_candidate_email(email)
+            self.send_json(200, history)
+            return
+
         # Serve static web files
         super().do_GET()
 
@@ -107,7 +118,7 @@ class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_json(401, {"error": "Invalid admin email or password"})
             return
 
-        # 2. API: Participant / User Login (Check single-attempt rule)
+        # 2. API: Participant / User Login (Returns account profile & attempt history)
         if parsed_url.path == "/api/user/login":
             email = payload.get("email", "").strip().lower()
             password = payload.get("password", "").strip()
@@ -118,22 +129,14 @@ class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_json(401, {"error": "Invalid email or password. Please contact admin if unregistered."})
                 return
 
-            # Check if candidate has already taken the exam
-            existing_attempt = db.get_result_by_email(email)
+            # Fetch past attempt history for candidate
+            history = db.get_results_by_candidate_email(email)
 
-            if existing_attempt:
-                self.send_json(200, {
-                    "status": "already_taken",
-                    "hasTakenExam": True,
-                    "user": { "id": matched_user["id"], "email": matched_user["email"] },
-                    "existingResult": existing_attempt
-                })
-            else:
-                self.send_json(200, {
-                    "status": "success",
-                    "hasTakenExam": False,
-                    "user": { "id": matched_user["id"], "email": matched_user["email"] }
-                })
+            self.send_json(200, {
+                "status": "success",
+                "user": { "id": matched_user["id"], "email": matched_user["email"] },
+                "history": history
+            })
             return
 
         # 3. API: Register / Add Participant (Admin only)
@@ -162,15 +165,8 @@ class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_json(201, {"status": "success", "message": "Participant registered successfully", "user": new_user})
             return
 
-        # 4. API: Save Exam Result (Strict single-attempt enforcement)
+        # 4. API: Save Exam Result (Allows retakes & multi-attempt history)
         if parsed_url.path == "/api/results":
-            candidate_email = payload.get("candidate", {}).get("email", "").strip().lower()
-
-            # Prevent duplicate submission
-            if db.get_result_by_email(candidate_email):
-                self.send_json(400, {"error": "Exam already submitted. Only 1 attempt is allowed per candidate."})
-                return
-
             db.add_result(payload)
             self.send_json(201, {"status": "success", "message": "Result saved successfully"})
             return
@@ -201,11 +197,20 @@ class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
             self.send_json(200, {"status": "success", "message": "Participant removed successfully"})
             return
 
-        # 2. API: Clear All Exam Results (Admin only)
+        # 2. API: Remove Single Exam Result or Clear All Results (Admin only)
         if parsed_url.path == "/api/results":
-            db.clear_all_results()
-            self.send_json(200, {"status": "success", "message": "All results cleared"})
-            return
+            result_id = query_params.get("id", [""])[0]
+            if result_id:
+                deleted = db.delete_result(result_id)
+                if not deleted:
+                    self.send_json(404, {"error": "Result record not found"})
+                    return
+                self.send_json(200, {"status": "success", "message": "Exam result removed successfully"})
+                return
+            else:
+                db.clear_all_results()
+                self.send_json(200, {"status": "success", "message": "All results cleared"})
+                return
 
     def do_OPTIONS(self):
         self.send_response(200)
