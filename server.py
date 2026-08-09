@@ -15,6 +15,8 @@ import os
 import urllib.parse
 import uuid
 
+import db
+
 def load_dotenv():
     env_path = os.path.join(os.path.dirname(__file__), ".env")
     if os.path.exists(env_path):
@@ -31,36 +33,8 @@ PORT = int(os.environ.get("PORT", 8080))
 ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "feroz@teamrag.com").lower()
 ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "203021258")
 
-RESULTS_FILE = os.path.join(os.path.dirname(__file__), "results.json")
-USERS_FILE = os.path.join(os.path.dirname(__file__), "users.json")
-
-# Ensure json files exist
-if not os.path.exists(RESULTS_FILE):
-    with open(RESULTS_FILE, "w") as f:
-        json.dump([], f)
-
-if not os.path.exists(USERS_FILE):
-    default_users = [
-        {
-            "id": "USR-1",
-            "email": "student@example.com",
-            "password": "password123",
-            "createdAt": "2026-08-04T12:00:00Z"
-        }
-    ]
-    with open(USERS_FILE, "w") as f:
-        json.dump(default_users, f, indent=2)
-
-def read_json_file(filepath):
-    try:
-        with open(filepath, "r") as f:
-            return json.load(f)
-    except Exception:
-        return []
-
-def write_json_file(filepath, data):
-    with open(filepath, "w") as f:
-        json.dump(data, f, indent=2)
+# Initialize database tables and migration
+db.init_db()
 
 class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
     def is_authenticated_admin(self, key_or_token):
@@ -89,7 +63,7 @@ class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_json(401, {"error": "Unauthorized admin access"})
                 return
             
-            results = read_json_file(RESULTS_FILE)
+            results = db.get_all_results()
             self.send_json(200, results)
             return
 
@@ -103,9 +77,8 @@ class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_json(401, {"error": "Unauthorized admin access"})
                 return
 
-            users = read_json_file(USERS_FILE)
-            safe_users = [{ "id": u["id"], "email": u["email"], "createdAt": u.get("createdAt", "") } for u in users]
-            self.send_json(200, safe_users)
+            users = db.get_all_users()
+            self.send_json(200, users)
             return
 
         # Serve static web files
@@ -139,16 +112,14 @@ class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
             email = payload.get("email", "").strip().lower()
             password = payload.get("password", "").strip()
 
-            users = read_json_file(USERS_FILE)
-            matched_user = next((u for u in users if u["email"].lower() == email and u["password"] == password), None)
+            matched_user = db.get_user_by_credentials(email, password)
 
             if not matched_user:
                 self.send_json(401, {"error": "Invalid email or password. Please contact admin if unregistered."})
                 return
 
             # Check if candidate has already taken the exam
-            results = read_json_file(RESULTS_FILE)
-            existing_attempt = next((r for r in results if r.get("candidate", {}).get("email", "").lower() == email), None)
+            existing_attempt = db.get_result_by_email(email)
 
             if existing_attempt:
                 self.send_json(200, {
@@ -183,35 +154,24 @@ class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_json(400, {"error": "Email and Password are required"})
                 return
 
-            users = read_json_file(USERS_FILE)
-            if any(u["email"].lower() == email for u in users):
+            if db.user_exists(email):
                 self.send_json(400, {"error": "A participant with this email already exists"})
                 return
 
-            new_user = {
-                "id": "USR-" + str(uuid.uuid4())[:8],
-                "email": email,
-                "password": password,
-                "createdAt": payload.get("createdAt", "") or "2026-08-04T15:30:00Z"
-            }
-            users.append(new_user)
-            write_json_file(USERS_FILE, users)
-
+            new_user = db.add_user(email, password, payload.get("createdAt"))
             self.send_json(201, {"status": "success", "message": "Participant registered successfully", "user": new_user})
             return
 
         # 4. API: Save Exam Result (Strict single-attempt enforcement)
         if parsed_url.path == "/api/results":
             candidate_email = payload.get("candidate", {}).get("email", "").strip().lower()
-            results = read_json_file(RESULTS_FILE)
 
             # Prevent duplicate submission
-            if any(r.get("candidate", {}).get("email", "").lower() == candidate_email for r in results):
+            if db.get_result_by_email(candidate_email):
                 self.send_json(400, {"error": "Exam already submitted. Only 1 attempt is allowed per candidate."})
                 return
 
-            results.append(payload)
-            write_json_file(RESULTS_FILE, results)
+            db.add_result(payload)
             self.send_json(201, {"status": "success", "message": "Result saved successfully"})
             return
 
@@ -233,20 +193,17 @@ class QuizRequestHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_json(400, {"error": "User ID parameter required"})
                 return
 
-            users = read_json_file(USERS_FILE)
-            filtered_users = [u for u in users if u["id"] != user_id]
-            
-            if len(filtered_users) == len(users):
+            deleted = db.delete_user(user_id)
+            if not deleted:
                 self.send_json(404, {"error": "Participant not found"})
                 return
 
-            write_json_file(USERS_FILE, filtered_users)
             self.send_json(200, {"status": "success", "message": "Participant removed successfully"})
             return
 
         # 2. API: Clear All Exam Results (Admin only)
         if parsed_url.path == "/api/results":
-            write_json_file(RESULTS_FILE, [])
+            db.clear_all_results()
             self.send_json(200, {"status": "success", "message": "All results cleared"})
             return
 

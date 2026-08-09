@@ -11,10 +11,12 @@ import os
 import sys
 
 # Import server handler logic from server module
-from server import QuizRequestHandler, load_dotenv, ADMIN_EMAIL, RESULTS_FILE, USERS_FILE
+from server import QuizRequestHandler, load_dotenv, ADMIN_EMAIL
+import db
 
 def run():
     load_dotenv()
+    db.init_db()
     
     # Cloud PaaS platforms (Render, Railway, Heroku) pass PORT dynamically in environment
     port = int(os.environ.get("PORT", 8080))
@@ -26,8 +28,7 @@ def run():
     print(f"🚀 AI Certification Quiz Server Launching...")
     print(f"📍 Binding Address : http://{host}:{port}")
     print(f"🔑 Admin Email     : {ADMIN_EMAIL}")
-    print(f"📁 Results Storage : {RESULTS_FILE}")
-    print(f"👤 Users Storage   : {USERS_FILE}")
+    print(f"🗄️ Database        : SQLite ({db.DB_FILE})")
     print(f"==================================================")
 
     try:
