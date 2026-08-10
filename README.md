@@ -79,8 +79,8 @@ Create or update the `.env` file in the root directory (optional, defaults provi
 
 ```env
 PORT=8080
-ADMIN_EMAIL=feroz@teamrag.com
-ADMIN_PASSWORD=your_secure_password
+ADMIN_EMAIL=admin@teamrag.com
+ADMIN_PASSWORD=1234
 ```
 
 ### Running Locally

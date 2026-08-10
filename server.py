@@ -30,8 +30,8 @@ def load_dotenv():
 load_dotenv()
 
 PORT = int(os.environ.get("PORT", 8080))
-ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "feroz@teamrag.com").lower()
-ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "203021258")
+ADMIN_EMAIL = os.environ.get("ADMIN_EMAIL", "admin@teamrag.com").lower()
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "1234")
 
 # Initialize database tables and migration
 db.init_db()

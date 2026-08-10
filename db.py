@@ -120,14 +120,6 @@ def init_db():
             except Exception as e:
                 print(f"[!] Warning: Could not migrate results.json: {e}")
 
-        # 5. Seed default user if database users table is empty
-        cursor.execute("SELECT COUNT(*) as count FROM users")
-        if cursor.fetchone()["count"] == 0:
-            cursor.execute(
-                "INSERT INTO users (id, email, password, created_at) VALUES (?, ?, ?, ?)",
-                ("USR-1", "student@example.com", "password123", "2026-08-04T12:00:00Z")
-            )
-
 # --- USER OPERATIONS ---
 
 def get_all_users():
